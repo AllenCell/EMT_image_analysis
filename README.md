@@ -1,2 +1,2 @@
-# emt_data_analysis
+# emt_image_analysis
 Repository for EMT image analysis code 
