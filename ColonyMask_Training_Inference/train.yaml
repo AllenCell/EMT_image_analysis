@@ -1,0 +1,277 @@
+model:
+  _target_: cyto_dl.models.im2im.MultiTaskIm2Im
+  save_images_every_n_epochs: 50
+  save_dir: /allen/aics/assay-dev/users/Sandi/cyto-dl/logs/train/runs/fijimasks_cytogfp_ALL_v3/v3/2024-03-23_14-33-36
+  x_key: raw
+  backbone:
+    _target_: monai.networks.nets.DynUNet
+    spatial_dims: 3
+    in_channels: 1
+    out_channels: 1
+    strides:
+    - 1
+    - 2
+    - 2
+    - 2
+    kernel_size:
+    - 3
+    - 3
+    - 3
+    - 3
+    upsample_kernel_size:
+    - 2
+    - 2
+    - 2
+    dropout: 0.0
+    res_block: true
+  task_heads:
+    seg:
+      _target_: cyto_dl.nn.BaseHead
+      loss:
+        _target_: monai.losses.GeneralizedDiceFocalLoss
+        sigmoid: true
+      postprocess:
+        input:
+          _target_: cyto_dl.models.im2im.utils.postprocessing.ActThreshLabel
+          rescale_dtype: numpy.uint8
+        prediction:
+          _target_: cyto_dl.models.im2im.utils.postprocessing.ActThreshLabel
+          activation:
+            _target_: torch.nn.Sigmoid
+          rescale_dtype: numpy.uint8
+      save_input: true
+  optimizer:
+    generator:
+      _partial_: true
+      _target_: torch.optim.Adam
+      lr: 0.0001
+      weight_decay: 0.0001
+  lr_scheduler:
+    generator:
+      _partial_: true
+      _target_: torch.optim.lr_scheduler.ExponentialLR
+      gamma: 0.995
+  inference_args:
+    sw_batch_size: 1
+    roi_size:
+    - 16
+    - 128
+    - 128
+  compile: true
+model/params/total: 5644897
+model/params/trainable: 5644897
+model/params/non_trainable: 0
+data:
+  _target_: cyto_dl.datamodules.dataframe.DataframeDatamodule
+  path: /allen/aics/assay-dev/users/Sandi/cyto-dl/data//cytogfp_fijimasks_segmentation/v3_all
+  cache_dir: .//data//cytogfp_fijimasks_segmentation/v3_all/cache/tmp2j373ivo
+  smartcache_args:
+    cache_rate: 0.05
+    replace_rate: 0.1
+    num_init_workers: 4
+    num_replace_workers: 2
+  num_workers: 8
+  batch_size: 128
+  pin_memory: true
+  persistent_workers: true
+  split_column: null
+  columns:
+  - raw
+  - seg
+  transforms:
+    train:
+      _target_: monai.transforms.Compose
+      transforms:
+      - _target_: monai.transforms.LoadImaged
+        keys: raw
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+      - _target_: monai.transforms.LoadImaged
+        keys: seg
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+      - _target_: monai.transforms.AddChanneld
+        keys:
+        - raw
+        - seg
+      - _target_: monai.transforms.ToTensord
+        keys:
+        - raw
+        - seg
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: raw
+        channel_wise: true
+      - _target_: monai.transforms.ThresholdIntensityd
+        keys: seg
+        threshold: 0.1
+        above: false
+        cval: 1
+      - _target_: cyto_dl.image.transforms.RandomMultiScaleCropd
+        keys:
+        - raw
+        - seg
+        patch_shape:
+        - 16
+        - 128
+        - 128
+        patch_per_image: 1
+        scales_dict:
+          seg:
+          - 1
+          raw:
+          - 1
+    test:
+      _target_: monai.transforms.Compose
+      transforms:
+      - _target_: monai.transforms.LoadImaged
+        keys: raw
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+      - _target_: monai.transforms.LoadImaged
+        keys: seg
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+      - _target_: monai.transforms.AddChanneld
+        keys:
+        - raw
+        - seg
+      - _target_: monai.transforms.ToTensord
+        keys:
+        - raw
+        - seg
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: raw
+        channel_wise: true
+      - _target_: monai.transforms.ThresholdIntensityd
+        keys: seg
+        threshold: 0.1
+        above: false
+        cval: 1
+    predict:
+      _target_: monai.transforms.Compose
+      transforms:
+      - _target_: monai.transforms.LoadImaged
+        keys: raw
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+      - _target_: monai.transforms.AddChanneld
+        keys: raw
+      - _target_: monai.transforms.ToTensord
+        keys: raw
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: raw
+        channel_wise: true
+    valid:
+      _target_: monai.transforms.Compose
+      transforms:
+      - _target_: monai.transforms.LoadImaged
+        keys: raw
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+        expand_user: false
+      - _target_: monai.transforms.LoadImaged
+        keys: seg
+        reader:
+        - _target_: cyto_dl.image.io.MonaiBioReader
+          dimension_order_out: ZYX
+          C: 0
+      - _target_: monai.transforms.AddChanneld
+        keys:
+        - raw
+        - seg
+      - _target_: monai.transforms.ToTensord
+        keys:
+        - raw
+        - seg
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: raw
+        channel_wise: true
+      - _target_: monai.transforms.ThresholdIntensityd
+        keys: seg
+        threshold: 0.1
+        above: false
+        cval: 1
+      - _target_: cyto_dl.image.transforms.RandomMultiScaleCropd
+        keys:
+        - raw
+        - seg
+        patch_shape:
+        - 16
+        - 128
+        - 128
+        patch_per_image: 1
+        scales_dict:
+          seg:
+          - 1
+          raw:
+          - 1
+trainer:
+  _target_: lightning.Trainer
+  default_root_dir: /allen/aics/assay-dev/users/Sandi/cyto-dl/logs/train/runs/fijimasks_cytogfp_ALL_v3/v3/2024-03-23_14-33-36
+  min_epochs: 1
+  max_epochs: 10000
+  accelerator: gpu
+  devices:
+  - 0
+  precision: 16
+  check_val_every_n_epoch: 1
+  deterministic: false
+  detect_anomaly: false
+  max_time: null
+callbacks:
+  model_checkpoint:
+    _target_: lightning.pytorch.callbacks.ModelCheckpoint
+    dirpath: /allen/aics/assay-dev/users/Sandi/cyto-dl/logs/train/runs/fijimasks_cytogfp_ALL_v3/v3/2024-03-23_14-33-36/checkpoints
+    filename: epoch_{epoch:03d}
+    monitor: val/loss
+    verbose: false
+    save_last: true
+    save_top_k: 1
+    mode: min
+    auto_insert_metric_name: false
+    save_weights_only: false
+    every_n_train_steps: null
+    train_time_interval: null
+    every_n_epochs: 1
+    save_on_train_epoch_end: null
+  early_stopping:
+    _target_: lightning.pytorch.callbacks.EarlyStopping
+    monitor: val/loss
+    min_delta: 0.0
+    patience: 100
+    verbose: false
+    mode: min
+    strict: true
+    check_finite: true
+    stopping_threshold: null
+    divergence_threshold: null
+    check_on_train_epoch_end: null
+  model_summary:
+    _target_: lightning.pytorch.callbacks.RichModelSummary
+    max_depth: -1
+  rich_progress_bar:
+    _target_: lightning.pytorch.callbacks.RichProgressBar
+extras:
+  ignore_warnings: true
+  enforce_tags: true
+  print_config: true
+  precision:
+    _target_: torch.set_float32_matmul_precision
+    precision: medium
+task_name: train
+tags:
+- dev
+ckpt_path: /allen/aics/assay-dev/users/Sandi/cyto-dl/logs/train/runs/fijimasks_cytogfp_ALL_v3/v3/2024-03-22_16-12-46/checkpoints/epoch_425.ckpt
+seed: 12345
