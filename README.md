@@ -3,4 +3,4 @@
   * Part 1 - FMS Query
   * Part 2 - ColonyMask Groundtruth Generation
   * Part 3 - ColonyMask Model Training and Inference
-  * Part 4 - ....
+  * Part 4 - H2B and EOMES Instance Segmentations
