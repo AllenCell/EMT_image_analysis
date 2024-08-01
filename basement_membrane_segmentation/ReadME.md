@@ -17,6 +17,9 @@ snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds -
 ```
 # This is optional ---- You can also read directly the channel/timepoint using CytoDL
 
+
+Part 2: CytoDL Basement Membrane Segmentation
+
 The data, model, and experiment config are found in the cytoDL_configs directory
 
 The model weights we are using for the segmentation model is found here:
