@@ -1,0 +1,9 @@
+
+  _target_: cyto_dl.datamodules.czi.make_CZI_dataloader 
+  csv_path: ${paths.data_dir}/test.csv
+  channel_column: Collagen_channel
+  img_path_column: ${source_col}
+  out_key: ${source_col}
+  transforms:
+    - _target_: monai.transforms.ToTensor
+    - _target_: monai.transforms.NormalizeIntensity
