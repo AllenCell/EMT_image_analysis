@@ -1,0 +1,50 @@
+import os
+import sys
+import pdb
+import argparse
+import yaml
+import shutil
+from yaml.loader import SafeLoader
+from datetime import datetime
+import time
+import pandas as pd
+import numpy as np
+
+start_time = time.time()
+
+
+path_working_dir = config["working_dir"]
+snakemake_log_dir = config["snakemake_logs_dir"]
+input_log_dirs = os.path.join(snakemake_log_dir, "input_logs")
+output_parent_dir = config["output_parent_dir"]
+
+output_segmentation_dir = config["output_segmentation_dir"]
+input_movies = [f for f in os.listdir(input_log_dirs) if f.endswith(".txt") and not f.startswith(".")]
+snakemake_logdir = config['runtime_snakemake_logdir']
+
+
+rule all:
+    input:
+        expand("{output_dir}/output_logs_bm_postprocess/{movies}", output_dir=snakemake_log_dir, movies=input_movies)
+
+
+# TODO: workaround for wildcards and variables.... maybe parent dir and output_subdir?
+rule postprocess_seg:   
+    input:
+        "{output_dir}/input_logs/{movies}"
+    output:
+        "{output_dir}/output_logs_bm_postprocess/{movies}"
+    params:
+        logdir = snakemake_logdir,
+        path_working_dir = path_working_dir,
+        partition = "aics_cpu_general",
+        jobid = "step_save_collagen",
+        output_parent_dir = output_parent_dir,
+        job_label = "step_save_collagen",
+        output_segmentation_dir = output_segmentation_dir,
+
+    shell:
+        "/allen/aics/apps/hpc_shared/mod/anaconda3-5.3.0/envs/goutham_main/bin/python "
+        "{params.path_working_dir}/batch_postprocess_collagen_mask.py --raw_log_file {input[0]} --output_parent_dir {params.output_parent_dir} --output_log_file {output[0]} --output_segmentation_dir {params.output_segmentation_dir}"
+
+

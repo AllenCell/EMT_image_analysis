@@ -1,0 +1,15 @@
+cluster:
+  mkdir -p {params.logdir}/{rule} &&
+  sbatch
+    --job-name {rule}
+    --partition {params.partition}
+    --mem 50G
+    -c 1
+    --output {params.logdir}/{rule}/{params.job_label}_{params.jobid}.out
+jobs: 15
+use-conda: true
+restart-times: 1
+printshellcmds: True
+cores: 1 # This is the cores used by snakemake, not for each job
+latency-wait: 60 
+
