@@ -6,7 +6,6 @@ from skimage.exposure import rescale_intensity
 import pymeshfix as mf
 import trimesh
 from pathlib import Path
-from argparse import ArgumentParser
 import open3d as o3d
 import pyacvd
 
@@ -14,7 +13,7 @@ import pyacvd
 
 def mesh_generation(
         segmentation_fn: str,
-        output_directory:str,
+        output_directory: str,
         start_timepoint: int=0,
         end_timepoint: int=90,
     ):
@@ -25,6 +24,8 @@ def mesh_generation(
         Parameters:
             segmentation_fn: str
                 Filepath to the timelapse segmentation.
+            output_directory: str
+                Directory to save the mesh.
             start_timepoint: int
                 The first timepoint to process.
             end_timepoint: int
@@ -48,6 +49,7 @@ def mesh_generation(
         meshes[timepoint] = mesh
     
     mesh_block = pv.MultiBlock(meshes)
+    out_fn = Path(segmentation_fn).stem.replace("_probability", "_mesh") + ".vtm"
 
 ######---------Per-timepoint code---------######
 
