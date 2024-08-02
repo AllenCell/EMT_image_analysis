@@ -14,22 +14,17 @@ def get_fms_id(raw_log_file):
 
 
 def background_subtracted_segmentation(pred, threshold=0.25):
-    # remove small objects
+    '''
+    Processes the segmentation probability mask to keep only the largest connected component in the segmentation mask
+    '''
     tempelate_background = np.zeros_like(pred)
     thresh = 255*threshold
     binary = pred> thresh
-    print(np.shape(binary))
-
-
     for slice in range(np.shape(binary)[0]):
-            binary[slice,:,:] = skimage.morphology.remove_small_objects(binary[slice,:,:], min_size=25) # # for early set at 500
-            binary[slice,:,:] = skimage.morphology.dilation(binary[slice,:,:], footprint=skimage.morphology.disk(4)) # set at 4
-            binary[slice,:,:] = skimage.morphology.binary_closing(binary[slice,:,:], footprint=skimage.morphology.disk(4)) # set at 4
+            binary[slice,:,:] = skimage.morphology.remove_small_objects(binary[slice,:,:], min_size=25)
+            binary[slice,:,:] = skimage.morphology.dilation(binary[slice,:,:], footprint=skimage.morphology.disk(4))
+            binary[slice,:,:] = skimage.morphology.binary_closing(binary[slice,:,:], footprint=skimage.morphology.disk(4))
             binary[slice,:,:] = skimage.morphology.remove_small_holes(binary[slice,:,:], area_threshold=50000)
-
-        #binary[slice,:,:] = skimage.morphology.thin(binary[slice,:,:], max_num_iter=2)
-
-        #binary[slice,:,:] = skimage.morphology.remove_small_objects(binary[slice,:,:], min_size=500)
     labeled_lumen = skimage.measure.label(binary)
     # only keep largest object
     lumen_sizes = [np.sum(labeled_lumen==i) for i in np.unique(labeled_lumen)[1:]]

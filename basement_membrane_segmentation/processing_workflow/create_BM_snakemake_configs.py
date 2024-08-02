@@ -5,7 +5,7 @@ from PIL import Image
 import pandas as pd
 
 '''
-Generates config files- 1 for each movie for snakemake
+Generates config files- 1 for each movie for snakemake - Pass in the FMS manifest(from Antoine) and the gene name of the gene you want to process
 '''
 
 parser = argparse.ArgumentParser()
