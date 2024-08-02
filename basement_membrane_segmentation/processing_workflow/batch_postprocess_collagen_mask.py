@@ -5,7 +5,6 @@ import pandas as pd
 import time
 import argparse
 from aicsimageio import AICSImage
-from single_cell_feature_computer.basement_membrane_features import background_subtracted_segmentation
 from tqdm import tqdm
 
 
@@ -13,6 +12,31 @@ def get_fms_id(raw_log_file):
     fms_id = os.path.basename(raw_log_file).split("_input.txt", 1)[0].split("fmsid_", 1)[1]
     return fms_id
 
+
+def background_subtracted_segmentation(pred, threshold=0.25):
+    # remove small objects
+    tempelate_background = np.zeros_like(pred)
+    thresh = 255*threshold
+    binary = pred> thresh
+    print(np.shape(binary))
+
+
+    for slice in range(np.shape(binary)[0]):
+            binary[slice,:,:] = skimage.morphology.remove_small_objects(binary[slice,:,:], min_size=25) # # for early set at 500
+            binary[slice,:,:] = skimage.morphology.dilation(binary[slice,:,:], footprint=skimage.morphology.disk(4)) # set at 4
+            binary[slice,:,:] = skimage.morphology.binary_closing(binary[slice,:,:], footprint=skimage.morphology.disk(4)) # set at 4
+            binary[slice,:,:] = skimage.morphology.remove_small_holes(binary[slice,:,:], area_threshold=50000)
+
+        #binary[slice,:,:] = skimage.morphology.thin(binary[slice,:,:], max_num_iter=2)
+
+        #binary[slice,:,:] = skimage.morphology.remove_small_objects(binary[slice,:,:], min_size=500)
+    labeled_lumen = skimage.measure.label(binary)
+    # only keep largest object
+    lumen_sizes = [np.sum(labeled_lumen==i) for i in np.unique(labeled_lumen)[1:]]
+    final_lumen = labeled_lumen == (np.argmax(lumen_sizes)+1)
+    tempelate_background = final_lumen*pred
+
+    return tempelate_background
 
 def get_matching_filenames(fms_id, path):
     matching_filenames = [os.path.join(path,f) for f in os.listdir(path) if fms_id in f]
