@@ -6,6 +6,7 @@ import pandas as pd
 
 '''
 Generates config files- 1 for each movie for snakemake - Pass in the FMS manifest(from Antoine) and the gene name of the gene you want to process
+Note here, the input_log_dir should end with input_logs
 '''
 
 parser = argparse.ArgumentParser()

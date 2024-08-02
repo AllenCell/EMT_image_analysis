@@ -57,7 +57,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_fmsdir):
         os.mkdir(output_fmsdir)
 
-    output_fms_savedir = os.path.join(output_fmsdir, "basement_membrane_segmentation")
+    output_fms_savedir = os.path.join(output_fmsdir, "basement_membrane_segmentation_test")
 
     if not os.path.exists(output_fms_savedir):
         os.mkdir(output_fms_savedir)
