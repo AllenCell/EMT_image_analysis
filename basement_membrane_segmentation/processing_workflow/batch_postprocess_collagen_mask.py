@@ -6,7 +6,8 @@ import time
 import argparse
 from aicsimageio import AICSImage
 from tqdm import tqdm
-
+import skimage
+import numpy as np
 
 def get_fms_id(raw_log_file):
     fms_id = os.path.basename(raw_log_file).split("_input.txt", 1)[0].split("fmsid_", 1)[1]
@@ -38,10 +39,10 @@ def get_matching_filenames(fms_id, path):
     return matching_filenames
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--raw_log_file', type=str, required=False, help="dummy file of raw_log for snakemake. This is just used to determine metadata of file to run")
-parser.add_argument('--output_log_file', type=str, required=False, help="dummy file of raw_log for snakemake. This is just used to determine metadata of file to run")
-parser.add_argument('--output_parent_dir', type=str, help="cellpose model dir save")
-parser.add_argument('--output_segmentation_dir', type=str, help="cellpose model dir save")
+parser.add_argument('--raw_log_file', type=str, required=False, help="dummy file of raw_log for snakemake for input. This is just used to determine metadata of file to run")
+parser.add_argument('--output_log_file', type=str, required=False, help="dummy file dir raw_log for snakemake for output. This is just used to determine metadata of file to run")
+parser.add_argument('--output_parent_dir', type=str, help="Where the parent dir for output is saved")
+parser.add_argument('--output_segmentation_dir', type=str, help="Where the cytoDl segmentation masks directly are saved")
 
 
 

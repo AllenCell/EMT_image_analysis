@@ -3,7 +3,7 @@ snakemake_logs_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_pro
 # output parent directory- location in your filesystem where you want to store the output
 output_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/HIST1H2BJ
 # Working directory- location in your filesystem where your code is stored
-working_dir: /allen/aics/assay-dev/users/Goutham/EMT_deliverable_processing
+working_dir: /allen/aics/assay-dev/users/Goutham/EMT_image_analysis/basement_membrane_segmentation/processing_workflow
 # structure
 structure_name: "HIST1H2BJ"
 # data manifest(From Antoine)

@@ -3,7 +3,7 @@ snakemake_logs_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_pro
 # Output directory- location in your filesystem where you want to store the output
 output_parent_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/HIST1H2BJ
 # Working directory- location in your filesystem where your code is stored
-working_dir: /allen/aics/assay-dev/users/Goutham/EMT_deliverable_processing
+working_dir: /allen/aics/assay-dev/users/Goutham/EMT_image_analysis/basement_membrane_segmentation/processing_workflow
 # logdir for snakemake
 runtime_snakemake_logdir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/LOGS/batch_processing_logs
 # CytoDL output directory of segmentations

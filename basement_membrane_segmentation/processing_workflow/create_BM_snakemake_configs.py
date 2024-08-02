@@ -9,8 +9,8 @@ Generates config files- 1 for each movie for snakemake - Pass in the FMS manifes
 '''
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--input_csv_dir", type= str, default="/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/EMT_deliverable_1_dataset_1_with_aligned_path_info.csv")
-parser.add_argument("--input_log_dir", type= str, default="/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/Snakemake_logs/EOMES_TBR2/input_logs")
+parser.add_argument("--input_csv_dir", type= str, default="/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/EMT_deliverable_1_dataset_1_with_aligned_path_info.csv", help="FMS manifest csv file")
+parser.add_argument("--input_log_dir", type= str, default="/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/Snakemake_logs/EOMES_TBR2/input_logs", help="Where to save out the logs that initialize the snakemake workflow")
 parser.add_argument("--gene_name", type= str, default="EOMES|TBR2")
 
 if __name__ == "__main__":
