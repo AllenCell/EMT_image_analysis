@@ -46,7 +46,7 @@ def mesh_generation(
     meshes = {}
     for timepoint in range(start_timepoint, end_timepoint):
         mesh = process_seg(segmentations.get_image_data(timepoint))
-        meshes[timepoint] = mesh
+        meshes[f'{timepoint}'] = mesh
     
     # save the meshes
     mesh_block = pv.MultiBlock(meshes)
