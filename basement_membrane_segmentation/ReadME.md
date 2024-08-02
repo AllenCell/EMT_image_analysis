@@ -27,14 +27,12 @@ The model weights we are using for the segmentation model is found here:
 
 # Part 3: Basement Membrane Postprocessing
 
-This step processes the basement membrane segmentation to keep only the largest connected component in the prediction. This is currently done using Snakemake where we do this in parrallel for each fms id.
+This step processes the basement membrane segmentation to keep only the largest connected component in the prediction. This is currently done using Snakemake where we do this in parrallel for each fms id. 
+Please modify the configfile according to your own system!
 
 ```
-#  Basement Membrane postprocessing
+# Basement Membrane postprocessing example
 cd step_postprocess_basement_membrane_mask/
-snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/your_config.yaml
-
-# e.g. if you clone this on your filesystem and go into the directory with the snakemake file:
 
 #For EOMES
 snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_EOMES.yaml
