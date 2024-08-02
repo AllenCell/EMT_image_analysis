@@ -5,6 +5,8 @@ There are three parts to this workflow
 
 This is done using the slurm cluster using Snakemake:
 ```
+# use environment goutham_snakemake on slurm for all snakemake related jobs
+
 # creates logs for snakemake - These same logs are also initated to run the basement membrane postprocessing
 python create_BM_snakemake_configs.py 
 
