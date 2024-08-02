@@ -37,10 +37,10 @@ snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds -
 # e.g. if you clone this on your filesystem and go into the directory with the snakemake file:
 
 #For EOMES
-snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_EOMES.yaml -F 
+snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_EOMES.yaml
 
 #For H2B
-snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_H2B.yaml -F 
+snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_H2B.yaml
 
 ```
 
