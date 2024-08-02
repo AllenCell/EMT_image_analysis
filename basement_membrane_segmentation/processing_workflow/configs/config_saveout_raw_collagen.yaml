@@ -1,0 +1,11 @@
+snakemake_logs_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/Snakemake_logs/HIST1H2BJ
+output_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/HIST1H2BJ
+working_dir: /allen/aics/assay-dev/users/Goutham/EMT_deliverable_processing
+structure_name: "HIST1H2BJ"
+data_manifest: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/EMT_deliverable_1_dataset_1_with_aligned_path_info.csv
+runtime_snakemake_logdir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/LOGS/batch_processing_logs
+
+
+
+
+
