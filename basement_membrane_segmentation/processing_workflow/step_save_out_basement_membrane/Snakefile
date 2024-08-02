@@ -1,0 +1,51 @@
+import os
+import sys
+import pdb
+import argparse
+import yaml
+import shutil
+from yaml.loader import SafeLoader
+from datetime import datetime
+import time
+import pandas as pd
+import numpy as np
+
+start_time = time.time()
+path_working_dir = config["working_dir"]
+structure_name = config["structure_name"]
+snakemake_log_dir = config["snakemake_logs_dir"]
+data_manifest = config["data_manifest"]
+input_log_dirs = os.path.join(snakemake_log_dir, "input_logs")
+output_log_dirs = os.path.join(snakemake_log_dir,"output_logs")
+output_save_dir = config["output_dir"]
+
+input_movies = [f for f in os.listdir(input_log_dirs) if f.endswith(".txt") and not f.startswith(".")]
+
+snakemake_logdir = config['runtime_snakemake_logdir']
+
+
+rule all:
+    input:
+        expand("{output_dir}/output_logs/{movies}", output_dir=snakemake_log_dir, movies=input_movies)
+
+
+# TODO: workaround for wildcards and variables.... maybe parent dir and output_subdir?
+rule save_BM:   
+    input:
+        "{output_dir}/input_logs/{movies}"
+    output:
+        "{output_dir}/output_logs/{movies}"
+    params:
+        logdir = snakemake_logdir,
+        path_working_dir = path_working_dir,
+        partition = "aics_cpu_general",
+        jobid = "save_out_collagen",
+        output_dir = output_save_dir,
+        job_label = "step_save_collagen",
+        data_manifest = data_manifest,
+
+    shell:
+        "/allen/aics/apps/hpc_shared/mod/anaconda3-5.3.0/envs/goutham_main/bin/python "
+        "{params.path_working_dir}/batch_split_collagen.py --raw_log_file {input[0]} --output_parent_dir {params.output_dir} --manifest_dir {params.data_manifest} --output_log_file {output[0]}"
+
+

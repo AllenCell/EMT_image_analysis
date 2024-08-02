@@ -1,0 +1,58 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - data: null # choose datamodule with `test_dataloader()` for evaluation
+  - model: null
+  - logger: null
+  - optional callbacks: null
+  - trainer: default.yaml
+  - paths: default.yaml
+  - extras: default.yaml
+  - hydra: default.yaml
+  - optional local: default.yaml
+  - optional experiment: null
+
+experiment_name: "catchall_experiment"
+run_name: "catchall_run"
+task_name: "eval"
+
+tags: ["dev"]
+
+# passing checkpoint path is necessary for evaluation
+ckpt_path: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_6_early_model/2023-12-15_16-09-07/checkpoints/epoch_478.ckpt
+
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg_MMP_experiment_barcode/basement_membrane_semseg_MMP_experiments/2024-03-07_16-57-23/checkpoints/epoch_271.ckpt
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_6_early_model/2023-12-15_16-09-07/checkpoints/epoch_478.ckpt
+
+
+
+# v6 early model
+# /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_6_early_model/2023-12-15_16-09-07/checkpoints/epoch_478.ckpt
+
+#v5 late model
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_5_late_model/2023-12-07_14-54-37/checkpoints/epoch_434.ckpt
+
+
+
+# /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_5_late_model/2023-12-07_14-54-37/checkpoints/epoch_434.ckpt
+# /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_5_early_model/2023-12-07_15-37-21/checkpoints/epoch_317.ckpt
+
+
+
+
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_3_early_model/2023-12-05_15-34-09/checkpoints/epoch_493.ckpt
+
+
+
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_3_late_model/2023-12-05_14-19-07/checkpoints/epoch_487.ckpt
+
+#early
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_3_early_model/2023-12-05_15-34-09/checkpoints/epoch_493.ckpt
+
+#version 2 model
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_2/2023-11-30_16-57-02/checkpoints/epoch_489.ckpt
+
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Version_4/cyto_dl/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_2/2023-11-27_14-46-20/checkpoints/epoch_480.ckpt - old weight for 512
+#old
+#/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Version_4/cyto_dl/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_1/2023-11-22_15-38-04/checkpoints/epoch_096.ckpt

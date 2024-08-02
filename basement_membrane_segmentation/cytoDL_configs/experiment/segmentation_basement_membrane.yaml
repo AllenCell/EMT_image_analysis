@@ -1,0 +1,39 @@
+# @package _global_
+# to execute this experiment run:
+# python train.py experiment=example
+defaults:
+  - override /data: im2im/segmentation_basement_membrane.yaml
+  - override /model: im2im/segmentation_basement_membrane.yaml
+  - override /callbacks: default.yaml
+  - override /trainer: gpu.yaml
+  - override /logger: mlflow.yaml
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["dev"]
+seed: 12345
+# basement_membrane_semseg_version_6_early_model_bigrun_H2B_EOMES
+experiment_name: basement_membrane_semseg_reproducibility_run_final
+run_name: basement_membrane_semseg_reproducibility_run_2d_PLF_condition
+source_col: RAW
+target_col: SEG
+column_channel: Collagen_channel
+scene_column: scene
+spatial_dims: 3
+raw_im_channels: 1
+
+trainer:
+  max_epochs: 500
+
+data:
+#   path: ${paths.data_dir}
+#   cache_dir: ${paths.root_dir}/cache
+#   subsample:
+  batch_size: 4
+  _aux:
+    # 2D
+    # patch_shape: [64, 64]
+    # 3D
+    patch_shape: [8, 512, 512]
+
