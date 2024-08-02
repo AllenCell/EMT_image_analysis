@@ -19,7 +19,6 @@ snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds -
 # Part 2: CytoDL Basement Membrane Segmentation
 
 The data, model, and experiment config are found in the cytoDL_configs directory
-
 The model weights we are using for the segmentation model is found here:
 ```
 /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_6_early_model/2023-12-15_16-09-07/checkpoints/epoch_478.ckpt
@@ -28,8 +27,8 @@ The model weights we are using for the segmentation model is found here:
 # Part 3: Basement Membrane Postprocessing
 
 This step processes the basement membrane segmentation to keep only the largest connected component in the prediction. This is currently done using Snakemake where we do this in parrallel for each fms id. 
-Please modify the configfile according to your own system!
-
+Please modify the configfile according to your own system paths!
+The profile refers to your compute recourses. This is specific to our slurm cluster.
 ```
 # Basement Membrane postprocessing example
 cd step_postprocess_basement_membrane_mask/
