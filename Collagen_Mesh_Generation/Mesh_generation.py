@@ -3,7 +3,6 @@ import numpy as np
 import pyvista as pv
 from skimage.transform import resize
 from skimage.exposure import rescale_intensity
-import pymeshfix as mf
 import trimesh
 from pathlib import Path
 import open3d as o3d
@@ -156,20 +155,8 @@ def process_seg(
     ).T
     mesh = trimesh.Trimesh(V, F)
     
-    # ensure mesh reaches to of the segmentation
-    pSurf = pv.wrap(mesh)
-    mfix = mf.MeshFix(pSurf)
-    mf_holes = pv.wrap(mfix.extract_holes())
-    outline_verts = mf_holes.points
-    top = np.percentile(outline_verts[:,2], 99)
-    for i in range(outline_verts.shape[0]):
-        vert = outline_verts[i]
-        new_vert = np.array([vert[0], vert[1], max([vert[2], top])])
-        
-        v_idx = pSurf.find_closest_point(vert)
-        pSurf.points[v_idx] = new_vert
-    
     # mesh cleanup
+    pSurf = pv.wrap(mesh)
     pSurf.subdivide_adaptive(max_edge_len=5, inplace=True)
     clus = pyacvd.Clustering(pSurf)
     clus.subdivide(2)

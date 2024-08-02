@@ -1,5 +1,4 @@
 pyvista==0.43.3
 trimesh==4.1.7
-pymeshfix==0.16.3
 open3d==0.18.0
 pyacvd==0.2.10
