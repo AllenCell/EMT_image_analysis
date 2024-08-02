@@ -34,29 +34,42 @@ def mesh_generation(
     out_dir = Path(output_directory)
     out_dir.mkdir(parents=True, exist_ok=True)
     
+    # load the segmentation
     segmentations = AICSImage(segmentation_fn)
     
+    # set the timepoints to process
     num_timepoints = segmentations.shape[0]
     if end_timepoint < 0 or end_timepoint >= num_timepoints:
         end_timepoint = num_timepoints
     
+    # process each timepoint
     meshes = {}
     for timepoint in range(start_timepoint, end_timepoint):
-        seg_fn = segmentations.get_image_data(timepoint)
-        out_fn = f"mesh_{timepoint}.obj"
-        
-        mesh = process_seg(seg_fn, out_fn)
+        mesh = process_seg(segmentations.get_image_data(timepoint))
         meshes[timepoint] = mesh
     
+    # save the meshes
     mesh_block = pv.MultiBlock(meshes)
     out_fn = Path(segmentation_fn).stem.replace("_probability", "_mesh") + ".vtm"
+    mesh_block.save(out_dir / out_fn)
 
 ######---------Per-timepoint code---------######
 
-def process_seg(seg_fn):
-    
-    seg = AICSImage(seg_fn).data.squeeze()
-    
+def process_seg(
+        segmentation: np.ndarray,
+    ) -> pv.PolyData:
+    '''
+        Generate a collagen membrane mesh for a single timepoint segmentation.
+        
+        Parameters:
+            seg_fn: str
+                Filepath to the segmentation.
+                
+        Output:
+            mesh: pv.PolyData
+                The generated mesh.
+    '''
+    # resize the segmentation to isometric voxels
     seg = resize(
         seg, 
         (int(seg.shape[0] * 2.88/0.271), seg.shape[1], seg.shape[2]), 
@@ -64,90 +77,10 @@ def process_seg(seg_fn):
         preserve_range=False
     )
     
-    mesh = seg_to_mesh(seg)
-    
-    return pv.wrap(mesh)
-    
-    
-######---------Helper functions---------######
-
-
-def apply_local_outlier_factor_removal_to_pc(pc, n_neighbors=20):
-    cl, _ = pc.remove_statistical_outlier(nb_neighbors=n_neighbors, std_ratio=2.0)
-    cl, _ = cl.remove_radius_outlier(nb_points=n_neighbors, radius=40)
-    return cl
-
-def ensure_outward_normals(mesh):
-    centroid = list(mesh.centroid)
-    centroid[-1] = mesh.bounds[1, -1]
-    
-    mesh.fix_normals()
-    
-    rayCaster = trimesh.ray.ray_triangle.RayMeshIntersector(mesh)
-    hitFace = rayCaster.intersects_first([centroid], [[0,0,-1]])
-    assert hitFace is not None, "Could not find a face to flip"
-    
-    faceNorm = mesh.face_normals[hitFace]
-    if faceNorm[0,-1] > 0:
-        mesh.invert()
-        
-    return mesh
-
-def sample_segmentation(seg, n_samples=30000):
-    seg = seg.astype(np.float32) / seg.max()
-
-    sample_probs = np.clip(seg, 0.3, 1)
-    sample_probs = rescale_intensity(sample_probs, out_range=(0,1))
-    sample_probs = sample_probs / np.sum(sample_probs)
-
-    samples = np.random.choice(
-        np.arange(sample_probs.size), 
-        size=n_samples, 
-        p=sample_probs.flatten()
-    )
-    z,y,x = np.unravel_index(samples, sample_probs.shape)
-    
-    return np.stack([x,y,z], axis=1)
-
-def init_mesh(pCloud):
-    bounds = pCloud.bounds
-    radius = min([
-        (bounds[1] - bounds[0])/2,
-        (bounds[3] - bounds[2])/2,
-    ])
-    height = bounds[5] - bounds[4]
-    height_scale = height / radius
-    scale = 0.8
-
-    samples_points = pCloud.points
-    center = (
-        np.mean(samples_points[:,0]),
-        np.mean(samples_points[:,1]), 
-        bounds[5]
-    )
-    transform = trimesh.transformations.scale_and_translate(
-        scale= [
-            scale,
-            scale,
-            scale * height_scale    
-        ], 
-        translate=center
-    )
-
-    sphereMesh = trimesh.creation.icosphere(
-        subdivisions=3,
-        radius=radius)
-    sphereMesh.apply_transform(transform)
-    
-    faces = sphereMesh.vertex_faces[sphereMesh.vertices[:,2] < np.amax(samples_points[:,2])]
-    bot_faces = np.unique(faces.flatten()).tolist()
-    sphereMesh = sphereMesh.submesh([bot_faces], only_watertight=False, append=True)
-    
-    return sphereMesh
-
-def seg_to_mesh(seg):
+    # sample point cloud from the segmentation
     seg_sample = sample_segmentation(seg)
     
+    # scale the point cloud to a standard size
     center = np.mean(seg_sample, axis=0)
     bounds = np.array(
         [
@@ -169,14 +102,17 @@ def seg_to_mesh(seg):
         ]
     ).T
     
+    # convert point cloud in pyvista object
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(seg_scaled)
     downpcd = pcd.voxel_down_sample(voxel_size=10)
     downpcd = apply_local_outlier_factor_removal_to_pc(downpcd, 10)
     dPoly = pv.PolyData(np.asarray(downpcd.points))
     
+    # generate the initial mesh
     mesh = init_mesh(dPoly)
     
+    # register initial mesh to point cloud
     steps = [
         # [wc, wi, ws, wl, wn],
         [10, 0.001, 0.5, 2000, 0],
@@ -185,11 +121,13 @@ def seg_to_mesh(seg):
     ]
     vox_size = [60, 30, 10]
     for vox in vox_size:
+        # downsample the point cloud
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(dPoly.points)
         downpcd = pcd.voxel_down_sample(voxel_size=vox)
         dPoly = pv.PolyData(np.asarray(downpcd.points))
         
+        # register the mesh to the point cloud
         target = trimesh.PointCloud(dPoly.points)
         register = trimesh.registration.nricp_sumner(
             source_mesh=mesh, 
@@ -203,6 +141,7 @@ def seg_to_mesh(seg):
         mesh.vertices = register
         mesh = mesh.subdivide()
     
+    # mesh post processing
     trimesh.repair.fill_holes(mesh)
     mesh = trimesh.smoothing.filter_humphrey(mesh)
     mesh = ensure_outward_normals(mesh)
@@ -217,6 +156,7 @@ def seg_to_mesh(seg):
     ).T
     mesh = trimesh.Trimesh(V, F)
     
+    # ensure mesh reaches to of the segmentation
     pSurf = pv.wrap(mesh)
     mfix = mf.MeshFix(pSurf)
     mf_holes = pv.wrap(mfix.extract_holes())
@@ -229,6 +169,7 @@ def seg_to_mesh(seg):
         v_idx = pSurf.find_closest_point(vert)
         pSurf.points[v_idx] = new_vert
     
+    # mesh cleanup
     pSurf.subdivide_adaptive(max_edge_len=5, inplace=True)
     clus = pyacvd.Clustering(pSurf)
     clus.subdivide(2)
@@ -241,4 +182,143 @@ def seg_to_mesh(seg):
     )
     trimesh.repair.fill_holes(mesh)
     
+    return pv.wrap(mesh)
+    
+    
+######---------Helper functions---------######
+
+
+def apply_local_outlier_factor_removal_to_pc(
+        pc:o3d.geometry.PointCloud, 
+        n_neighbors:int=20
+    ) -> o3d.geometry.PointCloud:
+    '''
+        Apply local outlier factor removal to a point cloud.
+        
+        Parameters:
+            pc: o3d.geometry.PointCloud
+                The point cloud to remove outliers from.
+            n_neighbors: int
+                The number of neighbors to consider for outlier removal.
+                
+        Output:
+            cl: o3d.geometry.PointCloud
+                The point cloud with outliers removed.
+    '''
+    cl, _ = pc.remove_statistical_outlier(nb_neighbors=n_neighbors, std_ratio=2.0)
+    cl, _ = cl.remove_radius_outlier(nb_points=n_neighbors, radius=40)
+    return cl
+
+def ensure_outward_normals(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
+    '''
+        Ensure that the normals of a mesh are pointing outwards.
+        
+        Parameters:
+            mesh: trimesh.Trimesh
+                The mesh to ensure outward normals for.
+                
+        Output:
+            mesh: trimesh.Trimesh
+                The mesh with outward normals.
+    '''
+    centroid = list(mesh.centroid)
+    centroid[-1] = mesh.bounds[1, -1]
+    
+    mesh.fix_normals()
+    
+    # check if the normals are pointing outwards
+    rayCaster = trimesh.ray.ray_triangle.RayMeshIntersector(mesh)
+    hitFace = rayCaster.intersects_first([centroid], [[0,0,-1]])
+    assert hitFace is not None, "Could not find a face to flip"
+    
+    # flip the normals if they are not pointing outwards
+    faceNorm = mesh.face_normals[hitFace]
+    if faceNorm[0,-1] > 0:
+        mesh.invert()
+        
     return mesh
+
+def sample_segmentation(
+        seg: np.ndarray, 
+        n_samples: int=30000,
+        probability_threshold: float=0.3
+    ) -> np.ndarray:
+    '''
+        Sample a point cloud from a segmentation.
+        
+        Parameters:
+            seg: np.ndarray
+                The segmentation to sample from.
+            n_samples: int
+                The number of samples to take.
+            probability_threshold: float
+                The segmentation probability threshold for sampling.
+    '''
+    seg = seg.astype(np.float32) / seg.max()
+
+    # sample points from the segmentation
+    sample_probs = np.clip(seg, probability_threshold, 1)
+    sample_probs = rescale_intensity(sample_probs, out_range=(0,1))
+    sample_probs = sample_probs / np.sum(sample_probs)
+
+    samples = np.random.choice(
+        np.arange(sample_probs.size), 
+        size=n_samples, 
+        p=sample_probs.flatten()
+    )
+    z,y,x = np.unravel_index(samples, sample_probs.shape)
+    
+    return np.stack([x,y,z], axis=1)
+
+def init_mesh(
+        pCloud: pv.PolyData
+    ) -> trimesh.Trimesh:
+    '''
+        Generate an initial mesh from a point cloud.
+        
+        Parameters:
+            pCloud: pv.PolyData
+                The point cloud to generate the mesh from.
+                
+        Output:
+            mesh: trimesh.Trimesh
+                The generated mesh.
+    '''
+    # calculate bounds of the point cloud
+    bounds = pCloud.bounds
+    radius = min([
+        (bounds[1] - bounds[0])/2,
+        (bounds[3] - bounds[2])/2,
+    ])
+    height = bounds[5] - bounds[4]
+    height_scale = height / radius
+    scale = 0.8
+
+    # set the transform scale and center the mesh
+    samples_points = pCloud.points
+    center = (
+        np.mean(samples_points[:,0]),
+        np.mean(samples_points[:,1]), 
+        bounds[5]
+    )
+    transform = trimesh.transformations.scale_and_translate(
+        scale= [
+            scale,
+            scale,
+            scale * height_scale    
+        ], 
+        translate=center
+    )
+
+    # generate a sphere mesh
+    sphereMesh = trimesh.creation.icosphere(
+        subdivisions=3,
+        radius=radius)
+    sphereMesh.apply_transform(transform)
+    
+    # remove top half of the sphere
+    faces = sphereMesh.vertex_faces[sphereMesh.vertices[:,2] < np.amax(samples_points[:,2])]
+    bot_faces = np.unique(faces.flatten()).tolist()
+    sphereMesh = sphereMesh.submesh([bot_faces], only_watertight=False, append=True)
+    
+    return sphereMesh
