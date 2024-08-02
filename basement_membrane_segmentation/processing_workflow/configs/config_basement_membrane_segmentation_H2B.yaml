@@ -6,7 +6,7 @@ output_parent_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_proc
 working_dir: /allen/aics/assay-dev/users/Goutham/EMT_deliverable_processing
 # logdir for snakemake
 runtime_snakemake_logdir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/LOGS/batch_processing_logs
-# CytoDL output directory
+# CytoDL output directory of segmentations
 output_segmentation_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/eval/runs/basement_membrane_semseg_reproducibility_run/basement_membrane_semseg_reproducibility_run/2024-07-12_15-33-16/predict_images
 
 
