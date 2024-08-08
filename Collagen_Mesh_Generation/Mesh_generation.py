@@ -8,6 +8,8 @@ from pathlib import Path
 import open3d as o3d
 import pyacvd
 
+from argparse import ArgumentParser
+
 ######---------Main code---------######
 
 def mesh_generation(
@@ -309,3 +311,38 @@ def init_mesh(
     sphereMesh = sphereMesh.submesh([bot_faces], only_watertight=False, append=True)
     
     return sphereMesh
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--segmentation_fn",
+        type=str,
+        required=True,
+        help="Filepath to the timelapse segmentation.",
+    )
+    parser.add_argument(
+        "--output_directory",
+        type=str,
+        required=True,
+        help="Directory to save the mesh.",
+    )
+    parser.add_argument(
+        "--start_timepoint",
+        type=int,
+        default=0,
+        help="The first timepoint to process.",
+    )
+    parser.add_argument(
+        "--end_timepoint",
+        type=int,
+        default=90,
+        help="The last timepoint to process.",
+    )
+    args = parser.parse_args()
+    
+    mesh_generation(
+        args.segmentation_fn,
+        args.output_directory,
+        args.start_timepoint,
+        args.end_time
+    )
