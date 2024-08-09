@@ -1,0 +1,23 @@
+[project]
+name = "EMT_ColonyMask_merging_thresholding_rearranging"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Allen Institute", email = "cells@alleninstitute.org"},
+]
+dependencies = [
+    "aicsimageio>=4.14.0",
+    "opencv-python-headless>=4.10.0.84",
+    "matplotlib>=3.9.1.post1",
+    "numpy>=2.0.1",
+    "pandas>=2.2.2",
+    "tifffile>=2023.2.28",
+    "scikit-image>=0.24.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "AISL"}
+
+
+[tool.pdm]
+distribution = false

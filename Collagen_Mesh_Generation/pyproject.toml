@@ -1,0 +1,23 @@
+[project]
+name = "EMT_Collagen_Mesh_Generation"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Allen Institute", email = "cells@alleninstitute.org"},
+]
+dependencies = [
+    "pyvista==0.43.3",
+    "trimesh==4.1.7",
+    "open3d==0.18.0",
+    "pyacvd==0.2.10",
+    "numpy<2",
+    "scikit-image>=0.24.0",
+    "aicsimageio>=4.14.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "AISL"}
+
+
+[tool.pdm]
+distribution = false

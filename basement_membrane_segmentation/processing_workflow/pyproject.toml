@@ -1,0 +1,23 @@
+[project]
+name = "EMT_basement_membrane_segmentation"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Allen Institute", email = "cells@alleninstitute.org"},
+]
+dependencies = [
+    "aicsimageio>=4.14.0",
+    "numpy>=2.0.1",
+    "pandas>=2.2.2",
+    "scikit-image>=0.24.0",
+    "tqdm>=4.66.5",
+    "pillow>=10.4.0",
+    "pyyaml>=6.0.2",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "AISL"}
+
+
+[tool.pdm]
+distribution = false
