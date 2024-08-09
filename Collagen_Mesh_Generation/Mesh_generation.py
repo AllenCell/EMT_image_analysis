@@ -1,4 +1,4 @@
-from aicsimageio import AICSImage
+from bioio import BioImage
 import numpy as np
 import pyvista as pv
 from skimage.transform import resize
@@ -36,7 +36,7 @@ def mesh_generation(
     out_dir.mkdir(parents=True, exist_ok=True)
     
     # load the segmentation
-    segmentations = AICSImage(segmentation_fn)
+    segmentations = BioImage(segmentation_fn)
     
     # set the timepoints to process
     num_timepoints = segmentations.shape[0]
@@ -46,7 +46,7 @@ def mesh_generation(
     # process each timepoint
     meshes = {}
     for timepoint in range(start_timepoint, end_timepoint):
-        mesh = process_seg(segmentations.get_image_data(timepoint))
+        mesh = process_seg(segmentations.get_image_data(T=timepoint).squeeze())
         meshes[f'{timepoint}'] = mesh
     
     # save the meshes
