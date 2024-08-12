@@ -2,12 +2,12 @@
 SOURCE = "//allen/aics/microscopy/Data/RnD_Sandbox/3500006256_20240223_Deliverable_ZSD0/ch2/"
 OUTPUT_DIR = "//allen/aics/assay-dev/users/Suraj/EMT_Work/CytoGFP/GT_Generation/otsu_thresholding_test/";
 Dataset = "3500006256_20240223_20X_Timelapse_scene_29";
-Tini = 0;
-Tend = 63;
+T_ini = 0;
+T_end = 63;
 
 // ============
 
-t = Tini;
+t = T_ini;
 open(SOURCE+Dataset+"_T"+t+"_C=2.tiff");
 run("Plot Z-axis Profile");
 
@@ -19,7 +19,7 @@ ZERO_SLICE = Dialog.getNumber();
 
 run("Close All");
 
-for (t=Tini; t<=Tend; t++) {
+for (t=T_ini; t<=T_end; t++) {
 
 //	open(SOURCE+Dataset+"_T"+t+"_C=2.tiff");
 	run("Bio-Formats Importer", "open="+SOURCE+Dataset+"_T"+t+"_C=2.tiff");
