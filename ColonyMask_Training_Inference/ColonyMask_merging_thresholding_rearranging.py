@@ -23,7 +23,7 @@ from skimage.filters import threshold_otsu
 from aicsimageio import AICSImage
 from aicsimageio.writers.ome_tiff_writer import OmeTiffWriter
 from tifffile import imsave
-import cv2
+#import cv2
 import matplotlib.pyplot as plt
 
 
@@ -40,10 +40,10 @@ def MyconvertFloatToChar(img):
     return img.astype(np.uint8)
 
 
-dir_path = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/bf_colony_seg/eval_whole_movie_multiscale_256_antoine_g6_sg1/seg/*tif"
-path_512 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/bf_colony_seg/eval_whole_movie_multiscale_512_antoine_g6_sg1/seg/"
-path_128 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/bf_colony_seg/eval_whole_movie_multiscale_128_antoine_g6_sg1/seg/"
-targetname = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/bf_colony_seg/multiscale_colony_mask_22movies/"
+dir_path = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch2/seg/*tif"
+path_512 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch3/seg/"
+path_128 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch1/seg/"
+targetname = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/multiscale_all_cells_mask_v0/"
 
 for filename in glob.glob(dir_path):
     # Directory prep
