@@ -15,6 +15,9 @@
     # To run on your own model, edit the yaml file ckpt_path with the path to your model.
     # Predictions for each patch based predictions will be storde at \\allen\aics\assay-dev\users\Sandi\cyto-dl\data\all_cells_mask_test_dir\eval_whole_movie_multiscale_patchX (where, X={1, 2, 3})
   # Run thresholding and merging script to generate the all cells mask
-    # ToDo
+    # To run the thresholding and merging script, make sure your environment has aicsimageio and skimage installed
+    # Run the command --> python ColonyMask_merging_thresholding_rearranging.py
+    # The code expects patch-based probabilty masks has already been generated and are stored at /allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patchX
+    # The output will be binarized all cells masks and they can be accessed at /allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch2
   
     
