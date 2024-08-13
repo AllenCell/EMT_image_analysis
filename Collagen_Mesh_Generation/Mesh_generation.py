@@ -13,18 +13,21 @@ from argparse import ArgumentParser
 ######---------Main code---------######
 
 def mesh_generation(
-        segmentation_fn: str,
+        manifest_path: str,
+        movie_id:str,
         output_directory: str,
         start_timepoint: int=0,
-        end_timepoint: int=90,
+        end_timepoint: int=97,
     ):
     '''
         Generate collagen membrane mesh for a colony timelapse segmentation.
         Saves the meshes as a pyvista MultiBlock object in a .vtm file.
         
         Parameters:
-            segmentation_fn: str
-                Filepath to the timelapse segmentation.
+            manifest_path: str
+                Path to the dataset manifest
+            movie_id: str
+                Movie Unique ID of the timelapse to process
             output_directory: str
                 Directory to save the mesh.
             start_timepoint: int
@@ -33,13 +36,15 @@ def mesh_generation(
                 The last timepoint to process.
     '''
     out_dir = Path(output_directory)
-    out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True   )
     
     # load the segmentation
-    segmentations = BioImage(segmentation_fn)
+    df = pd.read_csv(manifest_path)
+    df = df[df['Movie Unique ID'] == movie_id]
+    segmentations = BioImage(df['CollagenIV Segmentation Probability File Download'].values[0])
     
     # set the timepoints to process
-    num_timepoints = segmentations.shape[0]
+    num_timepoints = int(df['Image Size T'].values[0])
     if end_timepoint < 0 or end_timepoint >= num_timepoints:
         end_timepoint = num_timepoints
     
@@ -315,10 +320,16 @@ def init_mesh(
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument(
-        "--segmentation_fn",
+        "--manifest_path",
         type=str,
         required=True,
-        help="Filepath to the timelapse segmentation.",
+        help="Filepath to the dataset manifest.",
+    )
+    parser.add_argument(
+        "--movie_id",
+        type=str,
+        required=True,
+        help="Movie Unique ID of timelapse to process."
     )
     parser.add_argument(
         "--output_directory",
@@ -335,13 +346,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--end_timepoint",
         type=int,
-        default=90,
+        default=97,
         help="The last timepoint to process.",
     )
     args = parser.parse_args()
     
     mesh_generation(
-        args.segmentation_fn,
+        args.manifest_path,
+        args.movie_id,
         args.output_directory,
         args.start_timepoint,
         args.end_time
