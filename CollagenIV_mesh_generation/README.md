@@ -1,12 +1,10 @@
-# Collagen Membrane Mesh Generation
+# Collagen membrane mesh generation
 
-This method generates a 3D mesh representing the collagen IV membrane of a lumenoid colony
+This method generates a 3D mesh representing the collagen IV membrane of a lumenoid colony.
 
 ## Data Requirements
 
-The only data needed for this is the post-processed basement membrane segmentations.
-
-**Note:** It's assumed here that the segmentations have been compiled into a single `ome.tiff` or `ome.zarr` file.
+This requires the post-processed collagenIV segmentations to be grouped by timepoint into a single 4D `ome.tiff` or `ome.zarr` file.
 
 ## Data Output
 
@@ -19,8 +17,9 @@ The code will create the following in your designated output folder:
 
 ## Running the code
 
-### CLI
-(assumes you are using python 3.10 in a bash terminal)
+### From command line
+
+This code has been tested in Python 3.10.
 
 ```bash
 # create virtual environment
