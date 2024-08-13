@@ -4,7 +4,7 @@ This method generates a 3D mesh representing the collagen IV membrane of a lumen
 
 ## Data Requirements
 
-This requires the post-processed basement membrane segmentations to be grouped by timepoint into a single 4D `ome.tiff` or `ome.zarr` file.
+This requires the post-processed collagenIV segmentations to be grouped by timepoint into a single 4D `ome.tiff` or `ome.zarr` file.
 
 ## Data Output
 
