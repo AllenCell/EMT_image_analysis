@@ -4,7 +4,7 @@ This repository contains code for reproducing the image analysis used in our man
 
 # Workflow components
 
-* 1 - CytoGFP Groundtruth Segmentation [README](./ColonyMask_GT_Generation/README.md)
+* 1 - CytoGFP Groundtruth Segmentation [README](./Colony_mask_gt_generation/README.md)
 * 2 - All Cells Mask Model Training and Inference [README](./ColonyMask_Training_Inference/README.md)
 * 3 - H2B and EOMES Nuclear Segmentations [README](./H2B%20and%20EOMES%20Instance%20Segmentations/README.md)
 * 4 - CollagenIV Segmentation [README](https://github.com/aics-int/EMT_image_analysis/blob/main/basement_membrane_segmentation/ReadME.md)
