@@ -41,7 +41,7 @@ def mesh_generation(
     # load the segmentation
     df = pd.read_csv(manifest_path)
     df = df[df['Movie Unique ID'] == movie_id]
-    segmentations = BioImage(df['CollagenIV Segmentation Probability File Download'].values[0])
+    segmentations = BioImage(df['CollagenIV Segmentation Probability URL'].values[0])
     
     # set the timepoints to process
     num_timepoints = int(df['Image Size T'].values[0])
@@ -56,7 +56,7 @@ def mesh_generation(
     
     # save the meshes
     mesh_block = pv.MultiBlock(meshes)
-    out_fn = Path(segmentation_fn).stem.replace("_probability", "_mesh") + ".vtm"
+    out_fn = Path(df['CollagenIV Segmentation Probability URL'].values[0]).stem.replace("_probability", "_mesh") + ".vtm"
     mesh_block.save(out_dir / out_fn)
 
 ######---------Per-timepoint code---------######
