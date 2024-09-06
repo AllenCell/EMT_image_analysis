@@ -48,12 +48,13 @@ class OmeZarrImporter():
             file_columns: list
                 The columns in the csv file that contain the paths to the OME-Zarr files.
         """
-        df = pd.read_csv(csv_path, columns=file_columns)
+        df = pd.read_csv(csv_path, usecols=file_columns)
         files = []
         for col in file_columns:
-            files.extend(df[col].unique().tolist())
+            files.extend(df[col].unique())
         for file in tqdm(files):
-            self.import_ome_zarr(file)
+            if isinstance(file, str):
+                self.import_ome_zarr(file)
         return
 
     def import_ome_zarr(self, remote_path):
@@ -65,12 +66,21 @@ class OmeZarrImporter():
                 The path to the OME-Zarr file in the s3 bucket. Must begin with \"https://allencell\".
         """
         self.check_path(remote_path)
-        image = BioImage(remote_path, reader=bioio_ome_tiff.OmeTiffReader)
+        image = BioImage(remote_path, reader=bioio_ome_zarr.Reader)
 
         fname = Path(remote_path).name.replace(".ome.zarr", ".ome.tiff")
         import_path = Path(self.local_path) / fname
 
-        image.save(import_path)
+        # import pdb; pdb.set_trace()
+
+        dtype = image.dtype
+
+        OmeTiffWriter().save(
+            data=image.data,
+            uri=import_path,
+            # ToDO: Add the following arguments to the save method
+            # ome_xml=OmeTiffWriter().build_ome(data_shapes=image.shape,dimension_order=[d for d in image.dims.order],channel_names=image.channel_names,physical_pixel_sizes=image.physical_pixel_sizes,)
+        )
         return 
     
     def check_path(self, file_path: str):
