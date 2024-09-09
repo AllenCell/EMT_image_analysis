@@ -6,15 +6,17 @@ authors = [
     {name = "Allen Institute", email = "cells@alleninstitute.org"},
 ]
 dependencies = [
-    "aicsimageio>=4.14.0",
-    "opencv-python-headless>=4.10.0.84",
-    "matplotlib>=3.9.1.post1",
-    "numpy>=2.0.1",
-    "pandas>=2.2.2",
-    "tifffile>=2023.2.28",
-    "scikit-image>=0.24.0",
+    "aicsimageio",
+    "opencv-python-headless",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "tifffile",
+    "scikit-image",
+    "cyto-dl @ git+https://github.com/AllenCellModeling/cyto-dl@f9c3058e5a86a0710375955549bd0cfc4c87e4ca",
 ]
-requires-python = ">=3.10"
+# cyto-dl does not support python >= 3.11 yet
+requires-python = "==3.10.*"
 readme = "README.md"
 license = {text = "AISL"}
 
