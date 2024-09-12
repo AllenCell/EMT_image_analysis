@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:53c756abde6fad06a917c5d6b018329212a54af001f8d0aecb16676385811113"
+content_hash = "sha256:12efac32e75a4671211dad99531fec6ef942fee62356be562369b93b894eb2e4"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -1968,17 +1968,17 @@ files = [
 
 [[package]]
 name = "monai-weekly"
-version = "1.4.dev2434"
-requires_python = ">=3.9"
+version = "1.3.dev2333"
+requires_python = ">=3.8"
 summary = "AI Toolkit for Healthcare Imaging"
 groups = ["default"]
 dependencies = [
-    "numpy<2.0,>=1.24",
+    "numpy>=1.20",
     "torch>=1.9",
 ]
 files = [
-    {file = "monai_weekly-1.4.dev2434-py3-none-any.whl", hash = "sha256:0de0b0dbf011e3f6ba68b0870d5ec4066bafe2c7a2a400cef492b9eae0f69e76"},
-    {file = "monai_weekly-1.4.dev2434.tar.gz", hash = "sha256:01b05e004eb6df0bbc6f3b65b24a6771afe945e909192a0faeebd68dabdfb986"},
+    {file = "monai-weekly-1.3.dev2333.tar.gz", hash = "sha256:b16434dbb238c0231b0e7a96fd429c87d427518107d08717f41eec362718f84a"},
+    {file = "monai_weekly-1.3.dev2333-py3-none-any.whl", hash = "sha256:da6ebf26c231129bacda4b3a208445c01faaf8899f76001b7a77c67a90e3ce07"},
 ]
 
 [[package]]
