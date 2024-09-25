@@ -7,6 +7,7 @@ import trimesh
 from pathlib import Path
 import open3d as o3d
 import pyacvd
+from tqdm import tqdm
 
 from argparse import ArgumentParser
 
@@ -45,8 +46,8 @@ def mesh_generation(
     
     # process each timepoint
     meshes = {}
-    for timepoint in range(start_timepoint, end_timepoint):
-        mesh = process_seg(segmentations.get_image_data(T=timepoint).squeeze())
+    for timepoint in tqdm(range(start_timepoint, end_timepoint)):
+        mesh = process_seg(segmentations.get_image_data("ZYX",T=timepoint).squeeze())
         meshes[f'{timepoint}'] = mesh
     
     # save the meshes
@@ -57,14 +58,14 @@ def mesh_generation(
 ######---------Per-timepoint code---------######
 
 def process_seg(
-        segmentation: np.ndarray,
+        seg: np.ndarray,
     ) -> pv.PolyData:
     '''
         Generate a collagen membrane mesh for a single timepoint segmentation.
         
         Parameters:
-            seg_fn: str
-                Filepath to the segmentation.
+            seg: np.ndarray
+                Segmentation.
                 
         Output:
             mesh: pv.PolyData
@@ -344,5 +345,5 @@ if __name__ == "__main__":
         args.segmentation_fn,
         args.output_directory,
         args.start_timepoint,
-        args.end_time
+        args.end_timepoint
     )
