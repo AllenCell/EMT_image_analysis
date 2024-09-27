@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:12efac32e75a4671211dad99531fec6ef942fee62356be562369b93b894eb2e4"
+content_hash = "sha256:77b01aeb4a50e038c4f34fe7f1d762d86f85339b35c4319504953d0d13333aae"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -3424,7 +3424,7 @@ files = [
 
 [[package]]
 name = "tifffile"
-version = "2023.2.28"
+version = "2023.7.10"
 requires_python = ">=3.8"
 summary = "Read and write TIFF files"
 groups = ["default"]
@@ -3432,8 +3432,8 @@ dependencies = [
     "numpy",
 ]
 files = [
-    {file = "tifffile-2023.2.28-py3-none-any.whl", hash = "sha256:8357cd8ccbdd4378ad4d6b84ffe3ab15b1d96630b1719f576d4de386f45546f1"},
-    {file = "tifffile-2023.2.28.tar.gz", hash = "sha256:2d2baba8dea6609f553fe61853db9a61f715d60ba3bce6a20b5a1ab72407dfed"},
+    {file = "tifffile-2023.7.10-py3-none-any.whl", hash = "sha256:94dfdec321ace96abbfe872a66cfd824800c099a2db558443453eebc2c11b304"},
+    {file = "tifffile-2023.7.10.tar.gz", hash = "sha256:c06ec460926d16796eeee249a560bcdddf243daae36ac62af3c84a953cd60b4a"},
 ]
 
 [[package]]
