@@ -9,7 +9,7 @@ persistent_workers: False
 csv_path:
 img_path_column: movie_path
 channel_column: bf_channel
-fms_id_column: fms_id
+#fms_id_column: fms_id
 out_key: ${source_col}
 transforms:
   - _target_: monai.transforms.ToTensor
