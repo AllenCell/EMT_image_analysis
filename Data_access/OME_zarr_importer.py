@@ -71,15 +71,12 @@ class OmeZarrImporter():
         fname = Path(remote_path).name.replace(".ome.zarr", ".ome.tiff")
         import_path = Path(self.local_path) / fname
 
-        # import pdb; pdb.set_trace()
-
         dtype = image.dtype
 
         OmeTiffWriter().save(
             data=image.data,
             uri=import_path,
-            # ToDO: Add the following arguments to the save method
-            # ome_xml=OmeTiffWriter().build_ome(data_shapes=image.shape,dimension_order=[d for d in image.dims.order],channel_names=image.channel_names,physical_pixel_sizes=image.physical_pixel_sizes,)
+            ome_xml=OmeTiffWriter().build_ome(data_shapes=image.shape,dimension_order=[d for d in image.dims.order],channel_names=image.channel_names,physical_pixel_sizes=image.physical_pixel_sizes,)
         )
         return 
     
