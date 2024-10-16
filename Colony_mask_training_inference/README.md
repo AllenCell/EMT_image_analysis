@@ -1,10 +1,11 @@
 # Instructions to run the all cells mask inference generation pipeline
 
 ## Installation
-Clone the repo (include instructions here)
-Switch to sm_colony_mask_pred_test_v0 branch
-
-Install Python 3.10, either from [python.org](https://www.python.org/downloads/), your operating system package manager, or [pyenv](https://github.com/pyenv/pyenv-installer).
+1. Clone this git repository.  
+   `git clone https://github.com/AllenCell/EMT_image_analysis.git`
+2. Switch to sm_colony_mask_pred_test_v0 branch.  
+   `git checkout sm_colony_mask_pred_test_v0`
+3. Install Python 3.10, either from [python.org](https://www.python.org/downloads/), your operating system package manager, or [pyenv](https://github.com/pyenv/pyenv-installer).
 Check that it is installed correctly by running `python --version` in the terminal.
 Then, use the following steps to create a new virtual environment and install the dependencies.
 ```bash
@@ -13,6 +14,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install .
 ```
+4. Alternatively use Conda package manager to create a virtual environment with python 3.10
 
 ## Run all cells mask model trianing
 Users are welcome to retrain the models by accessing all the images provided in https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/
