@@ -1,4 +1,4 @@
-# Instructions to run the all cells mask inference generation pipeline
+# Instructions to run the all cells mask(ACM) inference generation pipeline
 
 ## Installation
 1. Clone this git repository.  
@@ -15,15 +15,25 @@ source .venv/bin/activate
 pip install .
 ```
 4. Alternatively use Conda package manager to create a virtual environment with python 3.10
+   ```
+   conda create -n emt-acm-env python=3.10
+   conda activate emt-acm-env
+   ```
 
-## Run all cells mask model trianing
+## Run all cells mask model trianing [Under Development - ZARR support not yet implemented]
 Users are welcome to retrain the models by accessing all the images provided in https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/
 
 To re-run the whole training run --> `CYTODL_CONFIG_PATH=$PWD/configs python -m cyto_dl.train experiment=im2im/train.yaml`
 
 ## Run multi-scale patch-based evaluation to generate probability maps
-Download the all cells mask model checkpoint file from https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt and save it inside EMT_image_analysis/Colony_mask_training_inference
 
+Step 1 -  Download the model checkpoint  
+The model checkpoint path is required to generate the ACM. A pretrained model is provided and can be downloaded from  https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt  
+Save the downloaded checkpoint file in `EMT_image_analysis/Colony_mask_training_inference/`  
+Users are welcome to train their own models or finetune the existing model with their own data.  
+
+
+Step 2 - Test data on which the ACM prediction has to be performed
 Run the command --> `mkdir test_data` 
 
 save \\allen\aics\assay-dev\users\Suraj\EMT_Work\image_analysis_test\EMT_image_analysis\Colony_mask_training_inference\sample_csv\predict_all_cells_mask_v0.csv inside test_data  --adhoc solution
