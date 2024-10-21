@@ -13,7 +13,7 @@ dependencies = [
     "pandas",
     "tifffile",
     "scikit-image",
-    "cyto-dl @ git+https://github.com/AllenCellModeling/cyto-dl@57f9b3232da0ed853446d63de3237ff615ce554d",
+    "cyto-dl @ git+https://github.com/AllenCellModeling/cyto-dl@7e67f5365d98f78da43cb20ade9fd82fa04fc58c",
     "monai-weekly==1.3.dev2333",  # cyto-dl uses a feature removed from monai 1.4
 ]
 # cyto-dl does not support python >= 3.11 yet
