@@ -3,7 +3,8 @@
 ## Installation
 1. Clone this git repository.  
    `git clone https://github.com/AllenCell/EMT_image_analysis.git`
-2. Switch to sm_colony_mask_pred_test_v0 branch.  
+2. Go inside the directory and switch to sm_colony_mask_pred_test_v0 branch.  
+   `cd EMT_image_analysis`  
    `git checkout sm_colony_mask_pred_test_v0`
 3. Install Python 3.10, either from [python.org](https://www.python.org/downloads/), your operating system package manager, or [pyenv](https://github.com/pyenv/pyenv-installer).
 Check that it is installed correctly by running `python --version` in the terminal.
@@ -18,6 +19,7 @@ pip install .
    ```
    conda create -n emt-acm-env python=3.10
    conda activate emt-acm-env
+   pip install .
    ```
 
 
