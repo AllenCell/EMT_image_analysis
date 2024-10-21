@@ -1,9 +1,9 @@
-_target_: cyto_dl.datamodules.czi.make_CZI_dataloader #dataframe.DataframeDatamodule
+_target_: cyto_dl.datamodules.multidim_image.make_multidim_image_dataloader #MultiDimImageDataset #dataframe.DataframeDatamodule
 
-num_workers: 1
+num_workers: 0
 batch_size: 1
 pin_memory: True
-persistent_workers: False
+#persistent_workers: False
 
 
 csv_path:

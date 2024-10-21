@@ -3,7 +3,7 @@
 # python train.py experiment=example
 defaults:
   - override /data: im2im/mae.yaml
-  - override /model: im2im/mae.yaml
+  - override /model: im2im/hiera.yaml
   - override /callbacks: default.yaml
   - override /trainer: gpu.yaml
   - override /logger: csv.yaml
@@ -50,4 +50,3 @@ callbacks:
     save_dir: ${paths.output_dir}
     save_every_n_epochs: ${model.save_images_every_n_epochs}
     stages: ["train", "test", "val"]
-    save_input: True

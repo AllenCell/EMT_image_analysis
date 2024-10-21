@@ -1,9 +1,11 @@
 # @package _global_
+
 # to execute this experiment run:
 # python train.py experiment=example
+
 defaults:
-  - override /data: im2im/mae.yaml
-  - override /model: im2im/mae.yaml
+  - override /data: im2im/iwm.yaml
+  - override /model: im2im/iwm.yaml
   - override /callbacks: default.yaml
   - override /trainer: gpu.yaml
   - override /logger: csv.yaml
@@ -17,7 +19,7 @@ seed: 12345
 experiment_name: YOUR_EXP_NAME
 run_name: YOUR_RUN_NAME
 
-# only source_col is needed for masked autoencoder
+# only source_col is needed for IWM
 source_col: raw
 spatial_dims: 3
 raw_im_channels: 1
@@ -37,17 +39,6 @@ data:
     patch_shape: [16, 16, 16]
 
 callbacks:
-  # prediction
-  # saving:
-  #   _target_: cyto_dl.callbacks.ImageSaver
-  #   save_dir: ${paths.output_dir}
-  #   save_every_n_epochs: ${model.save_images_every_n_epochs}
-  #   stages: ["predict"]
-  #   save_input: False
-  # training
-  saving:
-    _target_: cyto_dl.callbacks.ImageSaver
+  prediction_saver:
+    _target_: cyto_dl.callbacks.csv_saver.CSVSaver
     save_dir: ${paths.output_dir}
-    save_every_n_epochs: ${model.save_images_every_n_epochs}
-    stages: ["train", "test", "val"]
-    save_input: True
