@@ -1,4 +1,4 @@
-# Instructions to run the all cells mask(ACM) inference generation pipeline
+# Instructions to run the all cells mask(ACM) inference generation pipeline on Linux machines
 
 ## Installation
 1. Clone this git repository.  
@@ -41,8 +41,7 @@ Access the link and click on the "DOWNLOAD FILE" button [top left].
 Alternatively, user can use `curl` to download using the link - https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt?versionId=ejf07rBiw5slyx1zQyurfX6.zpSJ92JM
 
 
-
-Create a new directory using the command `mkdir data`
+Create a new sub-directory using the command `mkdir data` inside `Colony_mask_training_inference` directory.
 
 Save the downloaded checkpoint file in `EMT_image_analysis/Colony_mask_training_inference/data/`  
 Users are welcome to train their own models or finetune the existing model with their own data.  
@@ -50,19 +49,16 @@ Users are welcome to train their own models or finetune the existing model with 
 
 
 **Step 2 - Prepare data on which the ACM prediction has to be performed**  
-Data (3D Z-stack of a single timepoint or a timelapse) is provided as an input to the model to predict its all-cells-mask. Data is provided as a CSV file. The CSV file should contain 2 columns: movie_path and bf_channel. E.g., 
+Data (3D Z-stack of a single timepoint or a timelapse) is provided as an input to the model to predict its all-cells-mask. Data is provided as a CSV file. The CSV file should contain these 2 columns: movie_path and bf_channel. E.g., 
 
 |count            |movie_path         |bf_channel        |
 |-----------------|-------------------|------------------|
-|0                |\path\to\movie1    |0                 |
-|1                |\apth\to\movie2    |0                 |
+|0                |https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/data/3500006062_2_raw_converted.ome.zarr    |0                 |
+|1                |https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/data/3500006062_4_raw_converted.ome.zarr    |0                 |
 
 We recommend storing this CSV inside the `Colony_mask_training_inference/data` directory
 
-A sample CSV containing few example timelapse movies used in this work is provided Here --> `/allen/aics/assay-dev/users/Suraj/EMT_Work/image_analysis_test/EMT_image_analysis/Colony_mask_training_inference/sample_csv/predict_all_cells_mask_v0.csv`
-
----> ToDo: Provide an example CSV in AWS
- Keep a copy of the provided CSV file using the command --> `cp /allen/aics/assay-dev/users/Suraj/EMT_Work/image_analysis_test/EMT_image_analysis/Colony_mask_training_inference/sample_csv/predict_all_cells_mask_v0.csv data/`
+Users are welcome to experiment using this table and save it as a CSV file named  `predict_all_cells_mask_zarr_aws_v0.csv` inside the `Colony_mask_training_inference/data` directory.
 
 
 **Step 3 - Edit the evaluation conifg file**  
