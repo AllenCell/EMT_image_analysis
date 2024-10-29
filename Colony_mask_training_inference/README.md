@@ -35,7 +35,12 @@ To re-run the whole training run --> `CYTODL_CONFIG_PATH=$PWD/configs python -m 
 ## Run multi-scale patch-based evaluation to generate probability maps
 
 **Step 1 -  Download the model checkpoint**  
-The model checkpoint path is required to generate the ACM. A pretrained model is provided and can be downloaded from  https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt  
+The model checkpoint path is required to generate the ACM. A pretrained model is provided and can be downloaded from this link -  https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt 
+Access the link and click on the "DOWNLOAD FILE" button [top left].  
+
+Alternatively, user can use `curl` to download using the link - https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt?versionId=ejf07rBiw5slyx1zQyurfX6.zpSJ92JM
+
+
 
 Create a new directory using the command `mkdir data`
 
