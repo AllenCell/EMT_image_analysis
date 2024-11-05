@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:12efac32e75a4671211dad99531fec6ef942fee62356be562369b93b894eb2e4"
+content_hash = "sha256:809afdf73b0df04623b20891a81fab990dc03f8239e370874cd149e22c5cf5b9"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -715,7 +715,7 @@ name = "cyto-dl"
 version = "0.1.4"
 requires_python = ">=3.8,<3.11"
 git = "https://github.com/AllenCellModeling/cyto-dl"
-ref = "f9c3058e5a86a0710375955549bd0cfc4c87e4ca"
+ref = "221543844fbefe5a6027f0473c1f4b4eaf59c7b9"
 revision = "f9c3058e5a86a0710375955549bd0cfc4c87e4ca"
 summary = "Collection of representation learning models, techniques, callbacks, utils, used to create latent variable models of cell shape, morphology and intracellular organization."
 groups = ["default"]
