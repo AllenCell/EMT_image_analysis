@@ -30,6 +30,7 @@ Users are welcome to retrain the models by accessing all the images provided in 
 
 To re-run the whole training run --> `CYTODL_CONFIG_PATH=$PWD/configs python -m cyto_dl.train experiment=im2im/train.yaml`
 
+This part is not yet fully supported as CytoDL training using OME ZARR files is still under development. For retraining, users can use tiff files instead.
 
 
 ## Run multi-scale patch-based evaluation to generate probability maps
