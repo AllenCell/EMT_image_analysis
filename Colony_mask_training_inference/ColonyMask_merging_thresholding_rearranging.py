@@ -48,8 +48,9 @@ for filename in glob.glob(dir_path):
     # Directory prep
     print(filename.split('/')[-1])
     imgname = filename.split('/')[-1]
-    id_temp = imgname.split('fms_id=')[1]
-    fms_id = id_temp.split('_')[0]
+    #id_temp = imgname.split('fms_id=')[1]
+    #fms_id = id_temp.split('_')[0]
+    fms_id = imgname.split('_')[0] + '_' + imgname.split('_')[1]
     print(fms_id)
     fms_id_dir_path = targetname + fms_id 
     if not os.path.exists(fms_id_dir_path):
