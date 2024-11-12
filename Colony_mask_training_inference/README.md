@@ -80,6 +80,6 @@ To run the thresholding and merging script, make sure your environment has aicsi
 
 Run the command --> `python ColonyMask_merging_thresholding_rearranging.py`
 
-The code expects patch-based probabilty masks has already been generated and are stored at `/pathto/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patchX` (where, X={1, 2, 3})
+The code expects patch-based probabilty masks have already been generated and were stored at `/pathto/Colony_mask_training_inference/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patchX` (where, X={1, 2, 3})
 
-The output will be binarized all cells masks and they can be accessed at `/pathto/cyto-dl/data/all_cells_mask_test_dir/multiscale_all_cells_mask_v0`
+The output of this script will be the binarized all cells masks and they can be accessed at `/pathto/Colony_mask_training_inference/data/all_cells_mask_test_dir/multiscale_all_cells_mask_v0`
