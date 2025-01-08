@@ -13,7 +13,7 @@ dependencies = [
     "pandas",
     "tifffile",
     "scikit-image",
-    "cyto-dl @ git+https://github.com/AllenCellModeling/cyto-dl@221543844fbefe5a6027f0473c1f4b4eaf59c7b9",
+    "cyto-dl @ git+https://github.com/AllenCellModeling/cyto-dl@2e6300b806541879b253d67ce766b86b371abf19",
 ]
 # cyto-dl does not support python >= 3.11 yet
 requires-python = "==3.10.*"
