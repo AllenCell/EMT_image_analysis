@@ -3,9 +3,9 @@
 ## Installation
 1. Clone this git repository.  
    `git clone https://github.com/AllenCell/EMT_image_analysis.git`
-2. Go inside the directory and switch to sm_colony_mask_pred_test_v0 branch.  
+2. Go inside the directory and switch to sm_colony_mask_czi_multi branch.  
    `cd EMT_image_analysis`  
-   `git checkout origin/sm_colony_mask_pred_test_v0`
+   `git checkout origin/sm_colony_mask_czi_multi`
 3. Install Python 3.10, either from [python.org](https://www.python.org/downloads/), your operating system package manager, or [pyenv](https://github.com/pyenv/pyenv-installer).
 Check that it is installed correctly by running `python --version` in the terminal.
 Then, use the following steps to create a new virtual environment and install the dependencies.
