@@ -5,24 +5,25 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:809afdf73b0df04623b20891a81fab990dc03f8239e370874cd149e22c5cf5b9"
+content_hash = "sha256:ff65542caa7ae820ad96ffd22b221a2d105e2f19bc6ec437c8afcad6f3c6f8a2"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
 
 [[package]]
 name = "aicsimageio"
-version = "4.11.0"
+version = "4.12.1"
 requires_python = ">=3.8"
 summary = "Image Reading, Metadata Conversion, and Image Writing for Microscopy Images in Pure Python"
 groups = ["default"]
 dependencies = [
-    "dask[array]>=2021.4.1",
+    "PyYAML>=6.0",
+    "dask[array]<=2023.5.0,>=2021.4.1",
     "fsspec>=2022.8.0",
     "imagecodecs>=2020.5.30",
     "lxml<5,>=4.6",
-    "numpy<2,>=1.16",
-    "ome-types>=0.3.3",
+    "numpy<=1.24.0,>=1.16",
+    "ome-types>=0.3.4",
     "ome-zarr>=0.6.1",
     "resource-backed-dask-array>=0.1.0",
     "tifffile>=2021.8.30",
@@ -32,8 +33,25 @@ dependencies = [
     "zarr<3,>=2.6",
 ]
 files = [
-    {file = "aicsimageio-4.11.0-py2.py3-none-any.whl", hash = "sha256:c0c3359e014689675663adfc4feef44e94ad7c536c88b8d5db3051da663addaf"},
-    {file = "aicsimageio-4.11.0.tar.gz", hash = "sha256:f554fb3a682116e69fa76fd8fea193e1b009af1d91d10b2cb6ea64341a6c0c15"},
+    {file = "aicsimageio-4.12.1-py2.py3-none-any.whl", hash = "sha256:cd43fa3ea2373c843d8f32913c73b79be8e8d096088790b742c4faf5d60d5630"},
+    {file = "aicsimageio-4.12.1.tar.gz", hash = "sha256:436f9e0b7b6cbb63ced0cdf6f81c34192398d724b1fce9a2e537804b50ed3518"},
+]
+
+[[package]]
+name = "aicspylibczi"
+version = "3.2.1"
+summary = "A python module and a python extension for Zeiss (CZI/ZISRAW) microscopy files."
+groups = ["default"]
+dependencies = [
+    "numpy>=1.14.1",
+]
+files = [
+    {file = "aicspylibczi-3.2.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:3557904ecf6859e746323bfe1159f4383b0972901e2a1e1cf3a903ae4bde2d78"},
+    {file = "aicspylibczi-3.2.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:50f354413ab18664d4c0779513f7658718b2cff29b1db43c9ad87df4dfdc22e4"},
+    {file = "aicspylibczi-3.2.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:0124932ed7e944c665740e009cf0c5ace6382f52bf339f2702d9b3208c56f711"},
+    {file = "aicspylibczi-3.2.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:67c4f40e5ec39fcb967aeef3ff4a0fc940d45e78bbce4f1b064d2049f739d86f"},
+    {file = "aicspylibczi-3.2.1-cp310-cp310-win_amd64.whl", hash = "sha256:537dd330f6ad1d1a92dfd896291b0d859279aaaf0c67693e36abe8b87ecc4622"},
+    {file = "aicspylibczi-3.2.1.tar.gz", hash = "sha256:4e5639b02df4ba82705bc7ca53b16cf17d13c211b9fa55d70cb7fff584f04ba7"},
 ]
 
 [[package]]
@@ -351,21 +369,112 @@ files = [
 ]
 
 [[package]]
-name = "bfio"
-version = "2.3.0"
-requires_python = ">=3.6"
-summary = "Simple reading and writing classes for tiled tiffs using Bioformats."
+name = "bioio"
+version = "1.1.0"
+requires_python = ">=3.9"
+summary = "Image reading, metadata management, and image writing for Microscopy images in Python"
 groups = ["default"]
 dependencies = [
-    "imagecodecs>=2021.2.26",
-    "lxml",
-    "numpy>=1.20.1",
-    "ome-types>=0.2.10",
+    "bioio-base>=0.9.1",
+    "dask[array]>=2021.4.1",
+    "fsspec>=2022.8.0",
+    "imageio[ffmpeg]<2.28.0,>=2.11.0",
+    "ngff-zarr>=0.8.2",
+    "numpy<2.0.0,>=1.21.0",
+    "ome-types[lxml]>=0.4.0",
+    "ome-zarr>=0.6.1",
+    "semver>=3.0.1",
     "tifffile>=2021.8.30",
+    "zarr<2.18.0,>=2.6.0",
 ]
 files = [
-    {file = "bfio-2.3.0-py2.py3-none-any.whl", hash = "sha256:df343233add10e592a047254397d167c4c22496415287ff5ab4cdb0cb94c110a"},
-    {file = "bfio-2.3.0.tar.gz", hash = "sha256:963a56aed17cf0fcbcac3995daf61dd75b8d68d8358b144003d79cf17dce16fe"},
+    {file = "bioio-1.1.0-py3-none-any.whl", hash = "sha256:175eb3466eb3d56fe5673118548e5844fcff5e27f0f14463adfb1a118a3a8d7c"},
+    {file = "bioio-1.1.0.tar.gz", hash = "sha256:a7e22bfa5ec60385057f3e1800b5292e5764ca6bd795e09954315b27bf0d1d3b"},
+]
+
+[[package]]
+name = "bioio-base"
+version = "1.0.4"
+requires_python = ">=3.9"
+summary = "Typing, base classes, and more for BioIO projects."
+groups = ["default"]
+dependencies = [
+    "dask[array,distributed]!=2022.5.1,>=2021.4.1",
+    "fsspec!=2022.7.0,>=2021.4.0",
+    "numpy>=1.21.0",
+    "ome-types>=0.2",
+    "xarray>=2022.6.0",
+]
+files = [
+    {file = "bioio_base-1.0.4-py3-none-any.whl", hash = "sha256:187ae976323b15250c978527fe271e1a9707f5712f3517ddeff1e160b2515e53"},
+    {file = "bioio_base-1.0.4.tar.gz", hash = "sha256:92fc4f5676e83103333da1903aa3ccc7825a333229b72bfcd200dd3dfdde360b"},
+]
+
+[[package]]
+name = "bioio-czi"
+version = "1.0.1"
+requires_python = ">=3.9"
+summary = "A Bioio reader plugin for reading czi images."
+groups = ["default"]
+dependencies = [
+    "aicspylibczi>=3.2.0",
+    "bioio-base>=0.2.0",
+    "dask[array]>=2021.4.1",
+    "fsspec>=2022.8.0",
+    "lxml<5,>=4.6",
+    "numpy>=1.16",
+    "ome-types>=0.3.4",
+    "xarray>=0.16.1",
+]
+files = [
+    {file = "bioio_czi-1.0.1-py3-none-any.whl", hash = "sha256:7f6e507f1fdcf55537a177cff045a1e2301c28692852e20976b8246263607f27"},
+    {file = "bioio_czi-1.0.1.tar.gz", hash = "sha256:b80197633647e4095facfb8373b8fe25da84d0981f2f201c1f4c75a950c8ddb9"},
+]
+
+[[package]]
+name = "bioio-ome-tiff"
+version = "1.0.1"
+requires_python = ">=3.9"
+summary = "A BioIO reader plugin for reading tiff files in the OME format."
+groups = ["default"]
+dependencies = [
+    "PyYAML>=6.0",
+    "bioio-base>=0.3.0",
+    "dask[array]>=2021.4.1",
+    "fsspec>=2022.8.0",
+    "imagecodecs>=2020.5.30",
+    "numpy>=1.21",
+    "ome-types[lxml]>=0.4.0",
+    "pydantic>=1.10.0",
+    "tifffile>=2022.4.22",
+    "xarray>=0.16.1",
+    "xmlschema",
+    "zarr>=2.6",
+]
+files = [
+    {file = "bioio_ome_tiff-1.0.1-py3-none-any.whl", hash = "sha256:53bc4873823ef8575ff9fedfb128b0d440d84d0e3f7d1dd30cbbc4a702928dfa"},
+    {file = "bioio_ome_tiff-1.0.1.tar.gz", hash = "sha256:d7420c50f78e4133657748ab5fb9cf99c4902c8b749251a9e120a6cd16640ee5"},
+]
+
+[[package]]
+name = "bioio-tifffile"
+version = "1.0.0"
+requires_python = ">=3.9"
+summary = "A BioIO reader plugin for reading TIFFs using Tifffile"
+groups = ["default"]
+dependencies = [
+    "bioio-base>=0.3.0",
+    "dask[array]>=2021.4.1",
+    "fsspec>=2022.8.0",
+    "imagecodecs>=2020.5.30",
+    "numpy>=1.16",
+    "tifffile>=2022.4.22",
+    "xarray>=0.16.1",
+    "zarr>=2.6",
+]
+files = [
+    {file = "bioio-tifffile-1.0.0.tar.gz", hash = "sha256:9ec524ea308b25736f6c6c2086ca7034818bfc5ac0cdc13cf20f0b2d141ee239"},
+    {file = "bioio_tifffile-1.0.0-py3-none-any.whl", hash = "sha256:ccbd8b57e79cf695757b5d61f19b373caaa7ce63f9db3c091f9ab47b9980a54e"},
 ]
 
 [[package]]
@@ -712,81 +821,101 @@ files = [
 
 [[package]]
 name = "cyto-dl"
-version = "0.1.4"
-requires_python = ">=3.8,<3.11"
+version = "0.4.1"
+requires_python = ">=3.9,<3.11"
 git = "https://github.com/AllenCellModeling/cyto-dl"
-ref = "221543844fbefe5a6027f0473c1f4b4eaf59c7b9"
-revision = "f9c3058e5a86a0710375955549bd0cfc4c87e4ca"
+ref = "2e6300b806541879b253d67ce766b86b371abf19"
+revision = "2e6300b806541879b253d67ce766b86b371abf19"
 summary = "Collection of representation learning models, techniques, callbacks, utils, used to create latent variable models of cell shape, morphology and intracellular organization."
 groups = ["default"]
 dependencies = [
-    "PyYAML~=6.0",
-    "aicsimageio~=4.11.0",
-    "anndata~=0.8",
-    "astropy~=5.2",
-    "bfio==2.3.0",
+    "PyYAML>=6.0",
+    "anndata>=0.8",
+    "astropy>=5.2",
+    "bioio-czi",
+    "bioio-ome-tiff",
+    "bioio-tifffile",
+    "bioio>=1.0.1",
+    "boto3",
     "edt>=2.3.1",
     "einops>=0.6.1",
-    "fire~=0.5",
-    "hydra-colorlog~=1.2",
-    "hydra-core~=1.3",
-    "hydra-optuna-sweeper~=1.2",
-    "joblib~=1.2",
-    "lightning<2.1,>=2.0",
-    "matplotlib~=3.7",
-    "mlflow~=2.1",
-    "monai-weekly>=1.2.dev2308",
-    "numpy~=1.23",
-    "ome-zarr~=0.6",
-    "omegaconf~=2.3",
-    "ostat>=0.2",
-    "pandas~=1.5",
-    "protobuf<=3.20.1",
-    "pyarrow~=10.0",
-    "pyrootutils~=1.0",
-    "scikit-learn~=1.2",
-    "tifffile~=2023.2",
+    "fire>=0.5",
+    "hydra-colorlog>=1.2",
+    "hydra-core~=1.3.0",
+    "hydra-optuna-sweeper>=1.2",
+    "lightning>=2.0",
+    "matplotlib>=3.7",
+    "mlflow>=2.1",
+    "monai>=1.2",
+    "numpy>=1.23",
+    "ome-zarr>=0.6",
+    "omegaconf>=2.3",
+    "online-stats>=2023",
+    "pandas>=1.5",
+    "positional-encodings>=6.0.3",
+    "pyarrow>=10.0",
+    "pyrootutils>=1.0",
+    "rich",
+    "scikit-learn>=1.2",
+    "tifffile>=2024.0.0",
     "timm>=0.9.7",
-    "torch<2.1,>=2.0",
-    "tqdm~=4.64",
-    "universal-pathlib~=0.0",
+    "torch~=2.0.0",
+    "tqdm>=4.64",
+    "universal-pathlib>=0.0",
 ]
 
 [[package]]
 name = "dask"
-version = "2024.8.0"
-requires_python = ">=3.9"
+version = "2023.5.0"
+requires_python = ">=3.8"
 summary = "Parallel PyData with Task Scheduling"
 groups = ["default"]
 dependencies = [
-    "click>=8.1",
+    "click>=8.0",
     "cloudpickle>=1.5.0",
     "fsspec>=2021.09.0",
-    "importlib-metadata>=4.13.0; python_version < \"3.12\"",
+    "importlib-metadata>=4.13.0",
     "packaging>=20.0",
-    "partd>=1.4.0",
+    "partd>=1.2.0",
     "pyyaml>=5.3.1",
     "toolz>=0.10.0",
 ]
 files = [
-    {file = "dask-2024.8.0-py3-none-any.whl", hash = "sha256:250ea3df30d4a25958290eec4f252850091c6cfaed82d098179c3b25bba18309"},
-    {file = "dask-2024.8.0.tar.gz", hash = "sha256:f1fec39373d2f101bc045529ad4e9b30e34e6eb33b7aa0fa7073aec7b1bf9eee"},
+    {file = "dask-2023.5.0-py3-none-any.whl", hash = "sha256:32b34986519b7ddc0947c8ca63c2fc81b964e4c208dfb5cbf9f4f8aec92d152b"},
+    {file = "dask-2023.5.0.tar.gz", hash = "sha256:4f4c28ac406e81b8f21b5be4b31b21308808f3e0e7c7e2f4a914f16476d9941b"},
 ]
 
 [[package]]
 name = "dask"
-version = "2024.8.0"
-extras = ["array"]
-requires_python = ">=3.9"
+version = "2023.5.0"
+extras = ["array", "distributed"]
+requires_python = ">=3.8"
 summary = "Parallel PyData with Task Scheduling"
 groups = ["default"]
 dependencies = [
-    "dask==2024.8.0",
+    "dask==2023.5.0",
+    "distributed==2023.5.0",
     "numpy>=1.21",
 ]
 files = [
-    {file = "dask-2024.8.0-py3-none-any.whl", hash = "sha256:250ea3df30d4a25958290eec4f252850091c6cfaed82d098179c3b25bba18309"},
-    {file = "dask-2024.8.0.tar.gz", hash = "sha256:f1fec39373d2f101bc045529ad4e9b30e34e6eb33b7aa0fa7073aec7b1bf9eee"},
+    {file = "dask-2023.5.0-py3-none-any.whl", hash = "sha256:32b34986519b7ddc0947c8ca63c2fc81b964e4c208dfb5cbf9f4f8aec92d152b"},
+    {file = "dask-2023.5.0.tar.gz", hash = "sha256:4f4c28ac406e81b8f21b5be4b31b21308808f3e0e7c7e2f4a914f16476d9941b"},
+]
+
+[[package]]
+name = "dask"
+version = "2023.5.0"
+extras = ["array"]
+requires_python = ">=3.8"
+summary = "Parallel PyData with Task Scheduling"
+groups = ["default"]
+dependencies = [
+    "dask==2023.5.0",
+    "numpy>=1.21",
+]
+files = [
+    {file = "dask-2023.5.0-py3-none-any.whl", hash = "sha256:32b34986519b7ddc0947c8ca63c2fc81b964e4c208dfb5cbf9f4f8aec92d152b"},
+    {file = "dask-2023.5.0.tar.gz", hash = "sha256:4f4c28ac406e81b8f21b5be4b31b21308808f3e0e7c7e2f4a914f16476d9941b"},
 ]
 
 [[package]]
@@ -849,30 +978,30 @@ files = [
 
 [[package]]
 name = "distributed"
-version = "2024.8.0"
-requires_python = ">=3.9"
+version = "2023.5.0"
+requires_python = ">=3.8"
 summary = "Distributed scheduler for Dask"
 groups = ["default"]
 dependencies = [
     "click>=8.0",
     "cloudpickle>=1.5.0",
-    "dask==2024.8.0",
+    "dask==2023.5.0",
     "jinja2>=2.10.3",
     "locket>=1.0.0",
     "msgpack>=1.0.0",
     "packaging>=20.0",
-    "psutil>=5.7.2",
+    "psutil>=5.7.0",
     "pyyaml>=5.3.1",
     "sortedcontainers>=2.0.5",
     "tblib>=1.6.0",
     "toolz>=0.10.0",
-    "tornado>=6.0.4",
+    "tornado>=6.0.3",
     "urllib3>=1.24.3",
-    "zict>=3.0.0",
+    "zict>=2.2.0",
 ]
 files = [
-    {file = "distributed-2024.8.0-py3-none-any.whl", hash = "sha256:11af55d22dd6e04eb868b87f166b8f59ef1b300f659f87c016643b7f98280ec6"},
-    {file = "distributed-2024.8.0.tar.gz", hash = "sha256:b99caf0a7f257f59477a70a334e081c1241f7cd9860211cc669742e6450e1310"},
+    {file = "distributed-2023.5.0-py3-none-any.whl", hash = "sha256:73ce33bd2460bd45ffc793ffdf9066bd2a3b6bbc65079f74f5147eafcda9b1cb"},
+    {file = "distributed-2023.5.0.tar.gz", hash = "sha256:74e3f7f68d4dc435a3591ae1ad8ce7d5a11211fd22692e39c7e50aa11bf7e385"},
 ]
 
 [[package]]
@@ -1444,8 +1573,8 @@ files = [
 
 [[package]]
 name = "imageio"
-version = "2.34.2"
-requires_python = ">=3.8"
+version = "2.27.0"
+requires_python = ">=3.7"
 summary = "Library for reading and writing a wide range of image, video, scientific, and volumetric data formats."
 groups = ["default"]
 dependencies = [
@@ -1453,8 +1582,43 @@ dependencies = [
     "pillow>=8.3.2",
 ]
 files = [
-    {file = "imageio-2.34.2-py3-none-any.whl", hash = "sha256:a0bb27ec9d5bab36a9f4835e51b21d2cb099e1f78451441f94687ff3404b79f8"},
-    {file = "imageio-2.34.2.tar.gz", hash = "sha256:5c0c0ee8faa018a1c42f649b90395dd4d3bb6187c09053a0cd6f1fdd51bbff5e"},
+    {file = "imageio-2.27.0-py3-none-any.whl", hash = "sha256:24c6ad7d000e64eacc2861c402b6fb128f370cb0a6623cf796d83bca0d0d14d3"},
+    {file = "imageio-2.27.0.tar.gz", hash = "sha256:ee269c957785ef0373cc7a7323185956d83ec05e6cdf20b42a03ba7b74ac58c6"},
+]
+
+[[package]]
+name = "imageio-ffmpeg"
+version = "0.5.1"
+requires_python = ">=3.5"
+summary = "FFMPEG wrapper for Python"
+groups = ["default"]
+dependencies = [
+    "setuptools",
+]
+files = [
+    {file = "imageio-ffmpeg-0.5.1.tar.gz", hash = "sha256:0ed7a9b31f560b0c9d929c5291cd430edeb9bed3ce9a497480e536dd4326484c"},
+    {file = "imageio_ffmpeg-0.5.1-py3-none-macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:1460e84712b9d06910c1f7bb524096b0341d4b7844cea6c20e099d0a24e795b1"},
+    {file = "imageio_ffmpeg-0.5.1-py3-none-manylinux2010_x86_64.whl", hash = "sha256:5289f75c7f755b499653f3209fea4efd1430cba0e39831c381aad2d458f7a316"},
+    {file = "imageio_ffmpeg-0.5.1-py3-none-manylinux2014_aarch64.whl", hash = "sha256:7fa9132a291d5eb28c44553550deb40cbdab831f2a614e55360301a6582eb205"},
+    {file = "imageio_ffmpeg-0.5.1-py3-none-win32.whl", hash = "sha256:89efe2c79979d8174ba8476deb7f74d74c331caee3fb2b65ba2883bec0737625"},
+    {file = "imageio_ffmpeg-0.5.1-py3-none-win_amd64.whl", hash = "sha256:1521e79e253bedbdd36a547e0cbd94a025ba0b558e17f08fea687d805a0e4698"},
+]
+
+[[package]]
+name = "imageio"
+version = "2.27.0"
+extras = ["ffmpeg"]
+requires_python = ">=3.7"
+summary = "Library for reading and writing a wide range of image, video, scientific, and volumetric data formats."
+groups = ["default"]
+dependencies = [
+    "imageio-ffmpeg",
+    "imageio==2.27.0",
+    "psutil",
+]
+files = [
+    {file = "imageio-2.27.0-py3-none-any.whl", hash = "sha256:24c6ad7d000e64eacc2861c402b6fb128f370cb0a6623cf796d83bca0d0d14d3"},
+    {file = "imageio-2.27.0.tar.gz", hash = "sha256:ee269c957785ef0373cc7a7323185956d83ec05e6cdf20b42a03ba7b74ac58c6"},
 ]
 
 [[package]]
@@ -1473,6 +1637,20 @@ files = [
 ]
 
 [[package]]
+name = "importlib-resources"
+version = "6.5.2"
+requires_python = ">=3.9"
+summary = "Read resources from Python packages"
+groups = ["default"]
+dependencies = [
+    "zipp>=3.1.0; python_version < \"3.10\"",
+]
+files = [
+    {file = "importlib_resources-6.5.2-py3-none-any.whl", hash = "sha256:789cfdc3ed28c78b67a06acb8126751ced69a3d5f79c095a98298cd8a760ccec"},
+    {file = "importlib_resources-6.5.2.tar.gz", hash = "sha256:185f87adef5bcc288449d98fb4fba07cea78bc036455dd44c5fc4a2fe78fed2c"},
+]
+
+[[package]]
 name = "inquirer"
 version = "3.4.0"
 requires_python = ">=3.8.1"
@@ -1486,6 +1664,71 @@ dependencies = [
 files = [
     {file = "inquirer-3.4.0-py3-none-any.whl", hash = "sha256:bb0ec93c833e4ce7b51b98b1644b0a4d2bb39755c39787f6a504e4fee7a11b60"},
     {file = "inquirer-3.4.0.tar.gz", hash = "sha256:8edc99c076386ee2d2204e5e3653c2488244e82cb197b2d498b3c1b5ffb25d0b"},
+]
+
+[[package]]
+name = "itkwasm"
+version = "1.0b185"
+requires_python = ">=3.9"
+summary = "Python interface to itk-wasm WebAssembly (Wasm) modules."
+groups = ["default"]
+dependencies = [
+    "importlib-metadata; python_version < \"3.10\"",
+    "numpy",
+    "platformdirs; sys_platform != \"emscripten\"",
+    "typing-extensions",
+    "wasmtime>=27.0.1; sys_platform != \"emscripten\"",
+]
+files = [
+    {file = "itkwasm-1.0b185-py3-none-any.whl", hash = "sha256:5d976f244f645e8c1700d59a32dd4461f9ade152693b64d6ebefdfe6b97a2413"},
+    {file = "itkwasm-1.0b185.tar.gz", hash = "sha256:ec2514a96cecec4685cb5defb04620325f7e722d9c982d95c3e946532a7da47b"},
+]
+
+[[package]]
+name = "itkwasm-downsample"
+version = "1.5.0"
+requires_python = ">=3.8"
+summary = "Pipelines for downsampling images."
+groups = ["default"]
+dependencies = [
+    "itkwasm-downsample-emscripten; sys_platform == \"emscripten\"",
+    "itkwasm-downsample-wasi; sys_platform != \"emscripten\"",
+    "itkwasm>=1.0.b145",
+]
+files = [
+    {file = "itkwasm_downsample-1.5.0-py3-none-any.whl", hash = "sha256:b93b5be62444b0a67849504b4b6080254ccd0d9fe01de884a3db860470a8c895"},
+    {file = "itkwasm_downsample-1.5.0.tar.gz", hash = "sha256:4ed2e08cbcdb232fb6e651b9790e11af4998cbbbf42d738906204221fc3b30e5"},
+]
+
+[[package]]
+name = "itkwasm-downsample-emscripten"
+version = "1.5.0"
+requires_python = ">=3.8"
+summary = "Pipelines for downsampling images."
+groups = ["default"]
+marker = "sys_platform == \"emscripten\""
+dependencies = [
+    "itkwasm>=1.0.b145",
+]
+files = [
+    {file = "itkwasm_downsample_emscripten-1.5.0-py3-none-any.whl", hash = "sha256:1ada00dc47ff5c9c1864f4f64788e92445165de05eac611c887bdf70c22127d4"},
+    {file = "itkwasm_downsample_emscripten-1.5.0.tar.gz", hash = "sha256:8e9e5986e9663829d8181b04c290ae7879e6ca9d273bc1456088b90202e0e993"},
+]
+
+[[package]]
+name = "itkwasm-downsample-wasi"
+version = "1.5.0"
+requires_python = ">=3.8"
+summary = "Pipelines for downsampling images."
+groups = ["default"]
+marker = "sys_platform != \"emscripten\""
+dependencies = [
+    "importlib-resources",
+    "itkwasm>=1.0.b145",
+]
+files = [
+    {file = "itkwasm_downsample_wasi-1.5.0-py3-none-any.whl", hash = "sha256:6066bf1d0b265dfde2c45f51e05c1bb21181a38c0edc39f6f54df073eaa505b7"},
+    {file = "itkwasm_downsample_wasi-1.5.0.tar.gz", hash = "sha256:a53e986e347cc3ea438f13aaca7e4229494f9fea84f7125c340570de44f7e03c"},
 ]
 
 [[package]]
@@ -1858,15 +2101,14 @@ files = [
 
 [[package]]
 name = "matplotlib"
-version = "3.9.1.post1"
-requires_python = ">=3.9"
+version = "3.10.0"
+requires_python = ">=3.10"
 summary = "Python plotting package"
 groups = ["default"]
 dependencies = [
     "contourpy>=1.0.1",
     "cycler>=0.10",
     "fonttools>=4.22.0",
-    "importlib-resources>=3.2.0; python_version < \"3.10\"",
     "kiwisolver>=1.3.1",
     "numpy>=1.23",
     "packaging>=20.0",
@@ -1875,25 +2117,16 @@ dependencies = [
     "python-dateutil>=2.7",
 ]
 files = [
-    {file = "matplotlib-3.9.1.post1-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:3779ad3e8b72df22b8a622c5796bbcfabfa0069b835412e3c1dec8ee3de92d0c"},
-    {file = "matplotlib-3.9.1.post1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:ec400340f8628e8e2260d679078d4e9b478699f386e5cc8094e80a1cb0039c7c"},
-    {file = "matplotlib-3.9.1.post1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:82c18791b8862ea095081f745b81f896b011c5a5091678fb33204fef641476af"},
-    {file = "matplotlib-3.9.1.post1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:621a628389c09a6b9f609a238af8e66acecece1cfa12febc5fe4195114ba7446"},
-    {file = "matplotlib-3.9.1.post1-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:9a54734ca761ebb27cd4f0b6c2ede696ab6861052d7d7e7b8f7a6782665115f5"},
-    {file = "matplotlib-3.9.1.post1-cp310-cp310-win_amd64.whl", hash = "sha256:0721f93db92311bb514e446842e2b21c004541dcca0281afa495053e017c5458"},
-    {file = "matplotlib-3.9.1.post1-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:b08b46058fe2a31ecb81ef6aa3611f41d871f6a8280e9057cb4016cb3d8e894a"},
-    {file = "matplotlib-3.9.1.post1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:22b344e84fcc574f561b5731f89a7625db8ef80cdbb0026a8ea855a33e3429d1"},
-    {file = "matplotlib-3.9.1.post1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4b49fee26d64aefa9f061b575f0f7b5fc4663e51f87375c7239efa3d30d908fa"},
-    {file = "matplotlib-3.9.1.post1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:89eb7e89e2b57856533c5c98f018aa3254fa3789fcd86d5f80077b9034a54c9a"},
-    {file = "matplotlib-3.9.1.post1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:c06e742bade41fda6176d4c9c78c9ea016e176cd338e62a1686384cb1eb8de41"},
-    {file = "matplotlib-3.9.1.post1-cp311-cp311-win_amd64.whl", hash = "sha256:c44edab5b849e0fc1f1c9d6e13eaa35ef65925f7be45be891d9784709ad95561"},
-    {file = "matplotlib-3.9.1.post1-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:bf28b09986aee06393e808e661c3466be9c21eff443c9bc881bce04bfbb0c500"},
-    {file = "matplotlib-3.9.1.post1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:92aeb8c439d4831510d8b9d5e39f31c16c7f37873879767c26b147cef61e54cd"},
-    {file = "matplotlib-3.9.1.post1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f15798b0691b45c80d3320358a88ce5a9d6f518b28575b3ea3ed31b4bd95d009"},
-    {file = "matplotlib-3.9.1.post1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d59fc6096da7b9c1df275f9afc3fef5cbf634c21df9e5f844cba3dd8deb1847d"},
-    {file = "matplotlib-3.9.1.post1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:ab986817a32a70ce22302438691e7df4c6ee4a844d47289db9d583d873491e0b"},
-    {file = "matplotlib-3.9.1.post1-cp312-cp312-win_amd64.whl", hash = "sha256:0d78e7d2d86c4472da105d39aba9b754ed3dfeaeaa4ac7206b82706e0a5362fa"},
-    {file = "matplotlib-3.9.1.post1.tar.gz", hash = "sha256:c91e585c65092c975a44dc9d4239ba8c594ba3c193d7c478b6d178c4ef61f406"},
+    {file = "matplotlib-3.10.0-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:2c5829a5a1dd5a71f0e31e6e8bb449bc0ee9dbfb05ad28fc0c6b55101b3a4be6"},
+    {file = "matplotlib-3.10.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:a2a43cbefe22d653ab34bb55d42384ed30f611bcbdea1f8d7f431011a2e1c62e"},
+    {file = "matplotlib-3.10.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:607b16c8a73943df110f99ee2e940b8a1cbf9714b65307c040d422558397dac5"},
+    {file = "matplotlib-3.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:01d2b19f13aeec2e759414d3bfe19ddfb16b13a1250add08d46d5ff6f9be83c6"},
+    {file = "matplotlib-3.10.0-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:5e6c6461e1fc63df30bf6f80f0b93f5b6784299f721bc28530477acd51bfc3d1"},
+    {file = "matplotlib-3.10.0-cp310-cp310-win_amd64.whl", hash = "sha256:994c07b9d9fe8d25951e3202a68c17900679274dadfc1248738dcfa1bd40d7f3"},
+    {file = "matplotlib-3.10.0-pp310-pypy310_pp73-macosx_10_15_x86_64.whl", hash = "sha256:81713dd0d103b379de4516b861d964b1d789a144103277769238c732229d7f03"},
+    {file = "matplotlib-3.10.0-pp310-pypy310_pp73-macosx_11_0_arm64.whl", hash = "sha256:359f87baedb1f836ce307f0e850d12bb5f1936f70d035561f90d41d305fdacea"},
+    {file = "matplotlib-3.10.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ae80dc3a4add4665cf2faa90138384a7ffe2a4e37c58d83e115b54287c4f06ef"},
+    {file = "matplotlib-3.10.0.tar.gz", hash = "sha256:b886d02a581b96704c9d1ffe55709e49b4d2d52709ccebc4be42db856e511278"},
 ]
 
 [[package]]
@@ -1967,18 +2200,18 @@ files = [
 ]
 
 [[package]]
-name = "monai-weekly"
-version = "1.3.dev2333"
-requires_python = ">=3.8"
+name = "monai"
+version = "1.4.0"
+requires_python = ">=3.9"
 summary = "AI Toolkit for Healthcare Imaging"
 groups = ["default"]
 dependencies = [
-    "numpy>=1.20",
+    "numpy<2.0,>=1.24",
     "torch>=1.9",
 ]
 files = [
-    {file = "monai-weekly-1.3.dev2333.tar.gz", hash = "sha256:b16434dbb238c0231b0e7a96fd429c87d427518107d08717f41eec362718f84a"},
-    {file = "monai_weekly-1.3.dev2333-py3-none-any.whl", hash = "sha256:da6ebf26c231129bacda4b3a208445c01faaf8899f76001b7a77c67a90e3ce07"},
+    {file = "monai-1.4.0-py3-none-any.whl", hash = "sha256:a715ca9ff8a068e36efdd147420f0ff02ead744909e7ea0998f31129c4997c9b"},
+    {file = "monai-1.4.0.tar.gz", hash = "sha256:2fff631dd78afc166ccbafb89d7dde06f3d3b287860fb6f2d6cddd6bcc72caa8"},
 ]
 
 [[package]]
@@ -2113,6 +2346,30 @@ files = [
 ]
 
 [[package]]
+name = "ngff-zarr"
+version = "0.11.0"
+requires_python = ">=3.9"
+summary = "A lean and kind Open Microscopy Environment (OME) Next Generation File Format (NGFF) Zarr implementation."
+groups = ["default"]
+dependencies = [
+    "dask[array]",
+    "importlib-resources",
+    "itkwasm-downsample>=1.2.0",
+    "itkwasm>=1.0b183",
+    "numpy",
+    "platformdirs",
+    "psutil; sys_platform != \"emscripten\"",
+    "rich",
+    "rich-argparse",
+    "typing-extensions",
+    "zarr",
+]
+files = [
+    {file = "ngff_zarr-0.11.0-py3-none-any.whl", hash = "sha256:25fdd3d17df7856cec2b1a0d72a3d6d757512343a027af1cc2d3df803efab696"},
+    {file = "ngff_zarr-0.11.0.tar.gz", hash = "sha256:7cdc98df8c41f1aeff12d0212e846bf0c4e4e928aac13547180b0a5c77789767"},
+]
+
+[[package]]
 name = "numcodecs"
 version = "0.13.0"
 requires_python = ">=3.10"
@@ -2139,20 +2396,18 @@ files = [
 
 [[package]]
 name = "numpy"
-version = "1.26.4"
-requires_python = ">=3.9"
+version = "1.24.0"
+requires_python = ">=3.8"
 summary = "Fundamental package for array computing in Python"
 groups = ["default"]
 files = [
-    {file = "numpy-1.26.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:9ff0f4f29c51e2803569d7a51c2304de5554655a60c5d776e35b4a41413830d0"},
-    {file = "numpy-1.26.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:2e4ee3380d6de9c9ec04745830fd9e2eccb3e6cf790d39d7b98ffd19b0dd754a"},
-    {file = "numpy-1.26.4-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d209d8969599b27ad20994c8e41936ee0964e6da07478d6c35016bc386b66ad4"},
-    {file = "numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f"},
-    {file = "numpy-1.26.4-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:62b8e4b1e28009ef2846b4c7852046736bab361f7aeadeb6a5b89ebec3c7055a"},
-    {file = "numpy-1.26.4-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:a4abb4f9001ad2858e7ac189089c42178fcce737e4169dc61321660f1a96c7d2"},
-    {file = "numpy-1.26.4-cp310-cp310-win32.whl", hash = "sha256:bfe25acf8b437eb2a8b2d49d443800a5f18508cd811fea3181723922a8a82b07"},
-    {file = "numpy-1.26.4-cp310-cp310-win_amd64.whl", hash = "sha256:b97fe8060236edf3662adfc2c633f56a08ae30560c56310562cb4f95500022d5"},
-    {file = "numpy-1.26.4.tar.gz", hash = "sha256:2a02aba9ed12e4ac4eb3ea9421c420301a0c6460d9830d74a9df87efa4912010"},
+    {file = "numpy-1.24.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:6e73a1f4f5b74a42abb55bc2b3d869f1b38cbc8776da5f8b66bf110284f7a437"},
+    {file = "numpy-1.24.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:9387c7d6d50e8f8c31e7bfc034241e9c6f4b3eb5db8d118d6487047b922f82af"},
+    {file = "numpy-1.24.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7ad6a024a32ee61d18f5b402cd02e9c0e22c0fb9dc23751991b3a16d209d972e"},
+    {file = "numpy-1.24.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:73cf2c5b5a07450f20a0c8e04d9955491970177dce8df8d6903bf253e53268e0"},
+    {file = "numpy-1.24.0-cp310-cp310-win32.whl", hash = "sha256:cec79ff3984b2d1d103183fc4a3361f5b55bbb66cb395cbf5a920a4bb1fd588d"},
+    {file = "numpy-1.24.0-cp310-cp310-win_amd64.whl", hash = "sha256:4f5e78b8b710cd7cd1a8145994cfffc6ddd5911669a437777d8cedfce6c83a98"},
+    {file = "numpy-1.24.0.tar.gz", hash = "sha256:c4ab7c9711fe6b235e86487ca74c1b092a6dd59a3cb45b63241ea0a148501853"},
 ]
 
 [[package]]
@@ -2322,18 +2577,34 @@ files = [
 
 [[package]]
 name = "ome-types"
-version = "0.5.1.post1"
+version = "0.5.3"
 requires_python = ">=3.8"
 summary = "Python dataclasses for the OME data model"
 groups = ["default"]
 dependencies = [
+    "pydantic!=2.0,!=2.1,!=2.2,!=2.3,>=1.10.16",
     "pydantic-compat>=0.1.0",
-    "pydantic>=1.9.0",
     "xsdata<24.4,>=23.6",
 ]
 files = [
-    {file = "ome_types-0.5.1.post1-py3-none-any.whl", hash = "sha256:49fc57a81cf179b354e2a62e0d15936522e9f35afbe536fdad92139d8285b8ef"},
-    {file = "ome_types-0.5.1.post1.tar.gz", hash = "sha256:cadda5e36ad4d33dad2034fd43f32113a736fe47c67fd9e06bbb8d3858d1dc58"},
+    {file = "ome_types-0.5.3-py3-none-any.whl", hash = "sha256:081d8e42bdacbbaf3de65dff3f4d73f809822c8ac6b422fd46c34fdd28a76ea8"},
+    {file = "ome_types-0.5.3.tar.gz", hash = "sha256:f19a7e6021f798117d342a52629ce4137ab9a9bc45b7707abd7f26191a3899be"},
+]
+
+[[package]]
+name = "ome-types"
+version = "0.5.3"
+extras = ["lxml"]
+requires_python = ">=3.8"
+summary = "Python dataclasses for the OME data model"
+groups = ["default"]
+dependencies = [
+    "lxml>=4.8.0",
+    "ome-types==0.5.3",
+]
+files = [
+    {file = "ome_types-0.5.3-py3-none-any.whl", hash = "sha256:081d8e42bdacbbaf3de65dff3f4d73f809822c8ac6b422fd46c34fdd28a76ea8"},
+    {file = "ome_types-0.5.3.tar.gz", hash = "sha256:f19a7e6021f798117d342a52629ce4137ab9a9bc45b7707abd7f26191a3899be"},
 ]
 
 [[package]]
@@ -2374,6 +2645,17 @@ dependencies = [
 files = [
     {file = "omegaconf-2.3.0-py3-none-any.whl", hash = "sha256:7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b"},
     {file = "omegaconf-2.3.0.tar.gz", hash = "sha256:d5d4b6d29955cc50ad50c46dc269bcd92c6e00f5f90d23ab5fee7bfca4ba4cc7"},
+]
+
+[[package]]
+name = "online-stats"
+version = "2023.6"
+requires_python = ">=3.6"
+summary = "Online algorithm for mean, variance, and covariance."
+groups = ["default"]
+files = [
+    {file = "online_stats-2023.6-py3-none-any.whl", hash = "sha256:5cf15b049fd6d1c2c93dd7ec31501c06922d93f7b16914a0c61ff6cf9068593a"},
+    {file = "online_stats-2023.6.tar.gz", hash = "sha256:fe824878afc4f20a05895142e1c3e5169b0962f607b9a7891a3747077cae46fe"},
 ]
 
 [[package]]
@@ -2485,15 +2767,6 @@ files = [
 ]
 
 [[package]]
-name = "ostat"
-version = "0.2"
-summary = "efficient, accurate, and stable calculation of online statistical quantities."
-groups = ["default"]
-files = [
-    {file = "ostat-0.2.tar.gz", hash = "sha256:92ba21760d855c8e1eb3c7b3eb81f9e4d46d24781d6e7fd52dce20bf8140f1fb"},
-]
-
-[[package]]
 name = "packaging"
 version = "24.1"
 requires_python = ">=3.8"
@@ -2506,25 +2779,27 @@ files = [
 
 [[package]]
 name = "pandas"
-version = "1.5.3"
-requires_python = ">=3.8"
+version = "2.2.3"
+requires_python = ">=3.9"
 summary = "Powerful data structures for data analysis, time series, and statistics"
 groups = ["default"]
 dependencies = [
-    "numpy>=1.20.3; python_version < \"3.10\"",
-    "numpy>=1.21.0; python_version >= \"3.10\"",
-    "numpy>=1.23.2; python_version >= \"3.11\"",
-    "python-dateutil>=2.8.1",
+    "numpy>=1.22.4; python_version < \"3.11\"",
+    "numpy>=1.23.2; python_version == \"3.11\"",
+    "numpy>=1.26.0; python_version >= \"3.12\"",
+    "python-dateutil>=2.8.2",
     "pytz>=2020.1",
+    "tzdata>=2022.7",
 ]
 files = [
-    {file = "pandas-1.5.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:3749077d86e3a2f0ed51367f30bf5b82e131cc0f14260c4d3e499186fccc4406"},
-    {file = "pandas-1.5.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:972d8a45395f2a2d26733eb8d0f629b2f90bebe8e8eddbb8829b180c09639572"},
-    {file = "pandas-1.5.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:50869a35cbb0f2e0cd5ec04b191e7b12ed688874bd05dd777c19b28cbea90996"},
-    {file = "pandas-1.5.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c3ac844a0fe00bfaeb2c9b51ab1424e5c8744f89860b138434a363b1f620f354"},
-    {file = "pandas-1.5.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7a0a56cef15fd1586726dace5616db75ebcfec9179a3a55e78f72c5639fa2a23"},
-    {file = "pandas-1.5.3-cp310-cp310-win_amd64.whl", hash = "sha256:478ff646ca42b20376e4ed3fa2e8d7341e8a63105586efe54fa2508ee087f328"},
-    {file = "pandas-1.5.3.tar.gz", hash = "sha256:74a3fd7e5a7ec052f183273dc7b0acd3a863edf7520f5d3a1765c04ffdb3b0b1"},
+    {file = "pandas-2.2.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:1948ddde24197a0f7add2bdc4ca83bf2b1ef84a1bc8ccffd95eda17fd836ecb5"},
+    {file = "pandas-2.2.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:381175499d3802cde0eabbaf6324cce0c4f5d52ca6f8c377c29ad442f50f6348"},
+    {file = "pandas-2.2.3-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d9c45366def9a3dd85a6454c0e7908f2b3b8e9c138f5dc38fed7ce720d8453ed"},
+    {file = "pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:86976a1c5b25ae3f8ccae3a5306e443569ee3c3faf444dfd0f41cda24667ad57"},
+    {file = "pandas-2.2.3-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:b8661b0238a69d7aafe156b7fa86c44b881387509653fdf857bebc5e4008ad42"},
+    {file = "pandas-2.2.3-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:37e0aced3e8f539eccf2e099f65cdb9c8aa85109b0be6e93e2baff94264bdc6f"},
+    {file = "pandas-2.2.3-cp310-cp310-win_amd64.whl", hash = "sha256:56534ce0746a58afaf7942ba4863e0ef81c9c50d3f0ae93e9497d6a41a057645"},
+    {file = "pandas-2.2.3.tar.gz", hash = "sha256:4f18ba62b61d7e192368b84517265a99b4d7ee8912f8708660fb4a366cc82667"},
 ]
 
 [[package]]
@@ -2612,6 +2887,31 @@ files = [
     {file = "pillow-10.4.0-pp310-pypy310_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:02a2be69f9c9b8c1e97cf2713e789d4e398c751ecfd9967c18d0ce304efbf885"},
     {file = "pillow-10.4.0-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:0755ffd4a0c6f267cccbae2e9903d95477ca2f77c4fcf3a3a09570001856c8a5"},
     {file = "pillow-10.4.0.tar.gz", hash = "sha256:166c1cd4d24309b30d61f79f4a9114b7b2313d7450912277855ff5dfd7cd4a06"},
+]
+
+[[package]]
+name = "platformdirs"
+version = "4.3.6"
+requires_python = ">=3.8"
+summary = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
+groups = ["default"]
+files = [
+    {file = "platformdirs-4.3.6-py3-none-any.whl", hash = "sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb"},
+    {file = "platformdirs-4.3.6.tar.gz", hash = "sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907"},
+]
+
+[[package]]
+name = "positional-encodings"
+version = "6.0.3"
+requires_python = ">=3.7"
+summary = "1D, 2D, and 3D Sinusodal Positional Encodings in PyTorch"
+groups = ["default"]
+dependencies = [
+    "numpy",
+]
+files = [
+    {file = "positional_encodings-6.0.3-py3-none-any.whl", hash = "sha256:714135704d54f42adc77585d54747e9d42580e03746ca90441e869ba7b3fc324"},
+    {file = "positional_encodings-6.0.3.tar.gz", hash = "sha256:c144ad52e78f09d16effcbfabdf3e84050b56a37e342248476e18bbffd747b24"},
 ]
 
 [[package]]
@@ -3053,6 +3353,20 @@ files = [
 ]
 
 [[package]]
+name = "rich-argparse"
+version = "1.6.0"
+requires_python = ">=3.8"
+summary = "Rich help formatters for argparse and optparse"
+groups = ["default"]
+dependencies = [
+    "rich>=11.0.0",
+]
+files = [
+    {file = "rich_argparse-1.6.0-py3-none-any.whl", hash = "sha256:fbe70a1d821b3f2fa8958cddf0cae131870a6e9faa04ab52b409cb1eda809bd7"},
+    {file = "rich_argparse-1.6.0.tar.gz", hash = "sha256:092083c30da186f25bcdff8b1d47fdfb571288510fb051e0488a72cc3128de13"},
+]
+
+[[package]]
 name = "rsa"
 version = "4.9"
 requires_python = ">=3.6,<4"
@@ -3140,37 +3454,27 @@ files = [
 
 [[package]]
 name = "scikit-image"
-version = "0.24.0"
+version = "0.22.0"
 requires_python = ">=3.9"
 summary = "Image processing in Python"
 groups = ["default"]
 dependencies = [
-    "imageio>=2.33",
-    "lazy-loader>=0.4",
+    "imageio>=2.27",
+    "lazy-loader>=0.3",
     "networkx>=2.8",
-    "numpy>=1.23",
+    "numpy>=1.22",
     "packaging>=21",
-    "pillow>=9.1",
-    "scipy>=1.9",
+    "pillow>=9.0.1",
+    "scipy>=1.8",
     "tifffile>=2022.8.12",
 ]
 files = [
-    {file = "scikit_image-0.24.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:cb3bc0264b6ab30b43c4179ee6156bc18b4861e78bb329dd8d16537b7bbf827a"},
-    {file = "scikit_image-0.24.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:9c7a52e20cdd760738da38564ba1fed7942b623c0317489af1a598a8dedf088b"},
-    {file = "scikit_image-0.24.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:93f46e6ce42e5409f4d09ce1b0c7f80dd7e4373bcec635b6348b63e3c886eac8"},
-    {file = "scikit_image-0.24.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:39ee0af13435c57351a3397eb379e72164ff85161923eec0c38849fecf1b4764"},
-    {file = "scikit_image-0.24.0-cp310-cp310-win_amd64.whl", hash = "sha256:7ac7913b028b8aa780ffae85922894a69e33d1c0bf270ea1774f382fe8bf95e7"},
-    {file = "scikit_image-0.24.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:272909e02a59cea3ed4aa03739bb88df2625daa809f633f40b5053cf09241831"},
-    {file = "scikit_image-0.24.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:190ebde80b4470fe8838764b9b15f232a964f1a20391663e31008d76f0c696f7"},
-    {file = "scikit_image-0.24.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:59c98cc695005faf2b79904e4663796c977af22586ddf1b12d6af2fa22842dc2"},
-    {file = "scikit_image-0.24.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fa27b3a0dbad807b966b8db2d78da734cb812ca4787f7fbb143764800ce2fa9c"},
-    {file = "scikit_image-0.24.0-cp311-cp311-win_amd64.whl", hash = "sha256:dacf591ac0c272a111181afad4b788a27fe70d213cfddd631d151cbc34f8ca2c"},
-    {file = "scikit_image-0.24.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:6fccceb54c9574590abcddc8caf6cefa57c13b5b8b4260ab3ff88ad8f3c252b3"},
-    {file = "scikit_image-0.24.0-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:ccc01e4760d655aab7601c1ba7aa4ddd8b46f494ac46ec9c268df6f33ccddf4c"},
-    {file = "scikit_image-0.24.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:18836a18d3a7b6aca5376a2d805f0045826bc6c9fc85331659c33b4813e0b563"},
-    {file = "scikit_image-0.24.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8579bda9c3f78cb3b3ed8b9425213c53a25fa7e994b7ac01f2440b395babf660"},
-    {file = "scikit_image-0.24.0-cp312-cp312-win_amd64.whl", hash = "sha256:82ab903afa60b2da1da2e6f0c8c65e7c8868c60a869464c41971da929b3e82bc"},
-    {file = "scikit_image-0.24.0.tar.gz", hash = "sha256:5d16efe95da8edbeb363e0c4157b99becbd650a60b77f6e3af5768b66cf007ab"},
+    {file = "scikit_image-0.22.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:74ec5c1d4693506842cc7c9487c89d8fc32aed064e9363def7af08b8f8cbb31d"},
+    {file = "scikit_image-0.22.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:a05ae4fe03d802587ed8974e900b943275548cde6a6807b785039d63e9a7a5ff"},
+    {file = "scikit_image-0.22.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6a92dca3d95b1301442af055e196a54b5a5128c6768b79fc0a4098f1d662dee6"},
+    {file = "scikit_image-0.22.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3663d063d8bf2fb9bdfb0ca967b9ee3b6593139c860c7abc2d2351a8a8863938"},
+    {file = "scikit_image-0.22.0-cp310-cp310-win_amd64.whl", hash = "sha256:ebdbdc901bae14dab637f8d5c99f6d5cc7aaf4a3b6f4003194e003e9f688a6fc"},
+    {file = "scikit_image-0.22.0.tar.gz", hash = "sha256:018d734df1d2da2719087d15f679d19285fce97cd37695103deadfaef2873236"},
 ]
 
 [[package]]
@@ -3229,6 +3533,17 @@ files = [
     {file = "scipy-1.14.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:65df4da3c12a2bb9ad52b86b4dcf46813e869afb006e58be0f516bc370165159"},
     {file = "scipy-1.14.0-cp312-cp312-win_amd64.whl", hash = "sha256:4c4161597c75043f7154238ef419c29a64ac4a7c889d588ea77690ac4d0d9b20"},
     {file = "scipy-1.14.0.tar.gz", hash = "sha256:b5923f48cb840380f9854339176ef21763118a7300a88203ccd0bdd26e58527b"},
+]
+
+[[package]]
+name = "semver"
+version = "3.0.2"
+requires_python = ">=3.7"
+summary = "Python helper for Semantic Versioning (https://semver.org)"
+groups = ["default"]
+files = [
+    {file = "semver-3.0.2-py3-none-any.whl", hash = "sha256:b1ea4686fe70b981f85359eda33199d60c53964284e0cfb4977d243e37cf4bf4"},
+    {file = "semver-3.0.2.tar.gz", hash = "sha256:6253adb39c70f6e51afed2fa7152bcd414c411286088fb4b9effb133885ab4cc"},
 ]
 
 [[package]]
@@ -3424,16 +3739,16 @@ files = [
 
 [[package]]
 name = "tifffile"
-version = "2023.2.28"
-requires_python = ">=3.8"
+version = "2024.12.12"
+requires_python = ">=3.10"
 summary = "Read and write TIFF files"
 groups = ["default"]
 dependencies = [
     "numpy",
 ]
 files = [
-    {file = "tifffile-2023.2.28-py3-none-any.whl", hash = "sha256:8357cd8ccbdd4378ad4d6b84ffe3ab15b1d96630b1719f576d4de386f45546f1"},
-    {file = "tifffile-2023.2.28.tar.gz", hash = "sha256:2d2baba8dea6609f553fe61853db9a61f715d60ba3bce6a20b5a1ab72407dfed"},
+    {file = "tifffile-2024.12.12-py3-none-any.whl", hash = "sha256:6ff0f196a46a75c8c0661c70995e06ea4d08a81fe343193e69f1673f4807d508"},
+    {file = "tifffile-2024.12.12.tar.gz", hash = "sha256:c38e929bf74c04b6c8708d87f16b32c85c6d7c2514b99559ea3db8003ba4edda"},
 ]
 
 [[package]]
@@ -3619,6 +3934,17 @@ files = [
 ]
 
 [[package]]
+name = "tzdata"
+version = "2024.2"
+requires_python = ">=2"
+summary = "Provider of IANA time zone data"
+groups = ["default"]
+files = [
+    {file = "tzdata-2024.2-py2.py3-none-any.whl", hash = "sha256:a48093786cdcde33cad18c2555e8532f34422074448fbc874186f0abd79565cd"},
+    {file = "tzdata-2024.2.tar.gz", hash = "sha256:7d85cc416e9382e69095b7bdf4afd9e3880418a2413feec7069d533d6b4e31cc"},
+]
+
+[[package]]
 name = "universal-pathlib"
 version = "0.2.3"
 requires_python = ">=3.8"
@@ -3669,6 +3995,26 @@ marker = "platform_system == \"Windows\""
 files = [
     {file = "waitress-3.0.0-py3-none-any.whl", hash = "sha256:2a06f242f4ba0cc563444ca3d1998959447477363a2d7e9b8b4d75d35cfd1669"},
     {file = "waitress-3.0.0.tar.gz", hash = "sha256:005da479b04134cdd9dd602d1ee7c49d79de0537610d653674cc6cbde222b8a1"},
+]
+
+[[package]]
+name = "wasmtime"
+version = "28.0.0"
+requires_python = ">=3.9"
+summary = "A WebAssembly runtime powered by Wasmtime"
+groups = ["default"]
+marker = "sys_platform != \"emscripten\""
+dependencies = [
+    "importlib-resources>=5.10",
+]
+files = [
+    {file = "wasmtime-28.0.0-py3-none-any.whl", hash = "sha256:34da39dac8bf80a0e150920a0cd36a33a8397796250b72ccf21560e0ae3f0953"},
+    {file = "wasmtime-28.0.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:6309664eac06b562e80f35f875228e7359e7361f10da5cb81da0545c5c8f9b00"},
+    {file = "wasmtime-28.0.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:85959652ba04d07b0b5d33d41c3146d556f38fc9153ea696d2eee2d22af54739"},
+    {file = "wasmtime-28.0.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:e2656429c13f408f8cb42b60dc49b96103525ca5e746e948c2cbd6052a86b047"},
+    {file = "wasmtime-28.0.0-py3-none-manylinux2014_aarch64.whl", hash = "sha256:99f4b16ab33cd3877fa00ca80ecd7aebf44bbb3ac8101b064fe46fdfe09e737b"},
+    {file = "wasmtime-28.0.0-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:34f91f27d2e4147f05a334b22fb2de74bbeaaf81653cf7d424cd26983a7c292e"},
+    {file = "wasmtime-28.0.0-py3-none-win_amd64.whl", hash = "sha256:74996ca26e5726615dd8d5bd91b855d16373033687e8fe6bc60d5be222da33eb"},
 ]
 
 [[package]]
