@@ -1,0 +1,262 @@
+_target_: cyto_dl.datamodules.dataframe.DataframeDatamodule
+
+path:
+cache_dir:
+
+num_workers: 4
+batch_size: 1
+pin_memory: True
+split_column:
+columns:
+  - ${source_col}
+  - ${target_col1}
+  - ${target_col2}
+  - ${merge_mask_col}
+  - ${exclude_mask_col}
+  - ${base_image_col}
+
+transforms:
+  train:
+    _target_: monai.transforms.Compose
+    transforms:
+      # remove nan keys
+      - _target_: cyto_dl.datamodules.dataframe.utils.RemoveNaNKeysd
+      # load
+      - _target_: monai.transforms.LoadImaged
+        keys: ${source_col}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            C: ${input_channel}
+      - _target_: monai.transforms.LoadImaged
+        keys: ${target_col1}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            # [TRAIN] Exposing C as a configurable param for multi-channel segs
+            C: ${target_col1_channel}
+      - _target_: monai.transforms.LoadImaged
+        keys: ${target_col2}
+        allow_missing_keys: True
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            # [TRAIN] Exposing C as a configurable param for multi-channel segs
+            C: ${target_col2_channel}
+      - _target_: monai.transforms.ThresholdIntensityd
+        allow_missing_keys: True
+        keys:
+          - ${target_col1}
+          - ${target_col2}
+        threshold: 0.1
+        above: False
+        cval: 1
+      # load merging mask - assumed not to exist by default
+      - _target_: cyto_dl.image.io.PolygonLoaderd
+        keys:
+          - ${merge_mask_col}
+        shape_reference_key: ${target_col1}
+        missing_key_mode: "ignore"
+      # load excluding mask - assumed to be all ones by default
+      - _target_: cyto_dl.image.io.PolygonLoaderd
+        keys:
+          - ${exclude_mask_col}
+        shape_reference_key: ${target_col1}
+        missing_key_mode: "create"
+      # normalize
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: ${source_col}
+        channel_wise: True
+      # merge masks
+      - _target_: cyto_dl.image.transforms.merge.Merged
+        mask_key: ${merge_mask_col}
+        image_keys:
+          - ${target_col1}
+          - ${target_col2}
+        base_image_key: ${base_image_col}
+        output_name: seg
+
+      - _target_: monai.transforms.ToTensord
+        keys:
+          - ${source_col}
+          - seg
+          - ${exclude_mask_col}
+        dtype: float16
+
+      #crop
+      - _target_: cyto_dl.image.transforms.RandomMultiScaleCropd
+        keys:
+          - ${source_col}
+          - seg
+          - ${exclude_mask_col}
+        patch_shape: ${data._aux.patch_shape}
+        patch_per_image: ${data._aux.patch_per_image}
+        scales_dict: ${kv_to_dict:${data._aux._scales_dict}}
+
+  test:
+    _target_: monai.transforms.Compose
+    transforms:
+      # remove nan keys
+      - _target_: cyto_dl.datamodules.dataframe.utils.RemoveNaNKeysd
+      # load
+      - _target_: monai.transforms.LoadImaged
+        keys: ${source_col}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            C: ${input_channel}
+      - _target_: monai.transforms.LoadImaged
+        keys: ${target_col1}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            # [TEST] Exposing C as a configurable param for multi-channel segs
+            C: ${target_col1_channel}
+      - _target_: monai.transforms.LoadImaged
+        keys: ${target_col2}
+        allow_missing_keys: True
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            # [TEST] Exposing C as a configurable param for multi-channel segs
+            C: ${target_col2_channel}
+      # load merging mask - assumed not to exist by default
+      - _target_: cyto_dl.image.io.PolygonLoaderd
+        keys:
+          - ${merge_mask_col}
+        shape_reference_key: ${target_col1}
+        missing_key_mode: "ignore"
+      # load excluding mask - assumed to be all ones by default
+      - _target_: cyto_dl.image.io.PolygonLoaderd
+        keys:
+          - ${exclude_mask_col}
+        shape_reference_key: ${target_col1}
+        missing_key_mode: "create"
+      # normalize
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: ${source_col}
+        channel_wise: True
+      # merge masks
+      - _target_: cyto_dl.image.transforms.merge.Merged
+        mask_key: ${merge_mask_col}
+        image_keys:
+          - ${target_col1}
+          - ${target_col2}
+        base_image_key: ${base_image_col}
+        output_name: seg
+
+      - _target_: monai.transforms.ToTensord
+        keys:
+          - ${source_col}
+          - seg
+          - ${exclude_mask_col}
+        dtype: float16
+
+  predict:
+    _target_: monai.transforms.Compose
+    transforms:
+      - _target_: cyto_dl.datamodules.dataframe.utils.RemoveNaNKeysd
+      # load
+      - _target_: monai.transforms.LoadImaged
+        keys: ${source_col}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            C: ${input_channel}
+      # normalize
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: ${source_col}
+        channel_wise: True
+      - _target_: monai.transforms.ToTensord
+        keys:
+          - ${source_col}
+
+  valid:
+    _target_: monai.transforms.Compose
+    transforms:
+      # remove nan keys
+      - _target_: cyto_dl.datamodules.dataframe.utils.RemoveNaNKeysd
+      # load
+      - _target_: monai.transforms.LoadImaged
+        keys: ${source_col}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            C: ${input_channel}
+      - _target_: monai.transforms.LoadImaged
+        keys: ${target_col1}
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            # [VAL] Exposing C as a configurable param for multi-channel segs
+            C: ${target_col1_channel}
+      - _target_: monai.transforms.LoadImaged
+        keys: ${target_col2}
+        allow_missing_keys: True
+        reader:
+          - _target_: cyto_dl.image.io.MonaiBioReader
+            dimension_order_out: ${eval:'"CZYX" if ${spatial_dims}==3 else "CYX"'}
+            # [VAL] Exposing C as a configurable param for multi-channel segs
+            C: ${target_col2_channel}
+
+      - _target_: monai.transforms.ThresholdIntensityd
+        allow_missing_keys: True
+        keys:
+          - ${target_col1}
+          - ${target_col2}
+        threshold: 0.1
+        above: False
+        cval: 1
+      # load merging mask - assumed not to exist by default
+      - _target_: cyto_dl.image.io.PolygonLoaderd
+        keys:
+          - ${merge_mask_col}
+        shape_reference_key: ${target_col1}
+        missing_key_mode: "ignore"
+      # load excluding mask - assumed to be all ones by default
+      - _target_: cyto_dl.image.io.PolygonLoaderd
+        keys:
+          - ${exclude_mask_col}
+        shape_reference_key: ${target_col1}
+        missing_key_mode: "create"
+
+      # normalize
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: ${source_col}
+
+        channel_wise: True
+      # merge masks
+      - _target_: cyto_dl.image.transforms.merge.Merged
+        mask_key: ${merge_mask_col}
+        image_keys:
+          - ${target_col1}
+          - ${target_col2}
+        base_image_key: ${base_image_col}
+        output_name: seg
+
+      - _target_: monai.transforms.ToTensord
+        keys:
+          - ${source_col}
+          - seg
+          - ${exclude_mask_col}
+        dtype: float16
+
+      # #crop
+      - _target_: cyto_dl.image.transforms.RandomMultiScaleCropd
+        keys:
+          - ${source_col}
+          - seg
+          - ${exclude_mask_col}
+        patch_shape: ${data._aux.patch_shape}
+        patch_per_image: ${data._aux.patch_per_image}
+        scales_dict: ${kv_to_dict:${data._aux._scales_dict}}
+
+_aux:
+  patch_per_image: 1
+  _scales_dict:
+    - - seg
+      - [1]
+    - - ${source_col}
+      - [1]
+    - - ${exclude_mask_col}
+      - [1]
