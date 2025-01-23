@@ -3,33 +3,29 @@
 ## Installation
 1. Clone this git repository.  
    `git clone https://github.com/AllenCell/EMT_image_analysis.git`
-2. Go inside the directory and switch to sm_colony_mask_czi_multi branch.  
+2. Go inside the directory and switch to sm_zo1_mask_pred_test_v0 branch.  
    `cd EMT_image_analysis`  
-   `git checkout origin/sm_colony_mask_czi_multi`
+   `git checkout origin/sm_zo1_mask_pred_test_v0`
 3. Install Python 3.10, either from [python.org](https://www.python.org/downloads/), your operating system package manager, or [pyenv](https://github.com/pyenv/pyenv-installer).
 Check that it is installed correctly by running `python --version` in the terminal.
 Then, use the following steps to create a new virtual environment and install the dependencies.
    ```bash
-   cd Colony_mask_training_inference
+   cd ZO1_mask_training_inference
    python -m venv .venv
    source .venv/bin/activate
    pip install .
    ```
 4. Alternatively use Conda package manager to create a virtual environment with python 3.10
    ```
-   conda create -n emt-acm-env python=3.10
-   conda activate emt-acm-env
-   cd Colony_mask_training_inference
+   conda create -n emt-zo1-env python=3.10
+   conda activate emt-zo1-env
+   cd ZO1_mask_training_inference
    pip install .
    ```
 
 
 
-## Run all cells mask model trianing [Under Development - ZARR support not yet implemented]
-Users are welcome to retrain the models by accessing all the images provided in https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/
-
-To re-run the whole training run --> `CYTODL_CONFIG_PATH=$PWD/configs python -m cyto_dl.train experiment=im2im/train.yaml`
-
+## Run ZO1 mask model trianing [Under Development]
 This part is not yet fully supported as CytoDL training using OME ZARR files is still under development. For retraining, users can use tiff files instead.
 
 
