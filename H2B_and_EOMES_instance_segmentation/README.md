@@ -58,19 +58,19 @@ Ensure you have Python 3.12 installed. Install required dependencies by running:
 
 BFS segmentation workflow app install instructions:
 
-1.conda create --name bfs python=3.12
+1. conda create --name bfs python=3.12
 
-2.conda activate bfs
+2. conda activate bfs
 
-3.python -m pip install cellpose
+3. python -m pip install cellpose
 
-4.pip uninstall torch #removes cpu version of torch which is installed by default
+4. pip uninstall torch #removes cpu version of torch which is installed by default
 
-5.pip install torch --index-url https://download.pytorch.org/whl/cu126
+5. pip install torch --index-url https://download.pytorch.org/whl/cu126
 
-6.pip install "cellpose[gui]"
+6. pip install "cellpose[gui]"
 
-7.run "cellpose --Zstack". You should see the following output:
+7. run "cellpose --Zstack". You should see the following output:
 
 (bfs) C:\Users\derek>cellpose --Zstack
 
@@ -82,7 +82,7 @@ python version:         3.12.9
 torch version:          2.6.0+cu126
 2025-02-25 09:19:25,604 [INFO] ** TORCH CUDA version installed and working. **
 
-8.pip install streamlit pandas numpy cupy-cuda12x scikit-image dask tqdm bioio==1.2.0 bioio-ome-zarr bioio-tifffile bioio-czi napari[all] matplotlib==3.10.0 tifffile==2025.1.10 PyOpenGL_accelerate
+8. pip install streamlit pandas numpy cupy-cuda12x scikit-image dask tqdm bioio==1.2.0 bioio-ome-zarr bioio-tifffile bioio-czi napari[all] matplotlib==3.10.0 tifffile==2025.1.10 PyOpenGL_accelerate
 
 9. cd to the directory path containing the python script.
 
@@ -97,6 +97,7 @@ Start the processing pipeline http streamlit server app the with:
 ```
 streamlit run BFS_v1.py --server.fileWatcherType none
 ```
+![image](https://github.com/user-attachments/assets/2563c9df-345d-4c79-bc09-2185f4083849)
 
 Then use the GUI to:
 
