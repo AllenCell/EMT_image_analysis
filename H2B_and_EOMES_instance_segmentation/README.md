@@ -102,6 +102,7 @@ streamlit run BFS_v1.py --server.fileWatcherType none
 
 You can use the GUI to:
 
+- The Parameter Source option at top allows for importing of processing settings so the same pipeline workflow settings can be replicated with different processing batches. 
 - Set the input/output paths (or upload a CSV of S3 paths created with AICS BFF).
 - Choose the processing mode.
 - Configure denoising (select channels, choose between dynamic rescaling or constant denoising, and decide whether to save raw images).
