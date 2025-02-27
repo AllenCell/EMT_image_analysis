@@ -53,20 +53,27 @@ The pipeline can accept a CSV file containing a list of S3 paths for raw images.
 ## Installation
 
 Ensure you have Python 3.12 installed. Install required dependencies by running:
-*Note:* CUDA GPU REQUIRED, make sure the proper CUDA drivers are installed.
+#*Note:* CUDA GPU REQUIRED, make sure the proper CUDA drivers are installed.
+# pick GPU version of torch which matches you CUDA version (https://pytorch.org/ 11.8, 12.4, or 12.6)
 
 BFS segmentation workflow app install instructions:
 
 1.conda create --name bfs python=3.12
+
 2.conda activate bfs
+
 3.python -m pip install cellpose
+
 4.pip uninstall torch #removes cpu version of torch which is installed by default
-5.pip install torch --index-url https://download.pytorch.org/whl/cu126 #installs the gpu version of torch pick GPU version of torch which matches you CUDA version (https://pytorch.org/ 11.8, 12.4, or 12.6)
-image.png
+
+5.pip install torch --index-url https://download.pytorch.org/whl/cu126
+
 6.pip install "cellpose[gui]"
+
 7.run "cellpose --Zstack". You should see the following output:
 
 (bfs) C:\Users\derek>cellpose --Zstack
+
 2025-02-25 09:19:24,152 [INFO] WRITING LOG OUTPUT TO C:\Users\derek\.cellpose\run.log
 2025-02-25 09:19:24,153 [INFO]
 cellpose version:       3.1.1.1
@@ -79,7 +86,9 @@ torch version:          2.6.0+cu126
 
 9. cd to the directory path containing the python script.
 
+```
 cd C:\path\to\scripts\BFS_segmentation_workflow
+```
 
 ## Usage
 
@@ -95,7 +104,7 @@ Then use the GUI to:
 - Choose the processing mode.
 - Configure denoising (select channels, choose between dynamic rescaling or constant denoising, and decide whether to save raw images).
 - Set segmentation parameters (select segmentation type and specify pretrained model paths for nuclei and/or cell segmentation).
-- Optionally configure clipping parameters.
+- Configure clipping parameters.
 - Launch processing and view results in Napari using the provided viewer launcher.
 
 ## Processing Workflow Summary
