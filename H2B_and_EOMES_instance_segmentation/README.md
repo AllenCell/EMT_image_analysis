@@ -97,7 +97,6 @@ Start the processing pipeline http streamlit server app the with:
 ```
 streamlit run BFS_v1.py --server.fileWatcherType none
 ```
-![image](https://github.com/user-attachments/assets/2563c9df-345d-4c79-bc09-2185f4083849)
 
 Then use the GUI to:
 
