@@ -105,7 +105,7 @@ You can use the GUI to:
 - Set the input/output paths (or upload a CSV of S3 paths created with AICS BFF).
 - Choose the processing mode.
 - Configure denoising (select channels, choose between dynamic rescaling or constant denoising, and decide whether to save raw images).
-- Set segmentation parameters (select segmentation type and specify pretrained model paths for nuclei and/or cell segmentation).
+- Set segmentation parameters (select segmentation type and specify pretrained model paths for nuclei and/or cell segmentation). Use the H2B trained model "cellpose_1733942372.5497868" file from the repo for the H2B or Eomes nuclei raw data s3 paths from BFF appplication instead of cyto3 default model.
 - Configure clipping parameters.
 - Launch processing and view results in Napari using the provided viewer launcher.
 
