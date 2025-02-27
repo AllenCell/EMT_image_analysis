@@ -53,8 +53,7 @@ The pipeline can accept a CSV file containing a list of S3 paths for raw images.
 ## Installation
 
 Ensure you have Python 3.12 installed. Install required dependencies by running:
-#*Note:* CUDA GPU REQUIRED, make sure the proper CUDA drivers are installed.
-# pick GPU version of torch which matches you CUDA version (https://pytorch.org/ 11.8, 12.4, or 12.6)
+#*Note:* CUDA GPU REQUIRED, make sure the proper CUDA drivers are installed.  Pick GPU version of torch which matches you CUDA version (https://pytorch.org/ 11.8, 12.4, or 12.6)
 
 BFS segmentation workflow app install instructions:
 
