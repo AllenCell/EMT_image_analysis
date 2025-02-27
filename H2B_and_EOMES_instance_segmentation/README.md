@@ -97,8 +97,10 @@ Start the processing pipeline http streamlit server app the with:
 ```
 streamlit run BFS_v1.py --server.fileWatcherType none
 ```
+![image](https://github.com/user-attachments/assets/e1e81325-03dd-4960-9f97-6f154b680332)
 
-Then use the GUI to:
+
+You can use the GUI to:
 
 - Set the input/output paths (or upload a CSV of S3 paths created with AICS BFF).
 - Choose the processing mode.
