@@ -13,7 +13,7 @@ The processing pipeline is organized into several steps:
    - **Denoising Parameters:**  
      You specify which channel(s) to process via the “Denoising Channels” input (for example, `"1"` for nuclei segmentation or `"0,1"` for (v2 feature) label-free cell segmentation). if enabled, saves the raw offset‑corrected images in a dedicated “Raw” subfolder.  #v2 feature: When two channels are provided, the pipeline performs two separate denoising passes (saving outputs in separate subfolders)
    - **Segmentation Parameters:**  
-     Choose the segmentation type (Nuclei, Cell, or Nuclei + Cell). Different pretrained model paths can be provided for nuclei and cell segmentation. Segmentation is then applied (using multi‑threading) on the denoised images.
+     (v2 feature) Choose the segmentation type (Nuclei, Cell, or Nuclei + Cell). Different pretrained model paths can be provided for nuclei and cell segmentation. Segmentation is then applied (using multi‑threading) on the denoised images.
    - **Clipping Parameters:**  
      An adaptive clipping algorithm refines the segmentation masks by removing low‑intensity pixels on a per‑slice basis. Additional options allow you to fill small holes and apply size/intensity filtering. A summary CSV file with object properties is also generated.
 
