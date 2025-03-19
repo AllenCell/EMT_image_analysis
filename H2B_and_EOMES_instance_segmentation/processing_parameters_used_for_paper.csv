@@ -1,6 +1,6 @@
 Parameter,Value
-Input Path,s3://allencell/aics/emt_timelapse_dataset/data/3500006256_11_raw_converted.ome.zarr
-Output Path,C:\scripts\BFS_segmentation_workflow\s3path_constantdenoise_testrun1
+Input Path,s3://allencell/aics/emt_timelapse_dataset/data/3500006256_19_raw_converted.ome.zarr
+Output Path,c:\bfs_workflow_output
 Timepoint Range,1-2
 Max Workers (Denoising),4
 File Workers (Denoising),2
@@ -8,15 +8,15 @@ Channel,1
 Processing Mode,Denoising + Segmentation + Clipping
 Denoising Method,Constant Rescaling
 Segmentation Channels,"[0, 0]"
-Segmentation Diameter,40
+Segmentation Diameter,60
 Segmentation Flow Threshold,0.4
 Segmentation Stitch Threshold,0.5
 Segmentation CellProb Threshold,-2.0
 Segmentation 3D,False
 Segmentation Anisotropy,5.87
-Segmentation Min Size,15
-Segmentation Model Type,
-Segmentation Pretrained Model,C:\scripts\BFS_segmentation_workflow\models\cellpose_1733942372.5497868
+Segmentation Min Size,500
+Segmentation Model Type,cyto3
+Segmentation Pretrained Model,
 Normalization Parameters,"{'lowhigh': None, 'percentile': [1.0, 99.0], 'normalize': True, 'norm3D': True, 'sharpen_radius': 0, 'smooth_radius': 0, 'tile_norm_blocksize': 0, 'tile_norm_smooth3D': 1, 'invert': False}"
 Perform Anisotropic Deblur,False
 Anisotropic Deblur Model,aniso_cyto2
@@ -24,17 +24,17 @@ Deblur Diameter,30
 Save Upsampled,False
 Use Existing Denoised for Segmentation,True
 Use Existing Segmentation Masks for Clipping,True
-Clipping Raw Directory,C:\scripts\BFS_segmentation_workflow\s3path_constantdenoise_testrun1\Denoised
-Clipping Mask Directory,C:\scripts\BFS_segmentation_workflow\s3path_constantdenoise_testrun1\NucleiSegmentation
-Clipping Output Directory,C:\scripts\BFS_segmentation_workflow\s3path_constantdenoise_testrun1\ClippedMask
+Clipping Raw Directory,c:\bfs_workflow_output\Denoised
+Clipping Mask Directory,c:\bfs_workflow_output\NucleiSegmentation
+Clipping Output Directory,c:\bfs_workflow_output\ClippedMask
 Clipping XY Percentile,55.0
-Clipping Z Percentile,65.0
+Clipping Z Percentile,68.0
 Clipping Workers,2
 Clipping Relabel,False
-Clipping Fill Holes,False
+Clipping Fill Holes,True
 Clipping Pre-min Size,0
-Clipping Post-min Size,0
+Clipping Post-min Size,2750
 Clipping Pre-min Mean Intensity,0.0
-Clipping Post-min Integrated Intensity,0.0
+Clipping Post-min Integrated Intensity,25000000.0
 Clipping Min Hole Diameter,64.0
 Skip Existing Clipping Files,False
