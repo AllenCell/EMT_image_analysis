@@ -6,24 +6,33 @@ import numpy as np
 from bioio import BioImage
 from bioio.writers import OmeTiffWriter
 from pathlib import Path
+from multiprocessing import Pool, cpu_count
 
+def morphology_ops(seg_slice: np.ndarray):
+    seg_slice = skimage.morphology.remove_small_objects(seg_slice, min_size=25)
+    seg_slice = skimage.morphology.dilation(seg_slice, footprint=skimage.morphology.disk(4))
+    seg_slice = skimage.morphology.binary_closing(seg_slice, footprint=skimage.morphology.disk(4))
+    seg_slice = skimage.morphology.remove_small_holes(seg_slice, area_threshold=50000)
+    return seg_slice
 
 def background_subtracted_segmentation(pred, threshold=0.25):
     '''
     Processes the segmentation probability mask to keep only the largest connected component in the segmentation mask
     '''
-    thresh = 255*threshold
-    binary = pred> thresh
-    for slice in range(np.shape(binary)[0]):
-            binary[slice,:,:] = skimage.morphology.remove_small_objects(binary[slice,:,:], min_size=25)
-            binary[slice,:,:] = skimage.morphology.dilation(binary[slice,:,:], footprint=skimage.morphology.disk(4))
-            binary[slice,:,:] = skimage.morphology.binary_closing(binary[slice,:,:], footprint=skimage.morphology.disk(4))
-            binary[slice,:,:] = skimage.morphology.remove_small_holes(binary[slice,:,:], area_threshold=50000)
-    labeled_lumen = skimage.measure.label(binary)
+    pred_thresh = pred> threshold*255
+    
+    with Pool(cpu_count()) as p:
+        pred_thresh = np.stack(
+            p.map(morphology_ops, [pred_thresh[i,...] for i in range(pred_thresh.shape[0])]),
+            axis=0
+        )
+
+    pred_thresh = skimage.measure.label(pred_thresh)
     # only keep largest object
-    lumen_sizes = [np.sum(labeled_lumen==i) for i in np.unique(labeled_lumen)[1:]]
-    final_lumen = labeled_lumen == (np.argmax(lumen_sizes)+1)
-    tempelate_background = final_lumen*pred
+    lumen_sizes = [prop.area for prop in skimage.measure.regionprops(pred_thresh)]
+    tempelate_background = np.where(
+        pred_thresh == (np.argmax(lumen_sizes)+1), 
+        pred, 0)
 
     return tempelate_background
 
@@ -41,7 +50,7 @@ if __name__ == "__main__":
     output.mkdir(exist_ok=True, parents=True)
 
 
-    for fn in tqdm(seg_fns, total=seg_fns):
+    for fn in tqdm(seg_fns, total=len(seg_fns)):
         seg = BioImage(fn).data.squeeze()
         seg = background_subtracted_segmentation(seg)
 
