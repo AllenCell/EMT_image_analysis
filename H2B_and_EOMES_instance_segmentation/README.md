@@ -1,4 +1,4 @@
-# Biofile Segmentation (BFS) Workflow Application
+# Bio File Segmentation (BFS) Workflow Application
 
 This repository contains a multi‑threaded, Streamlit‑based workflow pipeline for denoising, segmentation, and clipping of microscopy images used in the paper "A human induced pluripotent stem (hiPS) cell model for the holistic study of epithelial to mesenchymal transitions (EMTs)". The current BFS_v1 workflow supports OME‑Zarr file formats. It features both dynamic intensity normalization/denoising or constant intensity normalization/denoising options, segmentation using the cyto3 generalist Cellpose model or optional included pretrained model for generating instance nuclei segmentations, and adaptive post‑processing relative intensity pixel clipping of cellpose segmentation mask outputs. Processed results can be interactively visualized in Napari with the provided viewer launcher button at the bottom of the app.  Annotation of the segmentation mask outputs are also supported in the Napari viewer.
 
