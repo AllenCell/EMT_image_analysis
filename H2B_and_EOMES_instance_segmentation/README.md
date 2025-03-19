@@ -86,8 +86,9 @@ torch version:          2.6.0+cu126
 
 8. Install python package dependencies
 
-'''pip install streamlit pandas numpy cupy-cuda12x scikit-image dask tqdm bioio==1.2.0 bioio-ome-zarr bioio-tifffile bioio-czi napari[all] matplotlib==3.10.0 tifffile==2025.1.10 PyOpenGL_accelerate
-'''
+```
+pip install streamlit pandas numpy cupy-cuda12x scikit-image dask tqdm bioio==1.2.0 bioio-ome-zarr bioio-tifffile bioio-czi napari[all] matplotlib==3.10.0 tifffile==2025.1.10 PyOpenGL_accelerate
+```
 
 9. cd to the directory path containing the python script.
 
