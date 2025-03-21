@@ -60,3 +60,12 @@ python postprocess_collagen_mask.py \
     -s /path/to/cytodl/output/directory/ \
     -o /directory/to/save/postprocessing/results/to/
 ```
+
+# Part 4 (Optional): Compiling Segmentations for Mesh Generation
+
+If you want to run the mesh generation workflow on newly generated scripts
+they will have to be compiled into single `tif` files per scene and an 
+accompanying `csv` manifest generated. To do that you can run the following 
+script. Within the specified output folder will be saved both the compiled
+segmentations as well as a csv which you can use as an input in the [mesh generation
+workflow](../CollagenIV_mesh_generation/README.md)
