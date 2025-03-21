@@ -24,12 +24,14 @@ spatial_dims: 3
 raw_im_channels: 1
 
 paths:
-  output_dir: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/Collagen_segmentation_segmentations/membrane_thickness_proof_of_concept
+  output_dir: # enter path to output directory
 
 checkpoint:
-  ckpt_path: /allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_6_early_model/2023-12-15_16-09-07/checkpoints/epoch_478.ckpt
+  ckpt_path: # local path to model weights
 
 data:
+  dataset:
+    csv_path: # enter path to csv file
   _aux:
     patch_shape: [8, 512, 512]
 
