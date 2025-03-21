@@ -69,3 +69,11 @@ accompanying `csv` manifest generated. To do that you can run the following
 script. Within the specified output folder will be saved both the compiled
 segmentations as well as a csv which you can use as an input in the [mesh generation
 workflow](../CollagenIV_mesh_generation/README.md)
+
+
+```bash
+python compile_for_mesh_generation.py \
+    --segmentation_manifest /path/to/csv/from/part/1.csv \
+    --segmentation_directory /path/to/folder/with/post-processed/segmentations \
+    --output_directory /path/to/save/data/
+```
