@@ -34,10 +34,15 @@ is being segmented.
 
 # Part 2: CytoDL basement membrane segmentation
 
-The data, model, and experiment config are found in the `cytoDL_configs` directory. The model weights that we are using for the segmentation model can be found here:
+The data, model, and experiment config are found in the `cytoDL_configs` directory. 
+The model weights that we are using for the segmentation model can be downloaded 
+through curl into the directory of your choice 
+
 
 ```bash
-# ToDo: provide instructions on getting model weights from quilt
+cd /directory/to/save/weights/
+
+curl -O https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/collagenIV_mask_seg_model_checkpoint.ckpt
 ```
 
 # Part 3: Basement membrane postprocessing
