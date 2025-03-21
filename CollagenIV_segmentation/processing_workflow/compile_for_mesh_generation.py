@@ -32,10 +32,10 @@ def compile(
     df_mesh = []
     for _, czi in tqdm(df_cyto.iterrows()):
         base_fn = Path(czi['path']).stem
-        movie_id = base_fn + f'_scene_{scene}_T_{start:04d}-{end:04d}'
         scene = czi['scene']
         start = int(czi['start'])
         end = int(czi['stop'])
+        movie_id = base_fn + f'_scene_{scene}_T_{start:04d}-{end:04d}'
         out_fn = output_dir / (movie_id + '_basement_membrane_segmentation.tif')
 
         scene_fns = [fn for fn in seg_dir.glob(f'{base_fn}*_scene_{scene}*.tif')]
