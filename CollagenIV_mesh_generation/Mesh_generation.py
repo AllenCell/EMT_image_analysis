@@ -1,5 +1,6 @@
 from bioio import BioImage
 import numpy as np
+import pandas as pd
 import pyvista as pv
 from skimage.transform import resize
 from skimage.exposure import rescale_intensity
@@ -42,7 +43,8 @@ def mesh_generation(
     # load the segmentation
     df = pd.read_csv(manifest_path)
     df = df[df['Movie Unique ID'] == movie_id]
-    segmentations = BioImage(df['CollagenIV Segmentation Probability File Download'].values[0])
+    segmentation_fn = df['CollagenIV Segmentation Probability File Download'].values[0]
+    segmentations = BioImage(segmentation_fn)
     
     # set the timepoints to process
     num_timepoints = int(df['Image Size T'].values[0])

@@ -28,7 +28,7 @@ is being segmented.
 | channel | Channel containing Collagen IV signal (default 2) |
 | scene | Scene name as found in the czi file using `BioImage(path).scenes` |
 | start | The timepoint from which segmentations will start. (default 0) |
-| end | The timepoint at which segmentations wills stop. (default length of scene) |
+| end | The timepoint at which segmentations wills stop. (default end of scene) |
 | step | The interval between timepoints segmented (default 1) |
 
 
