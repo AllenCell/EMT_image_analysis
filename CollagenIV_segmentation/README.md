@@ -42,7 +42,7 @@ downloaded through curl into the directory of your choice.
 ```bash
 cd /directory/to/save/weights/
 
-curl -O https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/collagenIV_mask_seg_model_checkpoint.ckpt
+curl -O https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/collagenIV_mask_seg_model_checkpoint.ckpt?versionId=cUFbWrMmZLSOOztuZwaUob5vLLUAZ6RU
 ```
 
 Make sure to change `ckpt_path` in `cytoDL_configs/experiment/segmentation_basement_membrane.yaml`
