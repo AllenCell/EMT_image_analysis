@@ -40,20 +40,21 @@ import numpy as np
 import fire
 import csv
 from pathlib import Path
-from tifffile import imread, imwrite
+from bioio import BioImage
+from bioio.writers import OmeTiffWriter
 from glob import glob
 from cellpose.denoise import DenoiseModel
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 
 def load_image(image_path):
-    return imread(image_path)
+    return BioImage(image_path).data.squeeze()
 
 def save_image(image, output_path, image_name):
     image = np.squeeze(image)
     metadata = {'axes': 'ZYX'}
     image_uint16 = ConvertFloatToUint16(image)
-    imwrite(str(output_path), image_uint16, photometric='minisblack', metadata=metadata)
+    OmeTiffWriter().save(image_uint16,output_path, dim_order='ZYX')
 
 def ConvertFloatToUint16(img):
     minimum_val = img.min()
