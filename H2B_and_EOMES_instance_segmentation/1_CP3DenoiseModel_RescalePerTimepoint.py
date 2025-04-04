@@ -37,12 +37,12 @@ python CP3DenoiseModel_Multithreaded_tqdm_GlobalPercentile.py --input_path="//al
 """
 import os
 import numpy as np
+import pandas as pd
 import fire
 import csv
 from pathlib import Path
 from bioio import BioImage
 from bioio.writers import OmeTiffWriter
-from glob import glob
 from cellpose.denoise import DenoiseModel
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
@@ -115,16 +115,13 @@ def write_scale_log(output_dir, scale_log):
         writer.writerow(["Image Name", "Rescale Factor", "Raw Min", "Raw Max", "Percentile 1", "Percentile 99"])
         writer.writerows(scale_log)
 
-def denoise_directory(input_dir, output_dir, model_params, eval_params, max_workers=4):
+def denoise_directory(input_manifest, output_dir, model_params, eval_params, max_workers=4):
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     scale_log = []
     
     z_axis = model_params.pop('z_axis', None)
     denoise_model = DenoiseModel(**model_params)
-    image_paths = glob(os.path.join(input_dir, '*.tiff'))  # Ensure correct file extension
-
-    if not image_paths:
-        print(f"No images found in {input_dir}")
+    image_paths = pd.read_csv(input_manifest)['file_path'].values
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         tasks = [executor.submit(process_image, image_path, output_dir, denoise_model, eval_params, z_axis, scale_log) for image_path in image_paths]
