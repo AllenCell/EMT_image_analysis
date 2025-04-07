@@ -74,14 +74,13 @@ Load the `H2B_EomesPrePostClippingIntegIntObjectFiltering.cppipe` pipeline into 
 - fire
 - tqdm
 - pathlib
-- glob
 - cupy
 - skimage
 - pandas
 
 Install the required dependencies using:
 ```
-pip install numpy tifffile cellpose==3.0.8 fire tqdm pathlib glob cupy scikit-image pandas
+pip install numpy tifffile cellpose==3.0.8 fire tqdm pathlib cupy scikit-image pandas
 ```
 
 For more info contact Derek Thirstrup (derekt@alleninstitute.org)

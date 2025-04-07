@@ -48,7 +48,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 
 def load_image(image_path):
-    return BioImage(image_path).data.squeeze()
+    return BioImage(image_path)
 
 def save_image(image, output_path, image_name):
     image = np.squeeze(image)
@@ -76,34 +76,38 @@ def RescaleInputImage(image_offset_corrected, raw_min, raw_max):
     
     return image_rescaled.astype(np.uint16), scale
 
-def process_image(image_path, output_dir, denoise_model, eval_params, z_axis=None, scale_log=None):
+def process_image(image_path, image_channel, image_scene, output_dir, denoise_model, eval_params, z_axis=None, scale_log=None):
     base_name = os.path.basename(image_path)
     image_name = ".".join(base_name.split('.')[:-1])
-    print(f"Processing {image_name}")
+    print(f"Processing {image_name} Scene {image_scene}")
     image = load_image(image_path)
+    image.set_scene(image_scene)
     
-    raw_min = image.min()
-    raw_max = image.max()
-    
-    camera_offset = 100
+    timepoints = image.shape[0]
+    for t in tqdm(range(timepoints),total=timepoints):
+        img_t = image.get_image_dask_data('ZYX', C=image_channel, T=t).compute()
+        raw_min = img_t.min()
+        raw_max = img_t.max()
+        
+        camera_offset = 100
 
-    image_offset_corrected = image.astype(np.float32) - camera_offset
-    image_offset_corrected[image_offset_corrected < 0] = 0
+        image_offset_corrected = img_t.astype(np.float32) - camera_offset
+        image_offset_corrected[image_offset_corrected < 0] = 0
 
-    image_rescaled, scale = RescaleInputImage(image_offset_corrected, raw_min, raw_max)
+        image_rescaled, scale = RescaleInputImage(image_offset_corrected, raw_min, raw_max)
 
-    percentile_1 = np.percentile(image_rescaled, 1)
-    percentile_99 = np.percentile(image_rescaled, 99)
+        percentile_1 = np.percentile(image_rescaled, 1)
+        percentile_99 = np.percentile(image_rescaled, 99)
 
-    local_eval_params = eval_params.copy()
-    local_eval_params['lowhigh'] = [percentile_1, percentile_99]
+        local_eval_params = eval_params.copy()
+        local_eval_params['lowhigh'] = [percentile_1, percentile_99]
 
-    denoised_image = denoise_model.eval(x=image_rescaled, channels=[0, 0], tile=False, z_axis=z_axis, normalize=local_eval_params)
+        denoised_image = denoise_model.eval(x=image_rescaled, channels=[0, 0], tile=False, z_axis=z_axis, normalize=local_eval_params)
 
-    denoised_filename = Path(output_dir) / f"{image_name}.tif"
-    save_image(denoised_image, denoised_filename, image_name)
+        denoised_filename = Path(output_dir) / f"{image_name}_{image_scene}_C{image_channel}_T{t:04d}.tif"
+        save_image(denoised_image, denoised_filename, image_name)
 
-    scale_log.append([image_name, scale, raw_min, raw_max, percentile_1, percentile_99])
+        scale_log.append([image_name, scale, raw_min, raw_max, percentile_1, percentile_99])
 
 def write_scale_log(output_dir, scale_log):
     rescale_scale_dir = Path(output_dir) / "RescaleScale"
@@ -121,10 +125,10 @@ def denoise_directory(input_manifest, output_dir, model_params, eval_params, max
     
     z_axis = model_params.pop('z_axis', None)
     denoise_model = DenoiseModel(**model_params)
-    image_paths = pd.read_csv(input_manifest)['file_path'].values
-
+    input_df = pd.read_csv(input_manifest)
+    
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        tasks = [executor.submit(process_image, image_path, output_dir, denoise_model, eval_params, z_axis, scale_log) for image_path in image_paths]
+        tasks = [executor.submit(process_image, image_path, image_channel, image_scene, output_dir, denoise_model, eval_params, z_axis, scale_log) for image_path, image_channel, image_scene in zip(input_df['file_path'].values, input_df['channel'].values, input_df['scene'].values)]
         for task in tqdm(as_completed(tasks), total=len(tasks)):
             _ = task.result()
 
