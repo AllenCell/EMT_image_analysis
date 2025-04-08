@@ -76,7 +76,7 @@ def RescaleInputImage(image_offset_corrected, raw_min, raw_max):
     
     return image_rescaled.astype(np.uint16), scale
 
-def process_image(image_path, image_channel, image_scene, output_dir, denoise_model, eval_params, z_axis=None, scale_log=None):
+def process_image(image_path, image_channel, image_scene, image_stop, output_dir, denoise_model, eval_params, z_axis=None, scale_log=None):
     base_name = os.path.basename(image_path)
     image_name = ".".join(base_name.split('.')[:-1])
     print(f"Processing {image_name} Scene {image_scene}")
@@ -84,6 +84,9 @@ def process_image(image_path, image_channel, image_scene, output_dir, denoise_mo
     image.set_scene(image_scene)
     
     timepoints = image.shape[0]
+    if image_stop > 0:
+        timepoints = min([timepoints, image_stop+1])
+    
     for t in tqdm(range(timepoints),total=timepoints):
         img_t = image.get_image_dask_data('ZYX', C=image_channel, T=t).compute()
         raw_min = img_t.min()
@@ -128,7 +131,25 @@ def denoise_directory(input_manifest, output_dir, model_params, eval_params, max
     input_df = pd.read_csv(input_manifest)
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        tasks = [executor.submit(process_image, image_path, image_channel, image_scene, output_dir, denoise_model, eval_params, z_axis, scale_log) for image_path, image_channel, image_scene in zip(input_df['file_path'].values, input_df['channel'].values, input_df['scene'].values)]
+        tasks = [
+            executor.submit(
+                process_image, 
+                image_path, 
+                image_channel, 
+                image_scene, 
+                image_stop,
+                output_dir, 
+                denoise_model, 
+                eval_params, 
+                z_axis, 
+                scale_log
+            ) for image_path, image_channel, image_scene, image_stop in zip(
+                input_df['file_path'].values, 
+                input_df['channel'].values, 
+                input_df['scene'].values,
+                input_df['stop'].values
+            )
+        ]
         for task in tqdm(as_completed(tasks), total=len(tasks)):
             _ = task.result()
 
