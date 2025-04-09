@@ -7,3 +7,4 @@ bioio-base==1.0.3
 bioio-ome-zarr==1.0.1
 vtk==9.3.0
 rtree==1.4.0
+tqdm==4.67.1
