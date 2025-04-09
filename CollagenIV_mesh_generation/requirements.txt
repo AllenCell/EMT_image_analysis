@@ -2,3 +2,5 @@ pyvista==0.43.3
 trimesh==4.1.7
 open3d==0.18.0
 pyacvd==0.2.10
+bioio==1.3.0
+bioio-ome-zarr==1.0.1

@@ -29,11 +29,11 @@ python -m venv meshgen-env
 ./meshgen-env/bin/activate
 
 cd EMT_image_analysis/Collagen_Mesh_Generation
-pip install -r requirments.py
+pip install -r requirments.txt
 
 # run script
 python Mesh_generation.py \
-    --segmentation_fn path/to/segmentation.ome.zarr     # segmentation file to process
+    --segmentation_zarr path/to/segmentation.ome.zarr     # segmentation file to process
     --output_directory path/to/output/folder            # where you want the meshes to be saved
     --start_timpoint 0                                  # [Optional] Which timepoint to start processing from (default: 0)
     --end_timepoint 90                                  # [Optional] Which timepoint to stop processing (default: 90)
