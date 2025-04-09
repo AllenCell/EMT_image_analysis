@@ -344,5 +344,5 @@ if __name__ == "__main__":
         args.segmentation_zarr,
         args.output_directory,
         args.start_timepoint,
-        args.end_time
+        args.end_timepoint
     )
