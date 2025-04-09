@@ -47,7 +47,8 @@ python ClipMaskBasedOnRelativeIntensityZSD20x_gpu.py --raw_dir="//allen/aics/mic
 import os
 import cupy as cp
 import numpy as np
-import tifffile as tiff
+from bioio import BioImage
+from bioio.writers import OmeTiffWriter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 from skimage.measure import label, regionprops_table
@@ -55,6 +56,8 @@ from skimage.segmentation import relabel_sequential
 import pandas as pd
 import signal
 import gc
+from pathlib import Path
+import traceback
 
 def handle_signal(signal, frame):
     """
@@ -188,7 +191,21 @@ def remove_small_disconnected_objects(mask_img, props):
         print(f"Error in remove_small_disconnected_objects: {e}")
         raise
 
-def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, pre_clipping_min_size, post_clipping_min_size, pre_clipping_min_mean_intensity, post_clipping_min_integrated_intensity, relabel, csv_data):
+def process_single_tif(
+        raw_path, 
+        mask_path, 
+        scene,
+        channel,
+        timepoint,
+        output_dir, 
+        scaling_factor, 
+        pre_clipping_min_size, 
+        post_clipping_min_size, 
+        pre_clipping_min_mean_intensity, 
+        post_clipping_min_integrated_intensity, 
+        relabel, 
+        csv_data
+    ):
     """
     Processes a single TIFF file, applying filters, clipping, and saving the results.
 
@@ -225,9 +242,11 @@ def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, pre_clip
     raw_img, mask_img, filtered_mask, modified_mask, post_filtered_mask = None, None, None, None, None
     try:
         print(f"Reading raw image from {raw_path}")
-        raw_img = cp.array(tiff.imread(raw_path))
+        raw_reader = BioImage(raw_path)
+        raw_reader.set_scene(scene)
+        raw_img = cp.array(raw_reader.get_image_data('ZYX',T=timepoint,C=channel))
         print(f"Reading mask image from {mask_path}")
-        mask_img = cp.array(tiff.imread(mask_path))
+        mask_img = cp.array(BioImage(mask_path).get_image_data('ZYX'))
 
         # Pre-Clipping Filter
         properties = ['label', 'area', 'mean_intensity']
@@ -288,7 +307,7 @@ def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, pre_clip
         
         # Save the output image immediately after relabeling
         print(f"Saving output for file {mask_filename} after relabeling and post-clipping filtering...")
-        tiff.imwrite(output_file_path, cp.asnumpy(post_filtered_mask), photometric='minisblack', compression='zlib')
+        OmeTiffWriter().save(cp.asnumpy(post_filtered_mask), output_file_path, 'ZYX')
         print(f"Completed and saved: {mask_filename}")
 
         for label, volume, integrated_intensity, mean_intensity in zip(
@@ -309,6 +328,7 @@ def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, pre_clip
 
     except Exception as e:
         print(f"Error processing file {mask_filename}: {e}")
+        traceback.print_exc()
         csv_data.append({
             "filename": mask_filename,
             "object_id": None,
@@ -333,7 +353,7 @@ def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, pre_clip
             del post_filtered_mask
         gc.collect()
 
-def process_directory(raw_dir, mask_dir, output_dir, scaling_factor=1.0, pre_clipping_min_size=100, post_clipping_min_size=100, pre_clipping_min_mean_intensity=1, post_clipping_min_integrated_intensity=100000, workers=8, relabel=False):
+def process_directory(raw_manifest, mask_dir, output_dir, scaling_factor=1.0, pre_clipping_min_size=100, post_clipping_min_size=100, pre_clipping_min_mean_intensity=1, post_clipping_min_integrated_intensity=100000, workers=4, relabel=False):
     """
     Processes all TIFF files in the specified directory, applying filters, clipping, and saving the results.
 
@@ -353,46 +373,76 @@ def process_directory(raw_dir, mask_dir, output_dir, scaling_factor=1.0, pre_cli
         None
     """
     # Ensure output_dir does not include arguments by splitting it at space and taking the first part
+    raw_df = pd.read_csv(raw_manifest, index_col=None)
     output_dir = output_dir.split()[0]
 
-    print(f"Starting processing directory with raw_dir: {raw_dir}, mask_dir: {mask_dir}, output_dir: {output_dir}")
-    try:
-        raw_files = [f for f in os.listdir(raw_dir) if f.endswith('.tif')]
-    except Exception as e:
-        print(f"Error listing files in raw_dir {raw_dir}: {e}")
-        return
+    # print(f"Starting processing directory with raw_dir: {raw_dir}, mask_dir: {mask_dir}, output_dir: {output_dir}")
+    # try:
+    #     raw_files = [f for f in os.listdir(raw_dir) if f.endswith('.tif')]
+    # except Exception as e:
+    #     print(f"Error listing files in raw_dir {raw_dir}: {e}")
+    #     return
 
-    mask_files = {}
-    for f in raw_files:
-        base_name = f.replace(".tif", "")
-        mask_file_tif = os.path.join(mask_dir, base_name + "_cp_masks.tif")
-        mask_file_tiff = os.path.join(mask_dir, base_name + "_cp_masks.tiff")
-        if os.path.exists(mask_file_tif):
-            mask_files[f] = mask_file_tif
-        elif os.path.exists(mask_file_tiff):
-            mask_files[f] = mask_file_tiff
+    src_files, raw_scenes, raw_channels, raw_stops = raw_df['file_path'].values, raw_df['scene'].values, raw_df['channel'].values, raw_df['stop'].values
+
+    raw_files = []
+    mask_files = []
+    timepoints = []
+    scenes = []
+    channels = []
+    for f, scn, ch, stop in zip(src_files,raw_scenes,raw_channels,raw_stops):
+        for tp in range(stop):
+            base_name = Path(f).name.replace(".czi", "")
+            mask_file_tif = os.path.join(mask_dir, base_name + f"_{scn}_C{ch}_T{tp:04d}_cp_masks.tif")
+            mask_file_tiff = os.path.join(mask_dir, base_name + f"_{scn}_C{ch}_T{tp:04d}_cp_masks.tif")
+            raw_files.append(f)
+            timepoints.append(tp)
+            scenes.append(scn)
+            channels.append(ch)
+            if os.path.exists(mask_file_tif):
+                mask_files.append(mask_file_tif)
+            elif os.path.exists(mask_file_tiff):
+                mask_files.append(mask_file_tiff)
+            else:
+                print(mask_file_tif, 'not found')
 
     print(f"Found {len(raw_files)} raw files and {len(mask_files)} corresponding mask files.")
     csv_data = []
 
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = []
-        for raw_file in tqdm(raw_files, desc="Processing Files"):
-            mask_path = mask_files.get(raw_file)
-            if mask_path is None:
-                print(f"No corresponding mask file found for {raw_file}")
-                csv_data.append({
-                    "filename": raw_file,
-                    "object_id": None,
-                    "volume": None,
-                    "integrated_intensity": None,
-                    "mean_intensity": None,
-                    "retained": 0,
-                    "new_object_id": None
-                })
-                continue
-            raw_path = os.path.join(raw_dir, raw_file)
-            future = executor.submit(process_single_tif, raw_path, mask_path, output_dir, scaling_factor, pre_clipping_min_size, post_clipping_min_size, pre_clipping_min_mean_intensity, post_clipping_min_integrated_intensity, relabel, csv_data)
+        for raw_file, mask_file, scene, channel, timepoint in tqdm(zip(raw_files, mask_files, scenes, channels, timepoints), desc="Processing Files"):
+            # mask_path = mask_files.get(raw_file)
+            # if mask_path is None:
+            #     print(f"No corresponding mask file found for {raw_file}")
+            #     csv_data.append({
+            #         "filename": raw_file,
+            #         "object_id": None,
+            #         "volume": None,
+            #         "integrated_intensity": None,
+            #         "mean_intensity": None,
+            #         "retained": 0,
+            #         "new_object_id": None
+            #     })
+            #     continue
+            # raw_path = os.path.join(raw_dir, raw_file)
+            print(mask_file)
+            future = executor.submit(
+                process_single_tif, 
+                raw_file, 
+                mask_file, 
+                scene,
+                channel,
+                timepoint,
+                output_dir, 
+                scaling_factor, 
+                pre_clipping_min_size, 
+                post_clipping_min_size, 
+                pre_clipping_min_mean_intensity, 
+                post_clipping_min_integrated_intensity, 
+                relabel, 
+                csv_data
+            )
             futures.append(future)
 
         for future in tqdm(as_completed(futures), total=len(futures), desc="Files Completed"):
