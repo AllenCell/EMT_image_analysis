@@ -7,6 +7,7 @@ import trimesh
 from pathlib import Path
 import open3d as o3d
 import pyacvd
+from tqdm import tqdm
 
 from argparse import ArgumentParser
 
@@ -45,8 +46,8 @@ def mesh_generation(
     
     # process each timepoint
     meshes = {}
-    for timepoint in range(start_timepoint, end_timepoint):
-        mesh = process_seg(segmentations.get_image_data(T=timepoint).squeeze())
+    for timepoint in tqdm(range(start_timepoint, end_timepoint)):
+        mesh = process_seg(segmentations.get_image_data('ZYX',T=timepoint))
         meshes[f'{timepoint}'] = mesh
     
     # save the meshes
@@ -71,15 +72,15 @@ def process_seg(
                 The generated mesh.
     '''
     # resize the segmentation to isometric voxels
-    seg = resize(
-        seg, 
-        (int(seg.shape[0] * 2.88/0.271), seg.shape[1], seg.shape[2]), 
+    segmentation = resize(
+        segmentation, 
+        (int(segmentation.shape[0] * 2.88/0.271), segmentation.shape[1], segmentation.shape[2]), 
         order=0, 
         preserve_range=False
     )
     
     # sample point cloud from the segmentation
-    seg_sample = sample_segmentation(seg)
+    seg_sample = sample_segmentation(segmentation)
     
     # scale the point cloud to a standard size
     center = np.mean(seg_sample, axis=0)
