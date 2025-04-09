@@ -13,8 +13,7 @@ from argparse import ArgumentParser
 ######---------Main code---------######
 
 def mesh_generation(
-        manifest_path: str,
-        movie_id:str,
+        segmentation_zarr: str,
         output_directory: str,
         start_timepoint: int=0,
         end_timepoint: int=97,
@@ -24,10 +23,8 @@ def mesh_generation(
         Saves the meshes as a pyvista MultiBlock object in a .vtm file.
         
         Parameters:
-            manifest_path: str
-                Path to the dataset manifest
-            movie_id: str
-                Movie Unique ID of the timelapse to process
+            segmentation_zarr: str
+                S3 path to segmentation file for entire timelapse.
             output_directory: str
                 Directory to save the mesh.
             start_timepoint: int
@@ -39,12 +36,10 @@ def mesh_generation(
     out_dir.mkdir(parents=True, exist_ok=True   )
     
     # load the segmentation
-    df = pd.read_csv(manifest_path)
-    df = df[df['Movie Unique ID'] == movie_id]
-    segmentations = BioImage(df['CollagenIV Segmentation Probability URL'].values[0])
+    segmentations = BioImage(segmentation_zarr)
     
     # set the timepoints to process
-    num_timepoints = int(df['Image Size T'].values[0])
+    num_timepoints = int(segmentations.shape[0])
     if end_timepoint < 0 or end_timepoint >= num_timepoints:
         end_timepoint = num_timepoints
     
@@ -56,7 +51,7 @@ def mesh_generation(
     
     # save the meshes
     mesh_block = pv.MultiBlock(meshes)
-    out_fn = Path(df['CollagenIV Segmentation Probability URL'].values[0]).stem.replace("_probability", "_mesh") + ".vtm"
+    out_fn = Path(segmentation_zarr).stem + ".vtm"
     mesh_block.save(out_dir / out_fn)
 
 ######---------Per-timepoint code---------######
@@ -320,16 +315,10 @@ def init_mesh(
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument(
-        "--manifest_path",
+        "--segmentation_zarr",
         type=str,
         required=True,
-        help="Filepath to the dataset manifest.",
-    )
-    parser.add_argument(
-        "--movie_id",
-        type=str,
-        required=True,
-        help="Movie Unique ID of timelapse to process."
+        help='S3 path to segmentation file for entire timelapse.'
     )
     parser.add_argument(
         "--output_directory",
@@ -352,8 +341,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     mesh_generation(
-        args.manifest_path,
-        args.movie_id,
+        args.segmentation_zarr,
         args.output_directory,
         args.start_timepoint,
         args.end_time
