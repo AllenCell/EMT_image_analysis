@@ -1,0 +1,5 @@
+bioio == 1.1.0
+bioio_ome_tiff == 1.0.0
+bioio_ome_zarr == 1.0.0
+pandas == 1.3.3
+tqdm == 4.62.3

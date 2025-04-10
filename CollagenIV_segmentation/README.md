@@ -1,42 +1,79 @@
 The workflow for generating basement membrane is divided into three parts.
 
-# Part 1: Create snakemake configs and split out basement membrane channel and timepoints and 
+# Part 1: Create csv file for running segmentations
 
-This is done in the slurm cluster using Snakemake. Make sure you use the envirorment goutham_snakemake for running Snakemake scripts.
+This is done using `prepare_cytodl_csv.py`. It's core function, `generate_csv()`
+can be used programaticlly to process multiple czi files together, but if only
+processing a single czi file then the script can be run from the terminal as such.
 
+```bash
+# This will prepare the csv using default parameters for scene, channel, and timepoints
+python prepare_cytodl_csv.py \
+    --czi /path/to/czi/file \
+    --output_dir /path/to/save/csv
+
+
+# For information on additional options to manually specify scenes, channel, and timepoints use
+python prepare_cytodl_csv.py --help
 ```
-module load anaconda3/5.3.0
-source activate
-conda activate goutham_snakemake
-cd processing_workflow
-# Creates logs for snakemake. These same logs are also initated to run the basement membrane postprocessing
-python create_BM_snakemake_configs.py
+The csv's generated for individual czi files can be concatenated to segment
+all czi's at once.
 
-# Run snakemake file for splitting out each timepoint
-cd processing_workflow/step_save_out_basement_membrane
-# See configs available in the configs directory
-snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/your_config.yaml
-```
+The csv file generated will have the columns, with one row for each scene that
+is being segmented.
+
+| Column | Description |
+| --- | --- |
+| path | File path to the czi file containing the scene |
+| channel | Channel containing Collagen IV signal (default 2) |
+| scene | Scene name as found in the czi file using `BioImage(path).scenes` |
+| start | The timepoint from which segmentations will start. (default 0) |
+| end | The timepoint at which segmentations wills stop. (default end of scene) |
+| step | The interval between timepoints segmented (default 1) |
+
 
 # Part 2: CytoDL basement membrane segmentation
 
-The data, model, and experiment config are found in the cytoDL_configs directory. The model weights that we are using for the segmentation model can be found here:
+The template data, model, and experiment config are found in the `cytoDL_configs` 
+directory. The model weights that we are using for the segmentation model can be 
+downloaded through curl into the directory of your choice.
 
+
+```bash
+cd /directory/to/save/weights/
+
+curl -O https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/collagenIV_mask_seg_model_checkpoint.ckpt?versionId=cUFbWrMmZLSOOztuZwaUob5vLLUAZ6RU
 ```
-/allen/aics/assay-dev/computational/data/EMT_deliverable_processing/cytodl_experiments/logs/train/runs/basement_membrane_semseg/basement_membrane_semseg_version_6_early_model/2023-12-15_16-09-07/checkpoints/epoch_478.ckpt
-```
+
+Make sure to change `ckpt_path` in `cytoDL_configs/experiment/segmentation_basement_membrane.yaml`
+has be changed to your loacally saved model weights.
 
 # Part 3: Basement membrane postprocessing
 
-This step processes the basement membrane segmentation to keep only the largest connected component in the prediction. This is currently done using Snakemake to do this in parrallel for each FMS ID. Please modify the config file according to your own system paths. The profile refers to your compute recourses. This is specific to our slurm cluster.
+This step processes the basement membrane segmentation to keep only the largest connected component in the prediction. This is computed using `postprocess_collagen_mask.py`
 
-```
+```bash
 # Basement membrane postprocessing example
-cd step_postprocess_basement_membrane_mask/
+cd processing_workflow/
 
-# For EOMES
-snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_EOMES.yaml
+python postprocess_collagen_mask.py \
+    -s /path/to/cytodl/output/directory/ \
+    -o /directory/to/save/postprocessing/results/to/
+```
 
-# For H2B
-snakemake --profile ../configs/profile --conda-frontend conda --printshellcmds --configfile ../configs/config_basement_membrane_segmentation_H2B.yaml
+# Part 4 (Optional): Compiling Segmentations for Mesh Generation
+
+If you want to run the mesh generation workflow on newly generated scripts
+they will have to be compiled into single `tif` files per scene and an 
+accompanying `csv` manifest generated. To do that you can run the following 
+script. Within the specified output folder will be saved both the compiled
+segmentations as well as a csv which you can use as an input in the [mesh generation
+workflow](../CollagenIV_mesh_generation/README.md)
+
+
+```bash
+python compile_for_mesh_generation.py \
+    --segmentation_manifest /path/to/csv/from/part/1.csv \
+    --segmentation_directory /path/to/folder/with/post-processed/segmentations \
+    --output_directory /path/to/save/data/
 ```

@@ -1,5 +1,6 @@
 from bioio import BioImage
 import numpy as np
+import pandas as pd
 import pyvista as pv
 from skimage.transform import resize
 from skimage.exposure import rescale_intensity
@@ -47,7 +48,7 @@ def mesh_generation(
     # process each timepoint
     meshes = {}
     for timepoint in tqdm(range(start_timepoint, end_timepoint)):
-        mesh = process_seg(segmentations.get_image_data('ZYX',T=timepoint))
+        mesh = process_seg(segmentations.get_image_data("ZYX",T=timepoint).squeeze())
         meshes[f'{timepoint}'] = mesh
     
     # save the meshes
@@ -58,14 +59,14 @@ def mesh_generation(
 ######---------Per-timepoint code---------######
 
 def process_seg(
-        segmentation: np.ndarray,
+        seg: np.ndarray,
     ) -> pv.PolyData:
     '''
         Generate a collagen membrane mesh for a single timepoint segmentation.
         
         Parameters:
-            seg_fn: str
-                Filepath to the segmentation.
+            seg: np.ndarray
+                Segmentation.
                 
         Output:
             mesh: pv.PolyData
