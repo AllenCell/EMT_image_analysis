@@ -59,7 +59,7 @@ def mesh_generation(
 ######---------Per-timepoint code---------######
 
 def process_seg(
-        seg: np.ndarray,
+        segmentation: np.ndarray,
     ) -> pv.PolyData:
     '''
         Generate a collagen membrane mesh for a single timepoint segmentation.
