@@ -112,7 +112,7 @@ def process_image(image_path, image_channel, image_scene, image_stop, output_dir
             denoised_filename = Path(output_dir) / f"{image_name}_{image_scene}_C{image_channel}_T{t:04d}.tif"
         else:
             denoised_filename = Path(output_dir) / f"{image_name}_C{image_channel}_T{t:04d}.tif"
-       save_image(denoised_image, denoised_filename, image_name)
+        save_image(denoised_image, denoised_filename, image_name)
 
         scale_log.append([image_name, scale, raw_min, raw_max, percentile_1, percentile_99])
 
