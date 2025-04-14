@@ -77,11 +77,12 @@ def RescaleInputImage(image_offset_corrected, raw_min, raw_max):
     return image_rescaled.astype(np.uint16), scale
 
 def process_image(image_path, image_channel, image_scene, image_stop, output_dir, denoise_model, eval_params, z_axis=None, scale_log=None):
-    base_name = os.path.basename(image_path)
-    image_name = ".".join(base_name.split('.')[:-1])
+    image_name = Path(image_path).stem.replace('.ome','')
+    # image_name = ".".join(base_name.split('.')[:-1])
     print(f"Processing {image_name} Scene {image_scene}")
     image = load_image(image_path)
-    image.set_scene(image_scene)
+    if image_scene is not None:
+        image.set_scene(image_scene)
     
     timepoints = image.shape[0]
     if image_stop > 0:
@@ -107,8 +108,11 @@ def process_image(image_path, image_channel, image_scene, image_stop, output_dir
 
         denoised_image = denoise_model.eval(x=image_rescaled, channels=[0, 0], tile=False, z_axis=z_axis, normalize=local_eval_params)
 
-        denoised_filename = Path(output_dir) / f"{image_name}_{image_scene}_C{image_channel}_T{t:04d}.tif"
-        save_image(denoised_image, denoised_filename, image_name)
+        if image_scene is not None:
+            denoised_filename = Path(output_dir) / f"{image_name}_{image_scene}_C{image_channel}_T{t:04d}.tif"
+        else:
+            denoised_filename = Path(output_dir) / f"{image_name}_C{image_channel}_T{t:04d}.tif"
+       save_image(denoised_image, denoised_filename, image_name)
 
         scale_log.append([image_name, scale, raw_min, raw_max, percentile_1, percentile_99])
 
@@ -146,7 +150,7 @@ def denoise_directory(input_manifest, output_dir, model_params, eval_params, max
             ) for image_path, image_channel, image_scene, image_stop in zip(
                 input_df['file_path'].values, 
                 input_df['channel'].values, 
-                input_df['scene'].values,
+                input_df['scene'].values if 'scene' in input_df.columns else [None,]*len(input_df['file_path'].values),
                 input_df['stop'].values
             )
         ]

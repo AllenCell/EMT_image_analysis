@@ -243,7 +243,8 @@ def process_single_tif(
     try:
         print(f"Reading raw image from {raw_path}")
         raw_reader = BioImage(raw_path)
-        raw_reader.set_scene(scene)
+        if scene is not None:
+            raw_reader.set_scene(scene)
         raw_img = cp.array(raw_reader.get_image_data('ZYX',T=timepoint,C=channel))
         print(f"Reading mask image from {mask_path}")
         mask_img = cp.array(BioImage(mask_path).get_image_data('ZYX'))
@@ -383,7 +384,11 @@ def process_directory(raw_manifest, mask_dir, output_dir, scaling_factor=1.0, pr
     #     print(f"Error listing files in raw_dir {raw_dir}: {e}")
     #     return
 
-    src_files, raw_scenes, raw_channels, raw_stops = raw_df['file_path'].values, raw_df['scene'].values, raw_df['channel'].values, raw_df['stop'].values
+    src_files, raw_channels, raw_stops = raw_df['file_path'].values, raw_df['channel'].values, raw_df['stop'].values
+    if 'scene' in raw_df.columns:
+        raw_scenes = raw_df['scenes']
+    else:
+        raw_scenes = [None,]*len(src_files)
 
     raw_files = []
     mask_files = []
@@ -392,9 +397,13 @@ def process_directory(raw_manifest, mask_dir, output_dir, scaling_factor=1.0, pr
     channels = []
     for f, scn, ch, stop in zip(src_files,raw_scenes,raw_channels,raw_stops):
         for tp in range(stop):
-            base_name = Path(f).name.replace(".czi", "")
-            mask_file_tif = os.path.join(mask_dir, base_name + f"_{scn}_C{ch}_T{tp:04d}_cp_masks.tif")
-            mask_file_tiff = os.path.join(mask_dir, base_name + f"_{scn}_C{ch}_T{tp:04d}_cp_masks.tif")
+            base_name = Path(f).stem.replace('.ome','')
+            if scn is None:
+                suffix = f"_C{ch}_T{tp:04d}_cp_masks"
+            else:
+                suffix = f"_{scn}_C{ch}_T{tp:04d}_cp_masks"
+            mask_file_tif = os.path.join(mask_dir, base_name + suffix + ".tif")
+            mask_file_tiff = os.path.join(mask_dir, base_name + suffix + ".tif")
             raw_files.append(f)
             timepoints.append(tp)
             scenes.append(scn)
