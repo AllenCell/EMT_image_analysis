@@ -92,7 +92,7 @@ def evaluate(cfg: DictConfig) -> Tuple[dict, dict, dict]:
 
 @hydra.main(
     version_base="1.3",
-    config_path=os.environ.get("CYTODL_CONFIG_PATH", "../configs"),
+    config_path=os.environ.get("CYTODL_CONFIG_PATH", "../"),
     config_name="eval.yaml",
 )
 def main(cfg: DictConfig) -> None:
