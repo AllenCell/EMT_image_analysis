@@ -354,7 +354,7 @@ def process_single_tif(
             del post_filtered_mask
         gc.collect()
 
-def process_directory(raw_manifest, mask_dir, output_dir, scaling_factor=1.0, pre_clipping_min_size=100, post_clipping_min_size=100, pre_clipping_min_mean_intensity=1, post_clipping_min_integrated_intensity=100000, workers=4, relabel=False):
+def process_directory(raw_manifest, mask_dir, output_dir, scaling_factor=0.75, pre_clipping_min_size=1, post_clipping_min_size=1, pre_clipping_min_mean_intensity=1, post_clipping_min_integrated_intensity=1, workers=4, relabel=False):
     """
     Processes all TIFF files in the specified directory, applying filters, clipping, and saving the results.
 
