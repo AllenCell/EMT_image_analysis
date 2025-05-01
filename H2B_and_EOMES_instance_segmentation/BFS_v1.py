@@ -485,7 +485,7 @@ def write_scale_log_constant(output_path, scale_log):
 # ==================== Clipping Functions ====================
 def adaptive_clip(raw_img, mask_img, label, mean_intensity, scaling_factor, slice_scaling_percentile, filename):
     try:
-        print(f"Clipping label {label} in file {filename}...")
+        # print(f"Clipping label {label} in file {filename}...")
         label_mask = (mask_img == label)
         adjusted_mean_intensity = mean_intensity * (scaling_factor / 100.0)
         
@@ -500,8 +500,8 @@ def adaptive_clip(raw_img, mask_img, label, mean_intensity, scaling_factor, slic
         slice_intensity_mask = (raw_img < slice_threshold) & label_mask
         mask_img[slice_intensity_mask] = 0
 
-        print(f"Median intensity for label {label} in file {filename}: {median_intensity}")
-        print(f"Slice threshold for label {label} in file {filename}: {slice_threshold}")
+        # print(f"Median intensity for label {label} in file {filename}: {median_intensity}")
+        # print(f"Slice threshold for label {label} in file {filename}: {slice_threshold}")
 
         return mask_img
     except Exception as e:
@@ -510,7 +510,7 @@ def adaptive_clip(raw_img, mask_img, label, mean_intensity, scaling_factor, slic
 
 def calculate_region_props(mask_img, raw_img, properties, filename):
     try:
-        print(f"Calculating region properties for file {filename} using scikit-image on CPU...")
+        # print(f"Calculating region properties for file {filename} using scikit-image on CPU...")
         mask_img_np = cp.asnumpy(mask_img)
         raw_img_np = cp.asnumpy(raw_img)
         props = regionprops_table(mask_img_np, intensity_image=raw_img_np, properties=properties)
@@ -528,7 +528,7 @@ def fill_holes_3d_gpu(mask, min_hole_diameter=64.0):
     filled_mask = cp.copy(mask)
     radius = min_hole_diameter / 2.0
     min_hole_size = int(np.pi * (radius ** 2))
-    print(f"Using minimum hole size of {min_hole_size} pixels (from diameter {min_hole_diameter})")
+    # print(f"Using minimum hole size of {min_hole_size} pixels (from diameter {min_hole_diameter})")
     for z in range(mask.shape[0]):
         slice_mask = cp.asnumpy(mask[z])
         slice_labels = np.unique(slice_mask)[1:] if np.any(slice_mask) else []
@@ -568,8 +568,8 @@ def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, slice_sc
         mean_intensities = cp.array(props['mean_intensity'])
         labels = cp.array(props['label'])
         print(f"File {mask_filename}: {len(labels)} labels before pre-clipping filtering.")
-        print(f"Areas: {cp.asnumpy(areas)}")
-        print(f"Mean Intensities: {cp.asnumpy(mean_intensities)}")
+        # print(f"Areas: {cp.asnumpy(areas)}")
+        # print(f"Mean Intensities: {cp.asnumpy(mean_intensities)}")
         
         valid_indices = (areas >= pre_clipping_min_size) & (mean_intensities >= pre_clipping_min_mean_intensity)
         filtered_labels = labels[valid_indices]
@@ -582,36 +582,36 @@ def process_single_tif(raw_path, mask_path, output_dir, scaling_factor, slice_sc
         modified_mask = cp.copy(filtered_mask)
 
         for label in filtered_labels:
-            print(f"About to clip label {label} in file {mask_filename}")
+            # print(f"About to clip label {label} in file {mask_filename}")
             label_mask = (modified_mask == label)
             if cp.any(label_mask):
                 computed_mean_intensity = cp.mean(raw_img[label_mask])
-                print(f"Label {label}: computed mean intensity = {computed_mean_intensity.item()}")
+                # print(f"Label {label}: computed mean intensity = {computed_mean_intensity.item()}")
                 modified_mask = adaptive_clip(raw_img, modified_mask, label, computed_mean_intensity,
                                                scaling_factor, slice_scaling_percentile, mask_filename)
-            else:
-                print(f"Label {label} has no pixels in the mask!")
+            # else:
+            #     print(f"Label {label} has no pixels in the mask!")
 
         props_post = calculate_region_props(modified_mask, raw_img, properties, mask_filename)
         post_areas = cp.array(props_post['area'])
         post_mean_intensities = cp.array(props_post['mean_intensity'])
         post_labels = cp.array(props_post['label'])
         post_integrated_intensity = post_mean_intensities * post_areas
-        print(f"File {mask_filename}: {len(post_labels)} labels after adaptive clipping (before post-filtering).")
+        # print(f"File {mask_filename}: {len(post_labels)} labels after adaptive clipping (before post-filtering).")
         
         valid_post_indices = (post_areas >= post_clipping_min_size) & (post_integrated_intensity >= post_clipping_min_integrated_intensity)
         post_filtered_labels = post_labels[valid_post_indices]
-        print(f"File {mask_filename}: {len(post_filtered_labels)} labels after post-clipping filtering.")
+        # print(f"File {mask_filename}: {len(post_filtered_labels)} labels after post-clipping filtering.")
         
         post_filtered_mask = cp.isin(modified_mask, post_filtered_labels) * modified_mask
         
         if fill_holes:
-            print(f"Filling holes slice-wise in mask for {mask_filename}...")
+            # print(f"Filling holes slice-wise in mask for {mask_filename}...")
             post_filtered_mask = fill_holes_3d_gpu(post_filtered_mask, min_hole_diameter)
         
         if not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
-        print(f"Saving output file to {output_file_path}")
+        # print(f"Saving output file to {output_file_path}")
         imwrite(output_file_path, cp.asnumpy(post_filtered_mask), photometric='minisblack', compression='zlib')
         print(f"File saved successfully: {output_file_path}")
         
