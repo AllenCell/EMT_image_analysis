@@ -448,6 +448,9 @@ def constant_denoise_directory(input_dir, output_dir, model_params, eval_params,
         else:
             start_tp, end_tp = 0, T - 1
         for t in range(start_tp, min(end_tp + 1, T)):
+            denoised_filename = denoised_out / f"{image_name}_T{t}.tif"
+            if denoised_filename.exists():
+                continue
             tasks.append((bio_img, t, image_name, denoise_model, eval_params, const_params, scale_log, str(image_output), timepoint_range, save_raw))
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [executor.submit(process_image_constant_timepoint, *task) for task in tasks]
