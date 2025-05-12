@@ -82,7 +82,7 @@ def get_image_paths(input_path):
     """
     Returns a list of image paths.
     """
-    supported_exts = [".zarr", ".ome.zarr", ".tif", ".tiff", ".czi"]
+    supported_exts = [".zarr", ".ome.zarr", ".tif", ".tiff", ".czi", ".ome.tif", ".ome.tiff"]
     image_paths = []
     if input_path.lower().endswith('.csv'):
         with open(input_path, newline='', encoding='utf-8-sig') as csvfile:
@@ -384,6 +384,12 @@ def process_image_constant_timepoint(bio_img, t, image_name, denoise_model, eval
     if not (start_tp <= t <= end_tp):
         return None
 
+    denoised_folder = Path(output_path) / "Denoised"
+    denoised_folder.mkdir(parents=True, exist_ok=True)
+    denoised_filename = denoised_folder / f"{image_name}_T{t:04d}.tif"
+    if denoised_filename.exists():
+        return (image_name, t, denoised_filename)
+    
     lazy_image = bio_img.get_image_dask_data("CZYX", T=t)
     image = lazy_image.compute()
     channel = get_param("Channel", 1)
@@ -406,12 +412,10 @@ def process_image_constant_timepoint(bio_img, t, image_name, denoise_model, eval
     local_eval_params['lowhigh'] = [0, p99]
     denoised_image = denoise_model.eval(x=image_rescaled, channels=[0, 0], tile=False, normalize=local_eval_params)
     denoised_uint16 = ConvertFloatToUint16(denoised_image)
-    denoised_folder = Path(output_path) / "Denoised"
-    denoised_folder.mkdir(parents=True, exist_ok=True)
-    denoised_filename = denoised_folder / f"{image_name}_T{t}.tif"
+    
     save_image(denoised_uint16, denoised_filename, convert=False)
     metrics = {
-        'Image Name': f"{image_name}_T{t}",
+        'Image Name': denoised_filename.name,
         'Scale Factor': scale,
         'Raw Input Max': raw_max_val,
         'Percentile 99 Used': p99,
@@ -423,7 +427,7 @@ def process_image_constant_timepoint(bio_img, t, image_name, denoise_model, eval
         'Percentile 99': np.percentile(denoised_uint16, 99)
     }
     scale_log.append(metrics)
-    return (image_name, t, denoised_uint16)
+    return (image_name, t, denoised_filename)
 
 def constant_denoise_directory(input_dir, output_dir, model_params, eval_params, max_workers, rescaling_method, const_params, timepoint_range, save_raw):
     image_output = Path(output_dir)
@@ -435,7 +439,7 @@ def constant_denoise_directory(input_dir, output_dir, model_params, eval_params,
     tasks = []
     for image_path in image_paths:
         base_name = os.path.basename(image_path)
-        image_name = os.path.splitext(base_name)[0]
+        image_name = base_name.split('.')[0]
         bio_img = load_image(image_path)
         T = bio_img.shape[0]
         if timepoint_range and timepoint_range.strip().lower() != "all":
@@ -448,9 +452,6 @@ def constant_denoise_directory(input_dir, output_dir, model_params, eval_params,
         else:
             start_tp, end_tp = 0, T - 1
         for t in range(start_tp, min(end_tp + 1, T)):
-            denoised_filename = denoised_out / f"{image_name}_T{t}.tif"
-            if denoised_filename.exists():
-                continue
             tasks.append((bio_img, t, image_name, denoise_model, eval_params, const_params, scale_log, str(image_output), timepoint_range, save_raw))
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [executor.submit(process_image_constant_timepoint, *task) for task in tasks]
@@ -461,15 +462,8 @@ def constant_denoise_directory(input_dir, output_dir, model_params, eval_params,
                 results.append(res)
     write_scale_log_constant(output_dir, scale_log)
     denoised_dict = {}
-    for image_name, t, img in results:
-        if image_name not in denoised_dict:
-            denoised_dict[image_name] = []
-        denoised_dict[image_name].append((t, img))
-    for key in denoised_dict:
-        denoised_dict[key].sort(key=lambda x: x[0])
-        timepoints = [t for t, _ in denoised_dict[key]]
-        stacked = np.stack([img for _, img in denoised_dict[key]], axis=0)
-        denoised_dict[key] = (stacked, timepoints)
+    for image_name, t, img_path in results:
+        denoised_dict[image_name] = (img_path, t)
     return denoised_dict
 
 def write_scale_log_constant(output_path, scale_log):
@@ -758,7 +752,7 @@ def upsample_and_deblur_volume(volume, anisotropy, deblur_model_type="aniso_cyto
         print(f"[DEBUG] Deblurred volume shape after adding channel: {img_iso.shape}")
     return img_iso
 
-def segment_volume_from_array(model, volume, timepoints, image_name, output_path, 
+def segment_volume_from_array(model, img_path, timepoint, image_name, output_path, 
                               channels=[0,0], diameter=60, flow_threshold=0.4, stitch_threshold=0.5,
                               cellprob_threshold=-2.0, do_3D=False, anisotropy=5.87,
                               z_axis=0, norm_params=None, min_size=500,
@@ -769,67 +763,64 @@ def segment_volume_from_array(model, volume, timepoints, image_name, output_path
     """
     Segments a 3D volume per timepoint using the Cellpose model.
     """
-    T = volume.shape[0]
-    for idx in range(T):
-        tp = timepoints[idx]
-        vol = volume[idx]  # (ZYX)
-        print(f"[DEBUG] Segmenting {image_name} timepoint {tp}, volume shape: {vol.shape}")
+    vol = load_image(img_path).get_image_data('ZYX')
+    print(f"[DEBUG] Segmenting {image_name} timepoint {timepoint}, volume shape: {vol.shape}")
+    if perform_anisotropic_deblur:
+        if vol.ndim == 4 and vol.shape[3] == 1:
+            vol_proc = vol[..., 0]
+        else:
+            vol_proc = vol
+        original_z = vol_proc.shape[0]
+        print(f"[DEBUG] Original z-dimension: {original_z}")
+        vol_deblur = upsample_and_deblur_volume(vol_proc, anisotropy, 
+                                                deblur_model_type=anisotropic_deblur_model, 
+                                                diameter=deblur_diameter, 
+                                                z_axis=z_axis, channels=channels)
+        print(f"[DEBUG] Deblurred volume shape: {vol_deblur.shape}")
+        if save_upsampled:
+            upsample_folder = Path(output_path) / "Denoised_anisotropic_upsampled"
+            upsample_folder.mkdir(parents=True, exist_ok=True)
+            up_filename = upsample_folder / f"{image_name}_T{tp}_upsampled.tif"
+            imwrite(str(up_filename), vol_deblur, compression='zlib')
+            print(f"[DEBUG] Saved upsampled image: {up_filename}")
+        if vol.ndim == 4 and vol.shape[3] == 1 and vol_deblur.ndim == 3:
+            vol_deblur = vol_deblur[..., np.newaxis]
+        vol = vol_deblur
+    output_name = f"{image_name}_cp_masks.tif"
+    # Use a new variable to avoid reassigning output_path.
+    output_file_path = os.path.join(output_path, output_name)
+    try:
+        print(f"[DEBUG] Running segmentation for {image_name} timepoint {timepoint} on volume shape: {vol.shape}")
+        masks, _, _ = model.eval(
+            [vol],
+            channels=channels,
+            diameter=diameter,
+            flow_threshold=flow_threshold,
+            stitch_threshold=stitch_threshold,
+            cellprob_threshold=cellprob_threshold,
+            do_3D=do_3D,
+            anisotropy=anisotropy,
+            z_axis=z_axis,
+            normalize=(norm_params if norm_params is not None else False),
+            min_size=min_size
+        )
+        mask_final = masks[0]
+        print(f"[DEBUG] Mask shape before resizing: {mask_final.shape}")
         if perform_anisotropic_deblur:
-            if vol.ndim == 4 and vol.shape[3] == 1:
-                vol_proc = vol[..., 0]
+            if mask_final.ndim == 3:
+                print(f"[DEBUG] Resizing mask from shape {mask_final.shape} back to original z-dim {original_z}")
+                mask_final = resize(mask_final,
+                                    (original_z, mask_final.shape[1], mask_final.shape[2]),
+                                    order=0,
+                                    preserve_range=True,
+                                    anti_aliasing=False).astype(mask_final.dtype)
+                print(f"[DEBUG] Mask shape after resizing: {mask_final.shape}")
             else:
-                vol_proc = vol
-            original_z = vol_proc.shape[0]
-            print(f"[DEBUG] Original z-dimension: {original_z}")
-            vol_deblur = upsample_and_deblur_volume(vol_proc, anisotropy, 
-                                                    deblur_model_type=anisotropic_deblur_model, 
-                                                    diameter=deblur_diameter, 
-                                                    z_axis=z_axis, channels=channels)
-            print(f"[DEBUG] Deblurred volume shape: {vol_deblur.shape}")
-            if save_upsampled:
-                upsample_folder = Path(output_path) / "Denoised_anisotropic_upsampled"
-                upsample_folder.mkdir(parents=True, exist_ok=True)
-                up_filename = upsample_folder / f"{image_name}_T{tp}_upsampled.tif"
-                imwrite(str(up_filename), vol_deblur, compression='zlib')
-                print(f"[DEBUG] Saved upsampled image: {up_filename}")
-            if vol.ndim == 4 and vol.shape[3] == 1 and vol_deblur.ndim == 3:
-                vol_deblur = vol_deblur[..., np.newaxis]
-            vol = vol_deblur
-        output_name = f"{image_name}_T{tp}_cp_masks.tif"
-        # Use a new variable to avoid reassigning output_path.
-        output_file_path = os.path.join(output_path, output_name)
-        try:
-            print(f"[DEBUG] Running segmentation for {image_name} timepoint {tp} on volume shape: {vol.shape}")
-            masks, flows, styles = model.eval(
-                [vol],
-                channels=channels,
-                diameter=diameter,
-                flow_threshold=flow_threshold,
-                stitch_threshold=stitch_threshold,
-                cellprob_threshold=cellprob_threshold,
-                do_3D=do_3D,
-                anisotropy=anisotropy,
-                z_axis=z_axis,
-                normalize=(norm_params if norm_params is not None else False),
-                min_size=min_size
-            )
-            mask_final = masks[0]
-            print(f"[DEBUG] Mask shape before resizing: {mask_final.shape}")
-            if perform_anisotropic_deblur:
-                if mask_final.ndim == 3:
-                    print(f"[DEBUG] Resizing mask from shape {mask_final.shape} back to original z-dim {original_z}")
-                    mask_final = resize(mask_final,
-                                        (original_z, mask_final.shape[1], mask_final.shape[2]),
-                                        order=0,
-                                        preserve_range=True,
-                                        anti_aliasing=False).astype(mask_final.dtype)
-                    print(f"[DEBUG] Mask shape after resizing: {mask_final.shape}")
-                else:
-                    print("[DEBUG] Skipping resize; mask is not 3D.")
-            imwrite(output_file_path, mask_final, compression='zlib')
-            print(f"[Segmentation] Processed {image_name} timepoint {tp}")
-        except Exception as e:
-            print(f"[Segmentation] Failed on {image_name} timepoint {tp}: {e}")
+                print("[DEBUG] Skipping resize; mask is not 3D.")
+        imwrite(output_file_path, mask_final, compression='zlib')
+        print(f"[Segmentation] Processed {image_name} timepoint {timepoint}")
+    except Exception as e:
+        print(f"[Segmentation] Failed on {image_name} timepoint {timepoint}: {e}")
 
 def run_segmentation_from_memory(denoised_dict, output_path, workers, seg_params):
     """
@@ -854,12 +845,12 @@ def run_segmentation_from_memory(denoised_dict, output_path, workers, seg_params
         )
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = []
-        for image_name, (volume, timepoints) in denoised_dict.items():
+        for image_name, (img_path, timepoint) in denoised_dict.items():
             futures.append(executor.submit(
                 segment_volume_from_array,
                 cp_model,
-                volume,
-                timepoints,
+                img_path,
+                timepoint,
                 image_name,
                 str(Path(output_path) / "NucleiSegmentation"),
                 channels=seg_params['channels'],
@@ -892,7 +883,7 @@ def load_denoised_images_from_disk(output_path):
     if not denoised_folder.exists():
         raise ValueError(f"Denoised folder {denoised_folder} does not exist.")
     tif_files = list(denoised_folder.glob("*.tif"))
-    results = {}
+    denoised_dict = {}
     for tif in tif_files:
         name = tif.stem  # e.g., "imageName_T0"
         if "_T" not in name:
@@ -903,16 +894,7 @@ def load_denoised_images_from_disk(output_path):
             timepoint = int(parts[1])
         except Exception as e:
             continue
-        img = imread(str(tif))
-        if image_name not in results:
-            results[image_name] = []
-        results[image_name].append((timepoint, img))
-    denoised_dict = {}
-    for image_name, lst in results.items():
-        lst.sort(key=lambda x: x[0])
-        timepoints = [t for t, _ in lst]
-        stacked = np.stack([img for _, img in lst], axis=0)
-        denoised_dict[image_name] = (stacked, timepoints)
+        denoised_dict[Path(tif).stem] = (tif, timepoint)
     return denoised_dict
 
 # ==================== Streamlit Interface ====================
