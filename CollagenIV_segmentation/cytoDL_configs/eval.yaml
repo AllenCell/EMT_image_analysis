@@ -20,5 +20,5 @@ task_name: "eval"
 tags: ["dev"]
 
 # passing checkpoint path is necessary for evaluation
-ckpt_path: #path to .ckpt file
+ckpt_path: /allen/aics/emt/basement_membrane_segmentation/Resubmission/collagenIV_mask_seg_model_checkpoint.ckpt
 

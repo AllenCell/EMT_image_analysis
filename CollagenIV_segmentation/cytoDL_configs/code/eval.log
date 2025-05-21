@@ -1,0 +1,535 @@
+[2025-05-12 10:00:08,842][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:00:08,843][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:00:09,040][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:00:09,143][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+TypeError: evaluate() got an unexpected keyword argument 'data'
+[2025-05-12 10:00:09,200][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:31:37,272][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:31:37,272][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:31:37,374][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:31:37,484][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 36, in evaluate
+    raise ValueError("Checkpoint path must be included for testing")
+ValueError: Checkpoint path must be included for testing
+[2025-05-12 10:31:37,524][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:32:26,475][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:32:26,475][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:32:26,497][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:32:30,300][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 78, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 116, in get_per_file_args
+    "C": row[self.channel_column],
+KeyError: '$(column_channel)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+KeyError('$(column_channel)')
+full_key: data.dataset
+[2025-05-12 10:32:30,326][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:34:45,799][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:34:45,800][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:34:45,824][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:34:48,687][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 78, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 116, in get_per_file_args
+    "C": row[self.channel_column],
+KeyError: '$(column_channel)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+KeyError('$(column_channel)')
+full_key: data.dataset
+[2025-05-12 10:34:48,737][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:35:48,906][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:35:48,906][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:35:48,934][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:35:51,825][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 78, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 116, in get_per_file_args
+    "C": row[self.channel_column],
+KeyError: '$(column_channel)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+KeyError('$(column_channel)')
+full_key: data.dataset
+[2025-05-12 10:35:51,847][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:36:25,271][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:36:25,271][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:36:25,292][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:36:27,956][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 78, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 116, in get_per_file_args
+    "C": row[self.channel_column],
+KeyError: '$(column_channel)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+KeyError('$(column_channel)')
+full_key: data.dataset
+[2025-05-12 10:36:27,985][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:46:24,230][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:46:24,231][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:46:24,381][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:46:31,524][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 10:47:11,763][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 10:47:11,764][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 10:47:11,816][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 10:47:18,911][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-12 10:47:20,244][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmpl113yt_i
+[2025-05-12 10:47:20,245][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmpl113yt_i/_remote_module_non_scriptable.py
+[2025-05-12 10:47:20,468][__main__][INFO] - Instantiating loggers...
+[2025-05-12 10:47:20,469][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-12 10:47:20,470][__main__][INFO] - Instantiating callbacks...
+[2025-05-12 10:47:20,470][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-12 10:47:20,476][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-12 10:47:20,477][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-12 10:47:20,477][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-12 10:47:20,478][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-12 10:47:20,527][__main__][INFO] - Logging hyperparameters!
+[2025-05-12 10:47:21,083][__main__][INFO] - Starting testing!
+[2025-05-12 11:02:04,856][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 11:02:04,862][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-12 11:02:40,532][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 11:02:40,533][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 11:02:40,562][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 11:02:47,961][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-12 11:02:49,122][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmpzcxtvjfg
+[2025-05-12 11:02:49,123][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmpzcxtvjfg/_remote_module_non_scriptable.py
+[2025-05-12 11:02:49,344][__main__][INFO] - Instantiating loggers...
+[2025-05-12 11:02:49,344][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-12 11:02:49,345][__main__][INFO] - Instantiating callbacks...
+[2025-05-12 11:02:49,345][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-12 11:02:49,353][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-12 11:02:49,354][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-12 11:02:49,354][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-12 11:02:49,355][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-12 11:02:49,424][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-12 11:02:49,473][__main__][INFO] - Logging hyperparameters!
+[2025-05-12 11:02:49,960][__main__][INFO] - Starting testing!
+[2025-05-12 14:56:24,286][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 14:56:24,320][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-12 14:56:54,263][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-12 14:56:54,263][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-12 14:56:54,292][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-12 14:56:58,694][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-12 14:57:00,104][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmpi13c1mtp
+[2025-05-12 14:57:00,105][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmpi13c1mtp/_remote_module_non_scriptable.py
+[2025-05-12 14:57:00,124][__main__][INFO] - Instantiating loggers...
+[2025-05-12 14:57:00,125][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-12 14:57:00,125][__main__][INFO] - Instantiating callbacks...
+[2025-05-12 14:57:00,125][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-12 14:57:00,150][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-12 14:57:00,151][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-12 14:57:00,152][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-12 14:57:00,152][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-12 14:57:00,216][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-12 14:57:00,268][__main__][INFO] - Logging hyperparameters!
+[2025-05-12 14:57:00,991][__main__][INFO] - Starting testing!
+[2025-05-12 20:12:19,929][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-12 20:12:19,947][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-13 08:54:40,609][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-13 08:54:40,609][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-13 08:54:40,659][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-13 08:54:48,584][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-13 08:54:50,085][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmptuc5ayed
+[2025-05-13 08:54:50,085][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmptuc5ayed/_remote_module_non_scriptable.py
+[2025-05-13 08:54:50,105][__main__][INFO] - Instantiating loggers...
+[2025-05-13 08:54:50,105][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-13 08:54:50,106][__main__][INFO] - Instantiating callbacks...
+[2025-05-13 08:54:50,106][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-13 08:54:50,114][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-13 08:54:50,115][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-13 08:54:50,115][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-13 08:54:50,116][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-13 08:54:50,200][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-13 08:54:50,249][__main__][INFO] - Logging hyperparameters!
+[2025-05-13 08:54:51,198][__main__][INFO] - Starting testing!
+[2025-05-15 09:07:14,895][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-15 09:07:14,909][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-15 12:58:56,385][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-15 12:58:56,385][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-15 12:58:56,421][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-15 12:59:03,249][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-15 12:59:04,136][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmp8i26orxg
+[2025-05-15 12:59:04,137][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmp8i26orxg/_remote_module_non_scriptable.py
+[2025-05-15 12:59:04,150][__main__][INFO] - Instantiating loggers...
+[2025-05-15 12:59:04,151][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-15 12:59:04,151][__main__][INFO] - Instantiating callbacks...
+[2025-05-15 12:59:04,152][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-15 12:59:04,153][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-15 12:59:04,154][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-15 12:59:04,155][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-15 12:59:04,155][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-15 12:59:04,244][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-15 12:59:04,294][__main__][INFO] - Logging hyperparameters!
+[2025-05-15 12:59:05,109][__main__][INFO] - Starting testing!
+[2025-05-19 09:04:23,501][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 09:04:23,549][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-19 09:07:48,062][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 09:07:48,063][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 09:07:48,086][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 09:07:51,494][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 83, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 112, in get_per_file_args
+    img = BioImage(row[self.img_path_column])
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 297, in __init__
+    self._reader, self._plugin = self._get_reader(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 281, in _get_reader
+    plugin = BioImage.determine_plugin(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 231, in determine_plugin
+    raise fe
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 224, in determine_plugin
+    if ReaderClass.is_supported_image(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio_base/reader.py", line 118, in is_supported_image
+    fs, path = pathlike_to_fs(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio_base/io.py", line 58, in pathlike_to_fs
+    raise FileNotFoundError(f"{fs.protocol}://{path}")
+FileNotFoundError: https://https://s3.us-west-2.amazonaws.com/production.files.allencell.org/bbe/8bc/701/9e8/840/f39/643/5b5/353/009/a6/3500007063_20250207_20X_Timelapse_ZSD0-02(P53-E5).ome.zarr
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+FileNotFoundError('https://https://s3.us-west-2.amazonaws.com/production.files.allencell.org/bbe/8bc/701/9e8/840/f39/643/5b5/353/009/a6/3500007063_20250207_20X_Timelapse_ZSD0-02(P53-E5).ome.zarr')
+full_key: data.dataset
+[2025-05-19 09:07:51,516][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 09:09:37,403][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 09:09:37,404][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 09:09:37,426][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 09:09:40,023][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 83, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 112, in get_per_file_args
+    img = BioImage(row[self.img_path_column])
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 297, in __init__
+    self._reader, self._plugin = self._get_reader(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 281, in _get_reader
+    plugin = BioImage.determine_plugin(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 231, in determine_plugin
+    raise fe
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 224, in determine_plugin
+    if ReaderClass.is_supported_image(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio_base/reader.py", line 118, in is_supported_image
+    fs, path = pathlike_to_fs(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio_base/io.py", line 58, in pathlike_to_fs
+    raise FileNotFoundError(f"{fs.protocol}://{path}")
+FileNotFoundError: file:///allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/s3.us-west-2.amazonaws.com/production.files.allencell.org/bbe/8bc/701/9e8/840/f39/643/5b5/353/009/a6/3500007063_20250207_20X_Timelapse_ZSD0-02(P53-E5).ome.zarr
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+FileNotFoundError('file:///allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/s3.us-west-2.amazonaws.com/production.files.allencell.org/bbe/8bc/701/9e8/840/f39/643/5b5/353/009/a6/3500007063_20250207_20X_Timelapse_ZSD0-02(P53-E5).ome.zarr')
+full_key: data.dataset
+[2025-05-19 09:09:40,044][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 09:10:10,538][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 09:10:10,538][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 09:10:10,556][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 09:10:13,300][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 83, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 112, in get_per_file_args
+    img = BioImage(row[self.img_path_column])
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 297, in __init__
+    self._reader, self._plugin = self._get_reader(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 281, in _get_reader
+    plugin = BioImage.determine_plugin(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 231, in determine_plugin
+    raise fe
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio/bio_image.py", line 224, in determine_plugin
+    if ReaderClass.is_supported_image(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio_base/reader.py", line 118, in is_supported_image
+    fs, path = pathlike_to_fs(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/bioio_base/io.py", line 58, in pathlike_to_fs
+    raise FileNotFoundError(f"{fs.protocol}://{path}")
+FileNotFoundError: https://https://s3.us-west-2.amazonaws.com/production.files.allencell.org/bbe/8bc/701/9e8/840/f39/643/5b5/353/009/a6/3500007063_20250207_20X_Timelapse_ZSD0-02(P53-E5).ome.zarr
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+FileNotFoundError('https://https://s3.us-west-2.amazonaws.com/production.files.allencell.org/bbe/8bc/701/9e8/840/f39/643/5b5/353/009/a6/3500007063_20250207_20X_Timelapse_ZSD0-02(P53-E5).ome.zarr')
+full_key: data.dataset
+[2025-05-19 09:10:13,324][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 09:15:52,302][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 09:15:52,302][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 09:15:52,338][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 09:15:58,996][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-19 09:16:00,106][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmpnasw75x7
+[2025-05-19 09:16:00,107][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmpnasw75x7/_remote_module_non_scriptable.py
+[2025-05-19 09:16:00,123][__main__][INFO] - Instantiating loggers...
+[2025-05-19 09:16:00,123][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-19 09:16:00,124][__main__][INFO] - Instantiating callbacks...
+[2025-05-19 09:16:00,124][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-19 09:16:00,126][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-19 09:16:00,127][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-19 09:16:00,127][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-19 09:16:00,128][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-19 09:16:00,193][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-19 09:16:00,242][__main__][INFO] - Logging hyperparameters!
+[2025-05-19 09:16:00,905][__main__][INFO] - Starting testing!
+[2025-05-19 14:11:07,170][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 14:11:07,204][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-19 14:11:50,768][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 14:11:50,768][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 14:11:50,794][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 14:11:53,593][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 83, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 112, in get_per_file_args
+    img = BioImage(row[self.img_path_column])
+TypeError: Can't instantiate abstract class BioImage with abstract methods scale, standard_metadata, time_interval
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+TypeError("Can't instantiate abstract class BioImage with abstract methods scale, standard_metadata, time_interval")
+full_key: data.dataset
+[2025-05-19 14:11:53,645][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 14:14:27,100][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 14:14:27,100][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 14:14:27,122][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 14:14:33,397][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-19 14:14:34,417][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmps1y9bxgp
+[2025-05-19 14:14:34,418][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmps1y9bxgp/_remote_module_non_scriptable.py
+[2025-05-19 14:14:34,430][__main__][INFO] - Instantiating loggers...
+[2025-05-19 14:14:34,431][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-19 14:14:34,431][__main__][INFO] - Instantiating callbacks...
+[2025-05-19 14:14:34,432][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-19 14:14:34,433][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-19 14:14:34,434][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-19 14:14:34,435][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-19 14:14:34,435][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-19 14:14:34,499][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-19 14:14:34,549][__main__][INFO] - Logging hyperparameters!
+[2025-05-19 14:14:35,266][__main__][INFO] - Starting testing!
+[2025-05-19 14:18:15,600][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 14:18:15,629][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+[2025-05-19 14:18:27,549][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 14:18:27,549][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 14:18:27,606][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 14:18:49,228][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 83, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 113, in get_per_file_args
+    scenes = self._get_scenes(row, img)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 93, in _get_scenes
+    raise ValueError(
+ValueError: For image /allen/programs/allencell/data/proj0/6c4/8dc/dad/25c/2fb/c79/54c/d68/579/864/7c/3500007063_20250207_20X_Timelapse_ZSD0-02.czi unable to find scene `P35-E5`, available scenes are ('P2-B2', 'P1-B2', 'P3-B2', 'P4-B3', 'P5-B3', 'P6-B3', 'P7-B4', 'P8-B4', 'P9-B4', 'P13-B5', 'P11-B5', 'P12-B5', 'P15-B6', 'P14-B6', 'P10-B6', 'P16-B8', 'P18-B8', 'P17-B8', 'P19-B9', 'P21-B9', 'P20-B9', 'P24-B10', 'P23-B10', 'P22-B10', 'P26-D2', 'P27-D2', 'P28-D3', 'P29-D3', 'P30-D3', 'P32-D4', 'P31-D4', 'P33-D4', 'P36-D6', 'P34-D6', 'P35-D6', 'P39-D8', 'P38-D8', 'P37-D8', 'P41-D10', 'P40-D10', 'P42-D10', 'P45-E10', 'P44-E10', 'P43-E10', 'P46-E7', 'P48-E7', 'P47-E7', 'P51-E6', 'P50-E6', 'P49-E6', 'P52-E5', 'P53-E5', 'P54-E5', 'P57-E4', 'P56-E4', 'P55-E4', 'P59-E3', 'P58-E3', 'P60-E3', 'P61-F3', 'P62-F3', 'P63-F3', 'P66-F7', 'P65-F7', 'P64-F7', 'P67-G10', 'P69-G10', 'P68-G10', 'P71-G9', 'P70-G9', 'P72-G9')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+ValueError("For image /allen/programs/allencell/data/proj0/6c4/8dc/dad/25c/2fb/c79/54c/d68/579/864/7c/3500007063_20250207_20X_Timelapse_ZSD0-02.czi unable to find scene `P35-E5`, available scenes are ('P2-B2', 'P1-B2', 'P3-B2', 'P4-B3', 'P5-B3', 'P6-B3', 'P7-B4', 'P8-B4', 'P9-B4', 'P13-B5', 'P11-B5', 'P12-B5', 'P15-B6', 'P14-B6', 'P10-B6', 'P16-B8', 'P18-B8', 'P17-B8', 'P19-B9', 'P21-B9', 'P20-B9', 'P24-B10', 'P23-B10', 'P22-B10', 'P26-D2', 'P27-D2', 'P28-D3', 'P29-D3', 'P30-D3', 'P32-D4', 'P31-D4', 'P33-D4', 'P36-D6', 'P34-D6', 'P35-D6', 'P39-D8', 'P38-D8', 'P37-D8', 'P41-D10', 'P40-D10', 'P42-D10', 'P45-E10', 'P44-E10', 'P43-E10', 'P46-E7', 'P48-E7', 'P47-E7', 'P51-E6', 'P50-E6', 'P49-E6', 'P52-E5', 'P53-E5', 'P54-E5', 'P57-E4', 'P56-E4', 'P55-E4', 'P59-E3', 'P58-E3', 'P60-E3', 'P61-F3', 'P62-F3', 'P63-F3', 'P66-F7', 'P65-F7', 'P64-F7', 'P67-G10', 'P69-G10', 'P68-G10', 'P71-G9', 'P70-G9', 'P72-G9')")
+full_key: data.dataset
+[2025-05-19 14:18:49,272][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 14:22:24,572][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 14:22:24,572][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 14:22:24,620][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 14:22:40,731][cyto_dl.utils.template_utils][ERROR] - 
+Traceback (most recent call last):
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 92, in _call_target
+    return _target_(*args, **kwargs)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 83, in __init__
+    data = self.get_per_file_args(df)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 113, in get_per_file_args
+    scenes = self._get_scenes(row, img)
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/datamodules/multidim_image.py", line 93, in _get_scenes
+    raise ValueError(
+ValueError: For image /allen/programs/allencell/data/proj0/6c4/8dc/dad/25c/2fb/c79/54c/d68/579/864/7c/3500007063_20250207_20X_Timelapse_ZSD0-02.czi unable to find scene `P35-E5`, available scenes are ('P2-B2', 'P1-B2', 'P3-B2', 'P4-B3', 'P5-B3', 'P6-B3', 'P7-B4', 'P8-B4', 'P9-B4', 'P13-B5', 'P11-B5', 'P12-B5', 'P15-B6', 'P14-B6', 'P10-B6', 'P16-B8', 'P18-B8', 'P17-B8', 'P19-B9', 'P21-B9', 'P20-B9', 'P24-B10', 'P23-B10', 'P22-B10', 'P26-D2', 'P27-D2', 'P28-D3', 'P29-D3', 'P30-D3', 'P32-D4', 'P31-D4', 'P33-D4', 'P36-D6', 'P34-D6', 'P35-D6', 'P39-D8', 'P38-D8', 'P37-D8', 'P41-D10', 'P40-D10', 'P42-D10', 'P45-E10', 'P44-E10', 'P43-E10', 'P46-E7', 'P48-E7', 'P47-E7', 'P51-E6', 'P50-E6', 'P49-E6', 'P52-E5', 'P53-E5', 'P54-E5', 'P57-E4', 'P56-E4', 'P55-E4', 'P59-E3', 'P58-E3', 'P60-E3', 'P61-F3', 'P62-F3', 'P63-F3', 'P66-F7', 'P65-F7', 'P64-F7', 'P67-G10', 'P69-G10', 'P68-G10', 'P71-G9', 'P70-G9', 'P72-G9')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/allen/aics/users/filip.sluzewski/Projects/basement-membrane-segmentation/cyto-dl/cyto_dl/utils/template_utils.py", line 53, in wrap
+    out = task_func(cfg=cfg, data=data)
+  File "/allen/aics/users/filip.sluzewski/Public_Repos/emt-image-analysis/EMT_image_analysis/CollagenIV_segmentation/cytoDL_configs/code/eval.py", line 44, in evaluate
+    data = hydra.utils.instantiate(cfg.data)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 226, in instantiate
+    return instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 342, in instantiate_node
+    value = instantiate_node(
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 347, in instantiate_node
+    return _call_target(_target_, partial, args, kwargs, full_key)
+  File "/home/filip.sluzewski/miniconda3/envs/cytodl/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 97, in _call_target
+    raise InstantiationException(msg) from e
+hydra.errors.InstantiationException: Error in call to target 'cyto_dl.datamodules.multidim_image.MultiDimImageDataset':
+ValueError("For image /allen/programs/allencell/data/proj0/6c4/8dc/dad/25c/2fb/c79/54c/d68/579/864/7c/3500007063_20250207_20X_Timelapse_ZSD0-02.czi unable to find scene `P35-E5`, available scenes are ('P2-B2', 'P1-B2', 'P3-B2', 'P4-B3', 'P5-B3', 'P6-B3', 'P7-B4', 'P8-B4', 'P9-B4', 'P13-B5', 'P11-B5', 'P12-B5', 'P15-B6', 'P14-B6', 'P10-B6', 'P16-B8', 'P18-B8', 'P17-B8', 'P19-B9', 'P21-B9', 'P20-B9', 'P24-B10', 'P23-B10', 'P22-B10', 'P26-D2', 'P27-D2', 'P28-D3', 'P29-D3', 'P30-D3', 'P32-D4', 'P31-D4', 'P33-D4', 'P36-D6', 'P34-D6', 'P35-D6', 'P39-D8', 'P38-D8', 'P37-D8', 'P41-D10', 'P40-D10', 'P42-D10', 'P45-E10', 'P44-E10', 'P43-E10', 'P46-E7', 'P48-E7', 'P47-E7', 'P51-E6', 'P50-E6', 'P49-E6', 'P52-E5', 'P53-E5', 'P54-E5', 'P57-E4', 'P56-E4', 'P55-E4', 'P59-E3', 'P58-E3', 'P60-E3', 'P61-F3', 'P62-F3', 'P63-F3', 'P66-F7', 'P65-F7', 'P64-F7', 'P67-G10', 'P69-G10', 'P68-G10', 'P71-G9', 'P70-G9', 'P72-G9')")
+full_key: data.dataset
+[2025-05-19 14:22:40,789][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 14:23:25,905][cyto_dl.utils.template_utils][INFO] - Disabling python warnings! <cfg.extras.ignore_warnings=True>
+[2025-05-19 14:23:25,906][cyto_dl.utils.template_utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2025-05-19 14:23:25,938][cyto_dl.utils.template_utils][INFO] - Printing config tree with Rich! <cfg.extras.print_config=True>
+[2025-05-19 14:28:45,438][__main__][INFO] - Instantiating model <cyto_dl.models.im2im.MultiTaskIm2Im>
+[2025-05-19 14:28:46,622][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmp3_n_yhs7
+[2025-05-19 14:28:46,623][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmp3_n_yhs7/_remote_module_non_scriptable.py
+[2025-05-19 14:28:46,635][__main__][INFO] - Instantiating loggers...
+[2025-05-19 14:28:46,635][cyto_dl.utils.template_utils][INFO] - Instantiating logger <lightning.pytorch.loggers.csv_logs.CSVLogger>
+[2025-05-19 14:28:46,635][__main__][INFO] - Instantiating callbacks...
+[2025-05-19 14:28:46,636][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>
+[2025-05-19 14:28:46,647][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>
+[2025-05-19 14:28:46,649][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>
+[2025-05-19 14:28:46,649][cyto_dl.utils.template_utils][INFO] - Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>
+[2025-05-19 14:28:46,650][cyto_dl.utils.template_utils][INFO] - Instantiating callback <cyto_dl.callbacks.image_saver.ImageSaver>
+[2025-05-19 14:28:46,709][__main__][INFO] - Instantiating trainer <lightning.Trainer>
+[2025-05-19 14:28:46,758][__main__][INFO] - Logging hyperparameters!
+[2025-05-19 14:28:47,314][__main__][INFO] - Starting testing!
+[2025-05-19 17:40:15,216][cyto_dl.utils.template_utils][INFO] - Closing loggers...
+[2025-05-19 17:40:15,224][cyto_dl.utils.template_utils][INFO] - Output dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations

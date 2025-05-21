@@ -35,8 +35,8 @@ def generate_csv(
             Interval between timepoints that are segmented. (Default 1)
             
     '''
-    if isinstance(img_path, str):
-        img_path = Path(img_path)
+    # if isinstance(img_path, str):
+    #     img_path = Path(img_path)
     
     #load image
     img = BioImage(img_path)
@@ -51,6 +51,7 @@ def generate_csv(
     assert start_tp >= 0, "Invalid start: start_tp < 0"
 
     df_scenes = []
+    print(scenes)
     for scene in scenes:
         #set img scene
         img.set_scene(scene)
@@ -83,8 +84,11 @@ def generate_csv(
 
 # CLI inputs
 parser = ArgumentParser()
-parser.add_argument('--czi', type=str, required=True,
+parser.add_argument('--czi', type=str, default=None,
                     help='Source czi file for all scenes')
+parser.add_argument('--manifest', type=str, default=None,
+                    help='Source czi file for all scenes')
+
 parser.add_argument('--output_dir', type=str, required=True,
                     help='Directory to save csv. Name will be same as czi')
 parser.add_argument('--channel', type=int, default=2,
@@ -103,15 +107,34 @@ if __name__ == "__main__":
     output = Path(args.output_dir)
     output.mkdir(exist_ok=True, parents=True)
 
-    df_csv = generate_csv(
-        img_path=args.czi,
-        channel=args.channel,
-        scenes=args.scenes,
-        start_tp=args.start,
-        end_tp=args.end,
-        step=args.step
-    )
+    if args.czi is not None:
+        df_csv = generate_csv(
+            img_path=args.czi,
+            channel=args.channel,
+            scenes=args.scenes,
+            start_tp=args.start,
+            end_tp=args.end,
+            step=args.step
+        )
+    elif args.manifest is not None:
+        df_manifest = pd.read_csv(args.manifest, index_col=None)
+        df_csv = []
+        for _, row in df_manifest.iterrows():
+            fn = row['Raw Converted File Download'].replace('\\','/')
+            df_csv.append(
+                generate_csv(
+                    img_path=fn,
+                    channel=args.channel,
+                    scenes=args.scenes,
+                    start_tp=args.start,
+                    end_tp=args.end,
+                    step=args.step
+                )
+            )
+        df_csv = pd.concat(df_csv, ignore_index=True)
+    else:
+        SyntaxError('Must provide either a source file or a manifest of source files')
 
-    df_csv.to_csv(output / Path(args.czi).name.replace('.czi','csv'), index=False)
+    df_csv.to_csv(output / 'segmentation_manifest.csv', index=False)
 
     

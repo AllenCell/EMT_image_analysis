@@ -19,7 +19,7 @@ with suppress(ValueError):
 
 
 @utils.task_wrapper
-def evaluate(cfg: DictConfig) -> Tuple[dict, dict, dict]:
+def evaluate(cfg: DictConfig, data=None) -> Tuple[dict, dict, dict]:
     """Evaluates given checkpoint on a datamodule testset.
 
     This method is wrapped in optional @task_wrapper decorator which applies extra utilities

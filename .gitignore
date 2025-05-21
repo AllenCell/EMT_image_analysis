@@ -1,3 +1,4 @@
 .pdm-python
 pdm.toml
 .venv
+CollagenIV_segmentation/cytoDL_configs/code/logs
