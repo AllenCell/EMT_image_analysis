@@ -22,6 +22,12 @@ def background_subtracted_segmentation(seg_fn, output, threshold=0.25):
     '''
     Processes the segmentation probability mask to keep only the largest connected component in the segmentation mask
     '''
+    output_save_name = f"{seg_fn.stem}_seg_collagen.tiff"
+    if (output / output_save_name).exists():
+        pred = BioImage(output / output_save_name).data.squeeze()
+        if np.any(pred):
+            return
+
     pred = BioImage(seg_fn).data.squeeze()
     pred_thresh = pred> threshold*255
     
@@ -34,11 +40,14 @@ def background_subtracted_segmentation(seg_fn, output, threshold=0.25):
     pred_thresh = skimage.measure.label(pred_thresh)
     # only keep largest object
     lumen_sizes = [prop.area for prop in skimage.measure.regionprops(pred_thresh)]
-    tempelate_background = np.where(
-        pred_thresh == (np.argmax(lumen_sizes)+1), 
-        pred, 0)
+    if len(lumen_sizes) == 0:
+        tempelate_background = np.zeros_like(pred_thresh)
+    else:
+        tempelate_background = np.where(
+            pred_thresh == (np.argmax(lumen_sizes)+1), 
+            pred, 0)
 
-    output_save_name = f"{seg_fn.stem}_seg_collagen.tiff"        
+    # output_save_name = f"{seg_fn.stem}_seg_collagen.tiff"        
     OmeTiffWriter().save(tempelate_background, output / output_save_name, dim_order="ZYX")
 
     return
@@ -56,7 +65,7 @@ if __name__ == "__main__":
     output = Path(args.output_dir)
     output.mkdir(exist_ok=True, parents=True)
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=20) as executor:
         futures = [executor.submit(background_subtracted_segmentation, fn, output) for fn in seg_fns]
         for future in tqdm(as_completed(futures), total=len(futures), desc="Processing Segmentations"):
             try:
