@@ -961,6 +961,7 @@ def process_directory(
                 )
                 continue
             raw_path = os.path.join(raw_dir, raw_file)
+            # import pdb; pdb.set_trace()
             future = executor.submit(
                 process_single_tif,
                 raw_path,
@@ -1069,6 +1070,12 @@ def segment_volume_from_array(
     """
     Segments a 3D volume per timepoint using the Cellpose model.
     """
+    output_name = f"{image_name}_cp_masks.tif"
+    # Use a new variable to avoid reassigning output_path.
+    output_file_path = os.path.join(output_path, output_name)
+    if Path(output_file_path).exists():
+        return
+
     vol = load_image(img_path).get_image_data("ZYX")
     print(
         f"[DEBUG] Segmenting {image_name} timepoint {timepoint}, volume shape: {vol.shape}"
@@ -1098,9 +1105,7 @@ def segment_volume_from_array(
         if vol.ndim == 4 and vol.shape[3] == 1 and vol_deblur.ndim == 3:
             vol_deblur = vol_deblur[..., np.newaxis]
         vol = vol_deblur
-    output_name = f"{image_name}_cp_masks.tif"
-    # Use a new variable to avoid reassigning output_path.
-    output_file_path = os.path.join(output_path, output_name)
+    
     try:
         print(
             f"[DEBUG] Running segmentation for {image_name} timepoint {timepoint} on volume shape: {vol.shape}"
