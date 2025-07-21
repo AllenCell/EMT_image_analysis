@@ -1,0 +1,177 @@
+experiment_name: basement_membrane_semseg
+run_name: basement_membrane_semseg
+task_name: eval
+tags:
+- dev
+ckpt_path: /allen/aics/emt/basement_membrane_segmentation/Resubmission/collagenIV_mask_seg_model_checkpoint.ckpt
+data:
+  _target_: monai.data.DataLoader
+  num_workers: 16
+  batch_size: 1
+  dataset:
+    _target_: cyto_dl.datamodules.multidim_image.MultiDimImageDataset
+    channel_column: ${column_channel}
+    img_path_column: ${source_col}
+    cache_num: 0
+    transform:
+      _target_: monai.transforms.Compose
+      transforms:
+      - _target_: cyto_dl.image.io.BioIOImageLoaderd
+        path_key: original_path
+        scene_key: ${scene_col}
+        out_key: ${source_col}
+        include_meta_in_filename: true
+      - _target_: monai.transforms.ToTensord
+        keys: ${source_col}
+      - _target_: monai.transforms.NormalizeIntensityd
+        keys: ${source_col}
+    csv_path: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentation_manifest.csv
+  _aux:
+    patch_shape:
+    - 8
+    - 512
+    - 512
+model:
+  _target_: cyto_dl.models.im2im.MultiTaskIm2Im
+  save_images_every_n_epochs: 1
+  save_dir: ${paths.output_dir}
+  x_key: ${source_col}
+  backbone:
+    _target_: monai.networks.nets.DynUNet
+    spatial_dims: ${spatial_dims}
+    in_channels: ${raw_im_channels}
+    out_channels: 1
+    strides:
+    - 1
+    - 2
+    - 2
+    - 2
+    kernel_size:
+    - 3
+    - 3
+    - 3
+    - 3
+    upsample_kernel_size:
+    - 2
+    - 2
+    - 2
+    filters:
+    - 16
+    - 32
+    - 64
+    - 128
+    dropout: 0.05
+    res_block: true
+  task_heads: ${kv_to_dict:${model._aux._tasks}}
+  optimizer:
+    generator:
+      _partial_: true
+      _target_: torch.optim.Adam
+      lr: 0.0001
+      weight_decay: 0.0001
+  lr_scheduler:
+    generator:
+      _partial_: true
+      _target_: torch.optim.lr_scheduler.ExponentialLR
+      gamma: 0.995
+  inference_args:
+    sw_batch_size: 1
+    roi_size: ${data._aux.patch_shape}
+    overlap: 0.5
+    mode: gaussian
+  _aux:
+    _tasks:
+    - - ${target_col}
+      - _target_: cyto_dl.nn.BaseHead
+        loss:
+          _target_: torch.nn.BCEWithLogitsLoss
+        postprocess:
+          input:
+            _target_: cyto_dl.models.im2im.utils.postprocessing.ActThreshLabel
+            rescale_dtype: numpy.uint8
+          prediction:
+            _target_: cyto_dl.models.im2im.utils.postprocessing.ActThreshLabel
+            activation:
+              _target_: torch.nn.Sigmoid
+            rescale_dtype: numpy.uint8
+logger:
+  csv:
+    _target_: lightning.pytorch.loggers.csv_logs.CSVLogger
+    save_dir: ${paths.output_dir}
+    name: csv/
+    prefix: ''
+callbacks:
+  model_checkpoint:
+    _target_: lightning.pytorch.callbacks.ModelCheckpoint
+    dirpath: ${paths.output_dir}/checkpoints
+    filename: epoch_{epoch:03d}
+    monitor: val/loss
+    verbose: false
+    save_last: true
+    save_top_k: 1
+    mode: min
+    auto_insert_metric_name: false
+    save_weights_only: false
+    every_n_train_steps: null
+    train_time_interval: null
+    every_n_epochs: 1
+    save_on_train_epoch_end: null
+  early_stopping:
+    _target_: lightning.pytorch.callbacks.EarlyStopping
+    monitor: val/loss
+    min_delta: 0.0
+    patience: 100
+    verbose: false
+    mode: min
+    strict: true
+    check_finite: true
+    stopping_threshold: null
+    divergence_threshold: null
+    check_on_train_epoch_end: null
+  model_summary:
+    _target_: lightning.pytorch.callbacks.RichModelSummary
+    max_depth: -1
+  rich_progress_bar:
+    _target_: lightning.pytorch.callbacks.RichProgressBar
+  segmentation_output:
+    _target_: cyto_dl.callbacks.image_saver.ImageSaver
+    save_dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+    stages:
+    - train
+    - test
+    - val
+    - predict
+trainer:
+  _target_: lightning.Trainer
+  default_root_dir: ${paths.output_dir}
+  min_epochs: 1
+  max_epochs: 10
+  accelerator: gpu
+  devices: 1
+  precision: 16
+  check_val_every_n_epoch: 1
+  deterministic: false
+  detect_anomaly: false
+  max_time: null
+paths:
+  root_dir: ${oc.env:PROJECT_ROOT, './'}
+  data_dir: ${paths.root_dir}/data/
+  log_dir: ${paths.root_dir}/logs/
+  output_dir: /allen/aics/emt/basement_membrane_segmentation/Resubmission/segmentations
+  work_dir: ${hydra:runtime.cwd}
+extras:
+  ignore_warnings: true
+  enforce_tags: true
+  print_config: true
+  precision:
+    _target_: torch.set_float32_matmul_precision
+    precision: medium
+seed: 12345
+source_col: path
+target_col: out_path
+column_channel: channel
+scene_col: scene
+spatial_dims: 3
+raw_im_channels: 1
+checkpoint:
+  ckpt_path: /allen/aics/emt/basement_membrane_segmentation/Resubmission/collagenIV_mask_seg_model_checkpoint.ckpt
