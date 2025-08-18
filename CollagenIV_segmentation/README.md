@@ -37,8 +37,6 @@ is being segmented.
 The template data, model, and experiment config are found in the `cytoDL_configs` 
 directory. The model weights that we are using for the segmentation model can be 
 downloaded through curl into the directory of your choice.
-
-
 ```bash
 cd /directory/to/save/weights/
 
