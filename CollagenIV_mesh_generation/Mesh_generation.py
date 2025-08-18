@@ -1,6 +1,5 @@
 from bioio import BioImage
 import numpy as np
-import pandas as pd
 import pyvista as pv
 from skimage.transform import resize
 from skimage.exposure import rescale_intensity
@@ -9,13 +8,19 @@ from pathlib import Path
 import open3d as o3d
 import pyacvd
 from tqdm import tqdm
+from time import asctime, localtime
+import pandas as pd
 
 from argparse import ArgumentParser
 
 ######---------Main code---------######
 
+def time():
+    return asctime(localtime())
+
 def mesh_generation(
-        segmentation_zarr: str,
+        manifest_path: str,
+        movie_id:str,
         output_directory: str,
         start_timepoint: int=0,
         end_timepoint: int=97,
@@ -38,7 +43,9 @@ def mesh_generation(
     out_dir.mkdir(parents=True, exist_ok=True   )
     
     # load the segmentation
-    segmentations = BioImage(segmentation_zarr)
+    df = pd.read_csv(manifest_path)
+    df = df[df['Movie Unique ID'] == movie_id]
+    segmentations = BioImage(df['CollagenIV Segmentation Probability File Download'].values[0])
     
     # set the timepoints to process
     num_timepoints = int(segmentations.shape[0])
@@ -161,9 +168,9 @@ def process_seg(
     
     # mesh cleanup
     pSurf = pv.wrap(mesh)
-    pSurf.subdivide_adaptive(max_edge_len=5, inplace=True)
+    # pSurf.subdivide_adaptive(max_edge_len=5, inplace=True)
     clus = pyacvd.Clustering(pSurf)
-    clus.subdivide(2)
+    clus.subdivide(3)
     clus.cluster(10000)
     mesh = clus.create_mesh()
 
@@ -248,6 +255,7 @@ def sample_segmentation(
     seg = seg.astype(np.float32) / seg.max()
 
     # sample points from the segmentation
+    seg = np.nan_to_num(seg)
     sample_probs = np.clip(seg, probability_threshold, 1)
     sample_probs = rescale_intensity(sample_probs, out_range=(0,1))
     sample_probs = sample_probs / np.sum(sample_probs)
