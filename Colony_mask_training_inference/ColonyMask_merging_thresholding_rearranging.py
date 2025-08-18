@@ -23,7 +23,6 @@ from skimage.filters import threshold_otsu
 from aicsimageio import AICSImage
 from aicsimageio.writers.ome_tiff_writer import OmeTiffWriter
 from tifffile import imsave
-#import cv2
 import matplotlib.pyplot as plt
 
 
@@ -40,17 +39,18 @@ def MyconvertFloatToChar(img):
     return img.astype(np.uint8)
 
 
-dir_path = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch2/seg/*tif"
-path_512 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch3/seg/"
-path_128 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch1/seg/"
-targetname = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/multiscale_all_cells_mask_v0/"
+dir_path = "./data/infer_movie_multiscale_patch2/seg/*tif"
+path_512 = "./data/infer_movie_multiscale_patch3/seg/"
+path_128 = "./data/infer_movie_multiscale_patch1/seg/"
+targetname = "./data/multiscale_all_cells_mask_v0/"
 
 for filename in glob.glob(dir_path):
     # Directory prep
     print(filename.split('/')[-1])
     imgname = filename.split('/')[-1]
-    id_temp = imgname.split('fms_id=')[1]
-    fms_id = id_temp.split('_')[0]
+    #id_temp = imgname.split('fms_id=')[1]
+    #fms_id = id_temp.split('_')[0]
+    fms_id = imgname.split('_')[0] + '_' + imgname.split('_')[1]
     print(fms_id)
     fms_id_dir_path = targetname + fms_id 
     if not os.path.exists(fms_id_dir_path):
@@ -87,5 +87,3 @@ for filename in glob.glob(dir_path):
     out=bw_all.astype(np.uint8)
     out[out>0] = 255
     imsave(targetfilename, out)
-
-

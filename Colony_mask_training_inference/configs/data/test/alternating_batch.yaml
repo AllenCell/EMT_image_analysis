@@ -1,0 +1,26 @@
+_target_: cyto_dl.datamodules.dataframe.DataframeDatamoduleMultiTask
+
+path:
+cache_dir:
+
+num_workers: 8
+batch_size: 1
+pin_memory: True
+persistent_workers: False
+split_column:
+
+columns:
+  - ${source_col}
+  - ${target_col}
+  - ${target2_col}
+  - head
+
+transforms:
+  _target_: monai.transforms.LoadImaged
+  keys:
+    - ${source_col}
+    - ${target_col}
+    - ${target2_col}
+  reader:
+    - _target_: cyto_dl.image.io.MonaiBioReader
+      dimension_order_out: "CZYX"
