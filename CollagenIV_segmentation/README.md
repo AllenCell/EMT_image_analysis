@@ -37,16 +37,24 @@ is being segmented.
 The template data, model, and experiment config are found in the `cytoDL_configs` 
 directory. The model weights that we are using for the segmentation model can be 
 downloaded through curl into the directory of your choice.
-
-
 ```bash
 cd /directory/to/save/weights/
 
 curl -O https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/collagenIV_mask_seg_model_checkpoint.ckpt?versionId=cUFbWrMmZLSOOztuZwaUob5vLLUAZ6RU
 ```
 
-Make sure to change `ckpt_path` in `cytoDL_configs/experiment/segmentation_basement_membrane.yaml`
-has be changed to your loacally saved model weights.
+In `cytoDL_configs/experiment/segmentation_basement_membrane.yaml` fill in the following arguments with the appropriate arguments.
+
+- `ckpt_path`: your locally saved model weights.
+- `csv_path`: the csv manifest of images to segment
+- `output_dir`: folder to save results
+
+To run the segmentation:
+```bash
+cd cytoDL_configs/code
+
+python eval.py
+```
 
 # Part 3: Basement membrane postprocessing
 
