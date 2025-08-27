@@ -54,23 +54,23 @@ EMT_image_analysis/
 ## Installation
 
 Ensure you have Python 3.12 installed. Install required dependencies by running:
-#*Note:* CUDA GPU REQUIRED, make sure the proper CUDA drivers are installed.  Pick GPU version of torch which matches you CUDA version (https://pytorch.org/ 11.8, 12.4, or 12.6)
+#*Note:* CUDA GPU REQUIRED, make sure the proper CUDA drivers are installed.  Pick GPU version of torch which matches your CUDA version (https://pytorch.org/ 11.8, 12.4, or 12.6). We tested against CUDA 12.6.
 
 BFS segmentation workflow app install instructions:
 
-1. conda create --name bfs python=3.12
+1. `conda create --name bfs python=3.12`
 
-2. conda activate bfs
+2. `conda activate bfs`
 
-3. python -m pip install cellpose==3.1.1.2
+3. `python -m pip install cellpose==3.1.1.2`
 
-4. pip uninstall torch #removes cpu version of torch which is installed by default
+4. `pip uninstall torch` (removes cpu version of torch which is installed by default)
 
-5. pip install torch --index-url https://download.pytorch.org/whl/cu126
+5. `pip install torch --index-url https://download.pytorch.org/whl/cu126`
 
-6. pip install cellpose[gui]==3.1.1.2
+6. `pip install cellpose[gui]==3.1.1.2`
 
-7. run "cellpose --Zstack". You should see the following output:
+7. Run `cellpose --Zstack`. You should see the following output:
 
 ```
 (bfs) C:\Users\derek>cellpose --Zstack
