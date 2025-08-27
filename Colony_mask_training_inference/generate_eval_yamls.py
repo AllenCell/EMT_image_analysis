@@ -14,7 +14,7 @@ SCALE_PATCH_SHAPES = {
     3: [16, 512, 512]
 }
 
-DEFAULT_TEMPLATE_YAML = 'eval_scale1_7521_p1.yaml'
+DEFAULT_TEMPLATE_YAML = 'template_scale1.yaml'
 DEFAULT_DATA_DIR = '../../../data/'
 
 def count_parts(data_dir: str, csv_base_name: str) -> int:
@@ -34,7 +34,6 @@ def count_parts(data_dir: str, csv_base_name: str) -> int:
     ])
 
 def generate_yaml_files(
-    movie_num: str,
     scale: int,
     batch_size: int,
     save_dir: str,
@@ -46,7 +45,6 @@ def generate_yaml_files(
     Generate YAML files for evaluation based on a template.
 
     Args:
-        movie_num (str): Movie number (e.g., '7523').
         scale (int): Scale level (1, 2, or 3).
         batch_size (int): Batch size for YAMLs.
         save_dir (str): Directory to save generated YAMLs.
@@ -67,8 +65,8 @@ def generate_yaml_files(
     if scale not in SCALE_PATCH_SHAPES:
         raise ValueError(f"Invalid scale {scale}. Must be one of {list(SCALE_PATCH_SHAPES.keys())}.")
 
-    csv_base_name = f"{movie_num}_all_moviepaths_qc"
-    output_yaml_prefix = f"eval_scale{scale}_{movie_num}_p"
+    csv_base_name = f"all_moviepaths_qc"
+    output_yaml_prefix = f"eval_scale{scale}_p"
     patch_shape = SCALE_PATCH_SHAPES[scale]
 
     # Load template YAML
@@ -90,7 +88,7 @@ def generate_yaml_files(
 
         # Update fields
         yaml_data['data']['csv_path'] = f"${{paths.data_dir}}/{csv_name}"
-        yaml_data['model']['save_dir'] = f"/allen/aics/emt/all_cells_mask/{movie_num}_scale{scale}"
+        yaml_data['model']['save_dir'] = f"scale{scale}"
         yaml_data['data']['batch_size'] = batch_size
         yaml_data['data'].setdefault('_aux', {})['patch_shape'] = patch_shape
 
@@ -103,7 +101,6 @@ def generate_yaml_files(
 
 def main():
     parser = argparse.ArgumentParser(description="Generate evaluation YAMLs for cyto-dl.")
-    parser.add_argument("--movie_num", type=str, required=True, help="Movie number (e.g., 7523)")
     parser.add_argument("--scale", type=int, choices=[1, 2, 3], required=True, help="Scale level (1, 2, or 3)")
     parser.add_argument("--batch_size", type=int, required=True, help="Batch size for each YAML config")
     parser.add_argument("--save_dir", type=str, required=True, help="Directory to save generated YAMLs")
@@ -114,7 +111,6 @@ def main():
     args = parser.parse_args()
 
     generate_yaml_files(
-        movie_num=args.movie_num,
         scale=args.scale,
         batch_size=args.batch_size,
         save_dir=args.save_dir,

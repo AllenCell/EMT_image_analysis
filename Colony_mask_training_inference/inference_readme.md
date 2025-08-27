@@ -9,15 +9,9 @@ The following steps outline the workflow for generating All Cells Mask (ACM) out
 
 ---
 
-## 1. Prepare CSV Files from `.ome.zarr`
+## 1. Prepare CSV Files from `.ome.zarr` (or your data files)
 
-After splitting the input files, you'll obtain `.ome.zarr` data, typically stored at:
-
-```
-/allen/aics/acm_data/*.ome.zarr
-```
-
-Since `cyto-dl` expects inputs in CSV format, use the `csv_creator.py` script with a **barcode number** to generate the initial CSV file.
+Since `cyto-dl` expects inputs in CSV format, use the `csv_creator.py` script to generate the initial CSV file with path to your data files.
 
 ---
 

@@ -5,8 +5,6 @@ import argparse
 import sys
 import logging
 
-# Constants
-MOVIE_PREFIX = '350000'  # Prefix for movie folder names
 
 # Configure logging
 logging.basicConfig(
@@ -14,7 +12,7 @@ logging.basicConfig(
     format='[%(levelname)s] %(message)s'
 )
 
-def create_csv_for_movie(base_root: str, movie_num: str, output_dir: str = '.') -> bool:
+def create_csv_for_movie(base_root: str, output_dir: str = '.') -> bool:
     """
     Generates a CSV listing all .ome.zarr files for the specified movie.
 
@@ -26,14 +24,13 @@ def create_csv_for_movie(base_root: str, movie_num: str, output_dir: str = '.') 
     Returns:
         bool: True if CSV was created successfully, False otherwise.
     """
-    movie_dir = os.path.join(base_root, f'{MOVIE_PREFIX}{movie_num}')
-    zarr_files = glob.glob(os.path.join(movie_dir, '*.ome.zarr'))
+    zarr_files = glob.glob(os.path.join(base_root, '*.ome.zarr'))
 
     if not zarr_files:
-        logging.warning(f"No .ome.zarr files found for movie number {movie_num} in {movie_dir}")
+        logging.warning(f"No .ome.zarr files found in {base_root}")
         return False
 
-    output_csv = os.path.join(output_dir, f"{movie_num}_all_moviepaths_qc.csv")
+    output_csv = os.path.join(output_dir, "all_moviepaths_qc.csv")
 
     try:
         with open(output_csv, mode='w', newline='') as csv_file:
@@ -51,18 +48,12 @@ def create_csv_for_movie(base_root: str, movie_num: str, output_dir: str = '.') 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Generate CSV of .ome.zarr files for a given movie number."
-    )
-    parser.add_argument(
-        'movie_number',
-        type=str,
-        help="Movie number (digits only), e.g. 7521"
+        description="Generate CSV of .ome.zarr files."
     )
     parser.add_argument(
         '--base_path',
         type=str,
-        default='/allen/aics/emt/converted_zarr_files_2/',
-        help="Base directory containing movie folders (default: %(default)s)"
+        help="Base directory containing movie files (default: %(default)s)"
     )
     parser.add_argument(
         '--output_dir',
@@ -74,7 +65,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    success = create_csv_for_movie(args.base_path, args.movie_number, args.output_dir)
+    success = create_csv_for_movie(args.base_path, args.output_dir)
     if not success:
         sys.exit(1)
 

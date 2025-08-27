@@ -7,16 +7,16 @@ from typing import Optional
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-def split_csv_chunks(movie_number: str, chunk_size: int = 5, base_dir: str = '.') -> None:
+def split_csv_chunks(chunk_size: int = 5, base_dir: str = '.') -> None:
     """
-    Split the CSV file for the given movie number into chunks.
+    Split the CSV file into chunks.
+    IMPORTANT: Make sure to update the csv filename if it changes.
 
     Args:
-        movie_number (str): The movie number prefix for the CSV file.
         chunk_size (int): Number of rows per chunk.
         base_dir (str): Directory where the CSV file is located.
     """
-    filename = os.path.join(base_dir, f"{movie_number}_all_moviepaths_qc.csv")
+    filename = os.path.join(base_dir, "all_moviepaths_qc.csv")
 
     if not os.path.isfile(filename):
         logging.error(f"File '{filename}' does not exist.")
@@ -34,12 +34,7 @@ def split_csv_chunks(movie_number: str, chunk_size: int = 5, base_dir: str = '.'
 
 def parse_args(): 
     parser = argparse.ArgumentParser(
-        description="Split movie CSV file into smaller chunks by movie number."
-    )
-    parser.add_argument(
-        "movie_number",
-        type=str,
-        help="Movie number prefix, e.g. 7287"
+        description="Split CSV file into smaller chunks."
     )
     parser.add_argument(
         "--chunk_size",
