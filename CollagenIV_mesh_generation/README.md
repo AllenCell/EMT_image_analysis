@@ -26,10 +26,10 @@ This code has been tested in Python 3.10.
 python -m venv meshgen-env
 
 # activate env and install requirements
-./meshgen-env/bin/activate
+source meshgen-env/bin/activate
 
 cd EMT_image_analysis/Collagen_Mesh_Generation
-pip install -r requirments.txt
+pip install -r requirements.txt
 
 # run script
 python Mesh_generation.py \
