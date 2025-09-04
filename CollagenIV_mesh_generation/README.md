@@ -29,7 +29,7 @@ python -m venv meshgen-env
 source meshgen-env/bin/activate
 
 cd EMT_image_analysis/Collagen_Mesh_Generation
-pip install -r requirements.txt
+pip install .
 
 # run script
 python Mesh_generation.py \
