@@ -43,7 +43,7 @@ python Mesh_generation.py \
 Assuming you are working in an environment with python 3.10 and the requirements installed. You can import the main function into your script with 
 
 ```python
-from EMT_image_analysis.Collagen_Mesh_Generation.Mesh_generation import mesh_generation
+from CollagenIV_mesh_generation.Mesh_generation import mesh_generation
 ```
 
 The inputs to the function are identical to the CLI approach.
