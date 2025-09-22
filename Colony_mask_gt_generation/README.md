@@ -1,4 +1,4 @@
-# Instructions to run the fiji macro for colonymask groundtruth generation
+# Instructions to run the fiji macro for colonymask groundtruth generation - Method has been validated on TIFF images
   # Run specific variables
     # Images should be split time point-wise and channel-wise 
     # In SOURCE, provide the source directory containing CytoGFP tagged images
