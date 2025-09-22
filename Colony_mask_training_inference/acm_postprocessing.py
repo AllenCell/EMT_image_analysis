@@ -55,7 +55,7 @@ def load_input_csv(barcode: str) -> pd.DataFrame:
 
 
 def create_acm_mapping(df: pd.DataFrame, barcode: str) -> pd.DataFrame:
-    base_acm_path = f'/allen/aics/emt/all_cells_mask/{barcode}/infer_{barcode}_multiscale'
+    base_acm_path = f'/all_cells_mask/{barcode}/infer_{barcode}_multiscale'
     df['ACM_path'] = df['movie_path'].apply(
         lambda path: f"{base_acm_path}/{extract_movie_name(path)}"
     )

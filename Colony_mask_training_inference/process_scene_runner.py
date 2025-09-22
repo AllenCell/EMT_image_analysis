@@ -13,8 +13,8 @@ import logging
 # Constants
 POLL_INTERVAL = 0.1  # seconds
 DEFAULT_PROCESS_SCRIPT = 'process_scene.py'
-DEFAULT_CSV_PATH = 'data/7420_all_moviepaths_qc.csv'
-DEFAULT_BASE_PATH = '/allen/aics/emt/all_cells_mask'
+DEFAULT_CSV_PATH = 'data/all_moviepaths_qc.csv' # update this path for your data csv file
+DEFAULT_BASE_PATH = '/all_cells_mask' # update this path for your data base directory
 
 def setup_logging() -> None:
     """Set up logging for the main process."""
