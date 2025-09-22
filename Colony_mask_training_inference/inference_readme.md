@@ -7,6 +7,8 @@
 
 `git clone https://github.com/AllenCell/EMT_image_analysis.git`
 
+`cd Colony_mask_training_inference`
+
 2. You can use either `UV` or `PDM` to set up the Python environment using the provided requirements.txt file.
 
 For UV, follow these instructions:
