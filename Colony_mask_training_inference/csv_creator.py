@@ -18,7 +18,6 @@ def create_csv_for_movie(base_root: str, output_dir: str = '.') -> bool:
 
     Args:
         base_root (str): Root directory containing movie folders.
-        movie_num (str): Movie number string, e.g., '7521'.
         output_dir (str): Directory where the output CSV will be saved.
 
     Returns:

@@ -1,7 +1,31 @@
 
 # ACM Generation and Postprocessing Steps
 
-This guide complements the official instructions available [here](https://github.com/AllenCell/EMT_image_analysis/tree/sm_colony_mask_pred_test_v0/Colony_mask_training_inference#instructions-to-run-the-all-cells-maskacm-inference-generation-pipeline-on-linux-machines).
+## Installation
+
+1. Clone this git repository.
+
+`git clone https://github.com/AllenCell/EMT_image_analysis.git`
+
+2. You can use either `UV` or `PDM` to set up the Python environment using the provided requirements.txt file.
+
+For UV, follow these instructions:
+
+`pipx install uv`
+
+`uv venv acm`
+
+`source acm/bin/activate`
+
+`uv pip install -r requirements.txt`
+
+For PDM, follow these instructions:
+
+`pipx install pdm`
+
+`pdm init`
+
+`pdm add -d -r requirements.txt`
 
 ## Overview
 
@@ -38,8 +62,6 @@ Since `cyto-dl` expects inputs in CSV format, use the `csv_creator.py` script to
 
 ## 4. Run Inference
 
-Refer to the [official instructions](https://github.com/AllenCell/EMT_image_analysis/tree/sm_colony_mask_pred_test_v0/Colony_mask_training_inference#instructions-to-run-the-all-cells-maskacm-inference-generation-pipeline-on-linux-machines) for more details.
-
 A typical command looks like:
 
 ```bash
@@ -65,5 +87,6 @@ Since multiple CSVs and YAMLs are involved, automate this using a bash script. S
 
 ---
 
+* Refer to the [instructions](https://github.com/AllenCell/EMT_image_analysis/tree/sm_colony_mask_pred_test_v0/Colony_mask_training_inference#instructions-to-run-the-all-cells-maskacm-inference-generation-pipeline-on-linux-machines) for more details.
 
 * Feel free to modify any of the provided scripts to better fit your pipeline setup.
