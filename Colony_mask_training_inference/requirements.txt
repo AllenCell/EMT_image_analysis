@@ -44,8 +44,6 @@ docker==7.1.0
 edt==3.0.0
 einops==0.8.1
 elementpath==5.0.1
-# Editable install with no version control (EMT_ColonyMask_merging_thresholding_rearranging==0.1.0)
--e /allen/aics/users/ashwin.samudre/exp1/EMT_image_analysis/Colony_mask_training_inference
 exceptiongroup==1.3.0
 fastapi==0.115.12
 fasteners==0.19

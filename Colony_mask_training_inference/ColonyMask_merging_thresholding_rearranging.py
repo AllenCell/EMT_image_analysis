@@ -40,10 +40,12 @@ def MyconvertFloatToChar(img):
     return img.astype(np.uint8)
 
 
-dir_path = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch2/seg/*tif"
-path_512 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch3/seg/"
-path_128 = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch1/seg/"
-targetname = "/allen/aics/assay-dev/users/Sandi/cyto-dl/data/all_cells_mask_test_dir/multiscale_all_cells_mask_v0/"
+# update these paths as needed
+
+dir_path = "/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch2/seg/*tif"
+path_512 = "/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch3/seg/"
+path_128 = "/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patch1/seg/"
+targetname = "/data/all_cells_mask_test_dir/multiscale_all_cells_mask_v0/"
 
 for filename in glob.glob(dir_path):
     # Directory prep

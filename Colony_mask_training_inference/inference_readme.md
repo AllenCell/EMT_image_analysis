@@ -37,9 +37,20 @@ The following steps outline the workflow for generating All Cells Mask (ACM) out
 
 Since `cyto-dl` expects inputs in CSV format, use the `csv_creator.py` script to generate the initial CSV file with path to your data files.
 
+The CSV file should contain these 2 columns: movie_path and bf_channel. E.g., 
+
+|count            |movie_path         |bf_channel        |
+|-----------------|-------------------|------------------|
+|0                |https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/data/3500006062_2_raw_converted.ome.zarr    |0                 |
+|1                |https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/data/3500006062_4_raw_converted.ome.zarr    |0                 |
+
+We recommend storing this CSV inside the `Colony_mask_training_inference/data` directory.
+
 ---
 
-## 2. Split CSV for Parallel Processing
+## 2. Split CSV for Parallel Processing (optional)
+
+This step is optional and you can proceed with a single csv generated from step 1 if your compute allows for it.
 
 `cyto-dl` uses a `DataFrameLoader` that loads all entries from the input CSV. For large datasets, this leads to inefficient processing. To improve performance, we **split the CSV** into smaller chunks using the `csv_splitter.py` script. You can set the desired chunk size in the script.
 
@@ -60,7 +71,7 @@ Since `cyto-dl` expects inputs in CSV format, use the `csv_creator.py` script to
 
 ---
 
-## 4. Run Inference
+## 4. Run Inference to generate outputs per scale
 
 A typical command looks like:
 
@@ -74,6 +85,18 @@ Since multiple CSVs and YAMLs are involved, automate this using a bash script. S
 * For multiple GPUs or MIG instances, duplicate and customize the runner script accordingly.
 * Place `run.sh` in the `EMT_image_analysis/Colony_mask_training_inference/` directory, or modify internal paths if you’re running it from elsewhere.
 
+## 5. Postprocessing to merge outputs and generate all cells mask
+
+Run the command --> `process_scene_runner.py`
+
+Step 4 generates outputs per scale and this script is used to merge the scales and obtain the final all cells mask. The code expects patch-based probabilty masks have already been generated and were stored at `/pathto/Colony_mask_training_inference/data/all_cells_mask_test_dir/eval_whole_movie_multiscale_patchX` (where, X={1, 2, 3})
+
+The output of this script will be the binarized all cells masks and they can be accessed at `/pathto/Colony_mask_training_inference/data/all_cells_mask_test_dir/multiscale_all_cells_mask`.
+
+## 6. CSV creation for feature extraction step
+
+Run `acm_postprocessing.py` to obtain a CSV with initial data paths and their corresponding all cells mask path. This csv can be used for feature extraction step.
+
 ---
 
 ## Summary of Scripts
@@ -84,6 +107,8 @@ Since multiple CSVs and YAMLs are involved, automate this using a bash script. S
 | `csv_splitter.py`    | Split large CSVs into chunks            |
 | `generate_eval_yamls.py` | Generate inference YAMLs per chunk      |
 | `run.sh`                 | Template bash script for inference runs |
+| `process_scene_runner.py`| Runs the merging and thresholding operation for all scenes in parallel |
+| `acm_postprocessing.py`| Creates the CSV mapping input paths with all cells mask output path for feature extraction |
 
 ---
 
