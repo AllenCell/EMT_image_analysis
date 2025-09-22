@@ -1,3 +1,5 @@
+For cytoDL installation, please follow the instructions as provided in All Cells Mask Model Training and Inference [README](../Colony_mask_training_inference/README.md)
+
 The workflow for generating basement membrane is divided into three parts.
 
 # Part 1: Create csv file for running segmentations
