@@ -6,18 +6,16 @@
 
    `git clone https://github.com/AllenCell/EMT_image_analysis.git`
 
-   `cd Colony_mask_training_inference`
+   `cd EMT_image_analysis/Colony_mask_training_inference`
 
 2. Install Python 3.10, either from [python.org](https://www.python.org/downloads/), your operating system package manager, or [pyenv](https://github.com/pyenv/pyenv-installer).
 Check that it is installed correctly by running `python --version` in the terminal.
-Then, you can use either `UV` or `PDM` to set up the Python environment using the provided requirements.txt file.
+Then, you can use `Conda` or `PDM` to set up the Python environment using the provided requirements.txt file.
 
-For UV, follow these instructions:
-```bash
-pipx install uv
-uv venv acm
-source acm/bin/activate
-uv pip install -r requirements.txt
+For Conda, follow these instructions:
+```
+conda env create -f acm-eval.yaml
+conda activate acm-eval
 ```
 
 For PDM, follow these instructions:
@@ -77,7 +75,7 @@ Users are welcome to experiment using this table and save it as a CSV file named
 
 This step is optional (but recommended) and you can proceed with a single csv generated from the previous step if your compute allows for it.
 
-`cyto-dl` uses a `DataFrameLoader` that loads all entries from the input CSV. For large datasets, this leads to inefficient processing. To improve performance, we **split the CSV** into smaller chunks using the `csv_splitter.py` script. You can set the desired chunk size in the script.
+`cyto-dl` uses a `DataFrameLoader` that loads all entries from the input CSV. For large datasets, this leads to inefficient processing. To improve performance, we **split the CSV** into smaller chunks using the `csv_splitter.py` script. You can set the desired chunk size in the script. In case your csv is named `predict_all_cells_mask_zarr_aws_v0.csv` inside the `Colony_mask_training_inference/data` directory, you can run `csv_splitter.py --csv_file data/predict_all_cells_mask_zarr_aws_v0.csv --chunk_size 5` and this will create `n%5` (where `n` is the total number of rows in the csv and `5` is the `chunk size`) number of csv files with names such as `predict_all_cells_mask_zarr_aws_v0_p1.csv` and so on in the same path as the input csv.
 
 ---
 
@@ -85,16 +83,33 @@ This step is optional (but recommended) and you can proceed with a single csv ge
 
 multi-scale patch-based evaluation runs on 3 different patch sizes to generate the prediction. To run prediction on each patch, the evaluation config files (provided in configs/experiment/im2im/eval_scale1.yaml, configs/experiment/im2im/eval_scale2.yaml, and configs/experiment/im2im/eval_scale3.yaml) has to be modified.
 
-As `cyto-dl` requires YAML config files for inference. You can start from a base YAML and generate customized versions for each data chunk using the `generate_eval_yamls.py` script. Here, we provide `template_scale1.yaml` as a base yaml file to generate your own yaml files.
+As `cyto-dl` requires YAML config files for inference. You can start from a base YAML and generate customized versions for each data chunk using the `generate_eval_yamls.py` script. This script allows **scale-specific YAML generation**. Here, we provide `template_scale1.yaml` as a base yaml file to generate your own yaml files.
 
-* The `generate_eval_yamls.py` script allows **scale-specific YAML generation**.
-* You can modify the script to suit your dataset or experiment needs.
-* Ensure that each YAML correctly references:
+### Arguments
 
-  * The corresponding **CSV file**
-  * The appropriate **model checkpoint path**
+- `--scale` (int, required): Scale level. Must be 1, 2, or 3.
+- `--batch_size` (int, required): Batch size for each YAML config.
+- `--save_dir` (str, required): Directory to save generated YAMLs.
+- `--start_index` (int, default=1): Start index for CSV parts (e.g., 1 for _p1.csv).
+- `--template_yaml` (str, required): Path to the base template YAML file.
+- `--data_dir` (str, required): Directory containing the chunked CSV files.
+- `--csv_base_name` (str, required): Base name for chunked CSV files (e.g., 'all_moviepaths_qc').
 
-> Tip: Adjust the base YAML before generating the set, or manually edit the generated files if needed.
+In the `template_scale1.yaml` file, make sure to adjust the correct checkpoint path in line 21 (`ckpt_path`). If you downloaded the checkpoint following step 1 and saved in `EMT_image_analysis/Colony_mask_training_inference/data/`, then your `ckpt_path` should be `EMT_image_analysis/Colony_mask_training_inference/data/all_cells_mask_seg_model_checkpoint.ckpt`.
+
+### Example Usage
+
+```
+python generate_eval_yamls.py \
+  --scale 1 \
+  --batch_size 4 \
+  --save_dir ./eval_yamls \
+  --template_yaml ./template_scale1.yaml \
+  --data_dir ./data \
+  --csv_base_name all_moviepaths_qc
+```
+
+This will generate YAML files like `all_moviepaths_qc_scale1_p1.yaml`, `all_moviepaths_qc_scale1_p2.yaml`, etc., in the `./eval_yamls` directory, one for each chunked CSV file found in `./data` per scale.
 
 ---
 
@@ -106,17 +121,11 @@ To run inference on patch2 run --> `CYTODL_CONFIG_PATH=$PWD/configs python -m cy
 
 To run inference on patch3 run --> `CYTODL_CONFIG_PATH=$PWD/configs python -m cyto_dl.eval experiment=im2im/eval_scale3.yaml`
 
+(e.g. if your yaml is named as `all_moviepaths_qc_scale1_p1.yaml` and stored under `EMT_image_analysis/Colony_mask_training_inference/configs/experiment/im2im/generated_yamls/`, make sure to run with `CYTODL_CONFIG_PATH=$PWD/configs python -m cyto_dl.eval experiment=im2im/generated_yamls/all_moviepaths_qc_scale1_p1.yaml`)
+
 To run on your own model, edit the yaml file ckpt_path with the path to your model.
 
 Predictions for each patch based predictions will be stored at the target location provided in save_dir. By default this location is `Colony_mask_training_inference/data/infer_movie_multiscale_patch1`, `Colony_mask_training_inference/data/infer_movie_multiscale_patch2`, and `Colony_mask_training_inference/data/infer_movie_multiscale_patch3` for different patches.
-
-**Optional speedup for Step 5**
-
-Since multiple CSVs and YAMLs are involved, automate this using a bash script. See the provided `run.sh` template.
-
-* **Edit the GPU UUID** and other arguments in the script.
-* For multiple GPUs or MIG instances, duplicate and customize the runner script accordingly.
-* Place `run.sh` in the `EMT_image_analysis/Colony_mask_training_inference/` directory, or modify internal paths if you’re running it from elsewhere.
 
 ---
 
