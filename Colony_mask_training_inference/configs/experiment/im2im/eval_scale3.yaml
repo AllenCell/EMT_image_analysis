@@ -6,7 +6,7 @@ defaults:
   - override /model: im2im/segmentation_all_cells_mask.yaml
   - override /callbacks: default.yaml
   - override /trainer: gpu.yaml
-  - override /logger: mlflow.yaml
+  - override /logger: csv.yaml
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
@@ -39,6 +39,6 @@ data:
 callbacks:
   predict_saving:
     _target_: cyto_dl.callbacks.ImageSaver
-    save_dir: ${model.save_dir} #/allen/aics/assay-dev/users/Suraj/EMT_Work/image_analysis_test/EMT_image_analysis/Colony_mask_training_inference/eval_whole_movie_multiscale_patch1_zarr_aws1
+    save_dir: ${model.save_dir} 
     stages: ["predict"]
     save_input: False

@@ -1,4 +1,0 @@
-layer_freeze:
-  _target_: cyto_dl.callbacks.LayerFreeze
-  contains:
-  excludes:
