@@ -20,8 +20,7 @@ import itertools
 import pandas as pd
 import random
 from skimage.filters import threshold_otsu
-from aicsimageio import AICSImage
-from aicsimageio.writers.ome_tiff_writer import OmeTiffWriter
+from bioio import BioImage
 from tifffile import imsave
 import matplotlib.pyplot as plt
 
@@ -57,7 +56,7 @@ for filename in glob.glob(dir_path):
         os.makedirs(fms_id_dir_path)
     targetfilename = fms_id_dir_path + '/' + imgname
     # Image operations
-    reader = AICSImage(filename) 
+    reader = BioImage(filename) 
     IMG = reader.data
     IMG = IMG[0]
     print(IMG.shape)
@@ -67,7 +66,7 @@ for filename in glob.glob(dir_path):
     bw = struct_img1 > thre
     
     img_512_path = path_512 + imgname
-    img_512 = AICSImage(img_512_path).data
+    img_512 = BioImage(img_512_path).data
     img_512 = img_512[0]
     struct_img0_512 = img_512[0,:,:,:]
     struct_img1_512 = MyconvertFloatToChar(struct_img0_512)
@@ -75,7 +74,7 @@ for filename in glob.glob(dir_path):
     bw_512 = struct_img1_512 > thre_512
     
     img_128_path = path_128 + imgname
-    img_128 = AICSImage(img_128_path).data
+    img_128 = BioImage(img_128_path).data
     img_128 = img_128[0]
     struct_img0_128 = img_128[0,:,:,:]
     struct_img1_128 = MyconvertFloatToChar(struct_img0_128)
