@@ -52,3 +52,4 @@ OUTPUT_DIR=/path/to/output/masks
 Dataset=example_dataset
 Tini=1
 Tend=10
+```
