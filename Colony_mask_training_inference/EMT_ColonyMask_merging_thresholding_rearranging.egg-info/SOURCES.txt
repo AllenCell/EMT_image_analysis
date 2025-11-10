@@ -1,8 +1,0 @@
-ColonyMask_merging_thresholding_rearranging.py
-README.md
-pyproject.toml
-EMT_ColonyMask_merging_thresholding_rearranging.egg-info/PKG-INFO
-EMT_ColonyMask_merging_thresholding_rearranging.egg-info/SOURCES.txt
-EMT_ColonyMask_merging_thresholding_rearranging.egg-info/dependency_links.txt
-EMT_ColonyMask_merging_thresholding_rearranging.egg-info/requires.txt
-EMT_ColonyMask_merging_thresholding_rearranging.egg-info/top_level.txt
