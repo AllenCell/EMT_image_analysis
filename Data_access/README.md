@@ -26,7 +26,7 @@ python Ome_zarr_importer.py \
 # this example command will download the entire EMT dataset to your Downloads folder 
 python Ome_zarr_importer.py \
     --local_path ~/Downloads/EMT_data \
-    --csv_path https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/manifests/imaging_and_segmentation_data.csv \
+    --csv_path https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/manifests/imaging_and_segmentation_data.csv?versionId=1dPCzwgkgZQpHp_juSoT6nwfFhSuZksk \
     --file_columns "Raw Converted URL" "All Cells Mask URL" "EOMES Nuclear Segmentation URL" "H2B Nuclear Segmentation URL" "CollagenIV Segmentation Probability URL"
 ```
 
