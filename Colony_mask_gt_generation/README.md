@@ -7,10 +7,12 @@ Unlike the **multi-timepoint z-stack sequences** provided in the [OME-ZARR forma
 
 To ensure compatibility with this Fiji macro, the original OME-ZARR files must first be **split by timepoint** and saved following the naming convention below:
 
+"Unique_Dataset_Identifier"_TXX_C=2.tiff
+
 Where:  
 - **`Unique_Dataset_Identifier`** — an optional, user-defined tag to distinguish datasets or experimental conditions  
 - **`TXX`** — the timepoint index (e.g., `T01`, `T15`, etc.)  
-- **`C=2`** — denotes the imaging channel of interest (as used in this workflow)  
+- **`C=2`** — denotes the imaging channel of interest (as used in this workflow) - macro only allows `C=2`. It requires modification for other C values.  
 
 ---
 
