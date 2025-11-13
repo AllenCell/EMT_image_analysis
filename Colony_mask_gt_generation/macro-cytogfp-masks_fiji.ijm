@@ -1,8 +1,10 @@
 // PARAMETERS
-SOURCE = "//allen/aics/microscopy/Data/RnD_Sandbox/3500006256_20240223_Deliverable_ZSD0/ch2/"
-OUTPUT_DIR = "//allen/aics/assay-dev/users/Suraj/EMT_Work/CytoGFP/GT_Generation/otsu_thresholding_test/";
-Dataset = "3500006256_20240223_20X_Timelapse_scene_29";
-Tini = 0;
+SOURCE = "//path/to/source/dir/"
+OUTPUT_DIR = "//path/to/target/dir/";
+Dataset = "Unique_Dataset_Identifier";
+
+//Initial and End time point of the time-lapse for which masks will be generated
+Tini = 0; 
 Tend = 63;
 
 // ============
