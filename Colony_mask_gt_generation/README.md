@@ -1,6 +1,27 @@
 # Instructions to Run the Fiji Macro for ColonyMask Groundtruth Generation
 
-This method has been validated on TIFF images. Follow the steps below to ensure proper execution.
+## 🧬 Dataset Format and Usage
+
+This method has been **validated on 3D TIFF image stacks**, where each TIFF file represents a **single z-stack** corresponding to one **timepoint**.  
+Unlike the **multi-timepoint z-stack sequences** provided in the [OME-ZARR format](https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/), each TIFF used here contains only a single volumetric acquisition.
+
+To ensure compatibility with this Fiji macro, the original OME-ZARR files must first be **split by timepoint** and saved following the naming convention below:
+
+Where:  
+- **`Unique_Dataset_Identifier`** — an optional, user-defined tag to distinguish datasets or experimental conditions  
+- **`TXX`** — the timepoint index (e.g., `T01`, `T15`, etc.)  
+- **`C=2`** — denotes the imaging channel of interest (as used in this workflow)  
+
+---
+
+## ⚙️ Execution Instructions
+
+1. **Split the OME-ZARR dataset** into separate TIFF stacks, one per timepoint.  
+2. **Rename each file** according to the format above.  
+3. **Place all TIFFs** in the designated input directory recognized by the Fiji macro.  
+4. **Run the macro** following the standard Fiji execution steps for this repository.  
+
+This configuration enables consistent preprocessing of volumetric image data for downstream quantitative analysis of 3D cellular structures.
 
 ---
 
