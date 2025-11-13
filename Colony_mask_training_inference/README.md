@@ -39,8 +39,9 @@ This part is not yet fully supported as CytoDL training using OME ZARR files is 
 The model checkpoint path is required to generate the ACM. A pretrained model is provided and can be downloaded from this link -  https://open.quiltdata.com/b/allencell/tree/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt 
 Access the link and click on the "DOWNLOAD FILE" button [top left].  
 
-Alternatively, user can use `curl` to download using the link - https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt?versionId=ejf07rBiw5slyx1zQyurfX6.zpSJ92JM
+Alternatively, user can use `curl` to download using the link and the command - https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt?versionId=ejf07rBiw5slyx1zQyurfX6.zpSJ92JM
 
+`curl -o all_cells_mask_seg_model_checkpoint.ckpt https://allencell.s3.amazonaws.com/aics/emt_timelapse_dataset/supplemental_files/cytodl_checkpoints/all_cells_mask_seg_model_checkpoint.ckpt?versionId=ejf07rBiw5slyx1zQyurfX6.zpSJ92JM`
 
 Create a new sub-directory using the command `mkdir data` inside `Colony_mask_training_inference` directory.
 
