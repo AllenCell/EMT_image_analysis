@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:809afdf73b0df04623b20891a81fab990dc03f8239e370874cd149e22c5cf5b9"
+content_hash = "sha256:282e02f97593324d23003400aaf9457bac3f7424377f895fdc8747b20c9e52f8"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -366,6 +366,42 @@ dependencies = [
 files = [
     {file = "bfio-2.3.0-py2.py3-none-any.whl", hash = "sha256:df343233add10e592a047254397d167c4c22496415287ff5ab4cdb0cb94c110a"},
     {file = "bfio-2.3.0.tar.gz", hash = "sha256:963a56aed17cf0fcbcac3995daf61dd75b8d68d8358b144003d79cf17dce16fe"},
+]
+
+[[package]]
+name = "bioio-base"
+version = "3.0.0"
+requires_python = ">=3.10"
+summary = "Typing, base classes, and more for BioIO projects."
+groups = ["default"]
+dependencies = [
+    "dask[array,distributed]!=2022.5.1,>=2021.4.1",
+    "fsspec!=2022.7.0,>=2021.4.0",
+    "numpy>=1.21.0",
+    "ome-types>=0.2",
+    "xarray>=2022.6.0",
+]
+files = [
+    {file = "bioio_base-3.0.0-py3-none-any.whl", hash = "sha256:278f44aa79bbd50217521d8a4347716d5b07123f892ba7b7d1a6709c86021724"},
+    {file = "bioio_base-3.0.0.tar.gz", hash = "sha256:47ba5aa50b9c068116b0b505f8c5816c346fc7ad1c65116052c6a734e662d680"},
+]
+
+[[package]]
+name = "bioio-ome-zarr"
+version = "1.2.0"
+requires_python = ">=3.10"
+summary = "A BioIO reader plugin for reading Zarr files in the OME format."
+groups = ["default"]
+dependencies = [
+    "bioio-base>=1.0.0",
+    "fsspec>=2022.8.0",
+    "ome-zarr>=0.9.0",
+    "xarray>=0.16.1",
+    "zarr>=2.18.2",
+]
+files = [
+    {file = "bioio_ome_zarr-1.2.0-py3-none-any.whl", hash = "sha256:f4bb66ab89f8e2be5b00fbf0a1dcd7eccad527d5c8820007c94c26287558f9bb"},
+    {file = "bioio_ome_zarr-1.2.0.tar.gz", hash = "sha256:dd517effdc9b945813fa82b1a867b9a936dc3ff4706719045bab10ea5179221d"},
 ]
 
 [[package]]
@@ -754,13 +790,13 @@ dependencies = [
 
 [[package]]
 name = "dask"
-version = "2024.8.0"
-requires_python = ">=3.9"
+version = "2025.11.0"
+requires_python = ">=3.10"
 summary = "Parallel PyData with Task Scheduling"
 groups = ["default"]
 dependencies = [
     "click>=8.1",
-    "cloudpickle>=1.5.0",
+    "cloudpickle>=3.0.0",
     "fsspec>=2021.09.0",
     "importlib-metadata>=4.13.0; python_version < \"3.12\"",
     "packaging>=20.0",
@@ -769,24 +805,41 @@ dependencies = [
     "toolz>=0.10.0",
 ]
 files = [
-    {file = "dask-2024.8.0-py3-none-any.whl", hash = "sha256:250ea3df30d4a25958290eec4f252850091c6cfaed82d098179c3b25bba18309"},
-    {file = "dask-2024.8.0.tar.gz", hash = "sha256:f1fec39373d2f101bc045529ad4e9b30e34e6eb33b7aa0fa7073aec7b1bf9eee"},
+    {file = "dask-2025.11.0-py3-none-any.whl", hash = "sha256:08c35a8146c05c93b34f83cf651009129c42ee71762da7ca452fb7308641c2b8"},
+    {file = "dask-2025.11.0.tar.gz", hash = "sha256:23d59e624b80ee05b7cc8df858682cca58262c4c3b197ccf61da0f6543c8f7c3"},
 ]
 
 [[package]]
 name = "dask"
-version = "2024.8.0"
-extras = ["array"]
-requires_python = ">=3.9"
+version = "2025.11.0"
+extras = ["array", "distributed"]
+requires_python = ">=3.10"
 summary = "Parallel PyData with Task Scheduling"
 groups = ["default"]
 dependencies = [
-    "dask==2024.8.0",
-    "numpy>=1.21",
+    "dask==2025.11.0",
+    "distributed==2025.11.0",
+    "numpy>=1.24",
 ]
 files = [
-    {file = "dask-2024.8.0-py3-none-any.whl", hash = "sha256:250ea3df30d4a25958290eec4f252850091c6cfaed82d098179c3b25bba18309"},
-    {file = "dask-2024.8.0.tar.gz", hash = "sha256:f1fec39373d2f101bc045529ad4e9b30e34e6eb33b7aa0fa7073aec7b1bf9eee"},
+    {file = "dask-2025.11.0-py3-none-any.whl", hash = "sha256:08c35a8146c05c93b34f83cf651009129c42ee71762da7ca452fb7308641c2b8"},
+    {file = "dask-2025.11.0.tar.gz", hash = "sha256:23d59e624b80ee05b7cc8df858682cca58262c4c3b197ccf61da0f6543c8f7c3"},
+]
+
+[[package]]
+name = "dask"
+version = "2025.11.0"
+extras = ["array"]
+requires_python = ">=3.10"
+summary = "Parallel PyData with Task Scheduling"
+groups = ["default"]
+dependencies = [
+    "dask==2025.11.0",
+    "numpy>=1.24",
+]
+files = [
+    {file = "dask-2025.11.0-py3-none-any.whl", hash = "sha256:08c35a8146c05c93b34f83cf651009129c42ee71762da7ca452fb7308641c2b8"},
+    {file = "dask-2025.11.0.tar.gz", hash = "sha256:23d59e624b80ee05b7cc8df858682cca58262c4c3b197ccf61da0f6543c8f7c3"},
 ]
 
 [[package]]
@@ -849,30 +902,30 @@ files = [
 
 [[package]]
 name = "distributed"
-version = "2024.8.0"
-requires_python = ">=3.9"
+version = "2025.11.0"
+requires_python = ">=3.10"
 summary = "Distributed scheduler for Dask"
 groups = ["default"]
 dependencies = [
     "click>=8.0",
-    "cloudpickle>=1.5.0",
-    "dask==2024.8.0",
+    "cloudpickle>=3.0.0",
+    "dask==2025.11.0",
     "jinja2>=2.10.3",
     "locket>=1.0.0",
-    "msgpack>=1.0.0",
+    "msgpack>=1.0.2",
     "packaging>=20.0",
-    "psutil>=5.7.2",
-    "pyyaml>=5.3.1",
+    "psutil>=5.8.0",
+    "pyyaml>=5.4.1",
     "sortedcontainers>=2.0.5",
     "tblib>=1.6.0",
-    "toolz>=0.10.0",
-    "tornado>=6.0.4",
-    "urllib3>=1.24.3",
+    "toolz>=0.11.2",
+    "tornado>=6.2.0",
+    "urllib3>=1.26.5",
     "zict>=3.0.0",
 ]
 files = [
-    {file = "distributed-2024.8.0-py3-none-any.whl", hash = "sha256:11af55d22dd6e04eb868b87f166b8f59ef1b300f659f87c016643b7f98280ec6"},
-    {file = "distributed-2024.8.0.tar.gz", hash = "sha256:b99caf0a7f257f59477a70a334e081c1241f7cd9860211cc669742e6450e1310"},
+    {file = "distributed-2025.11.0-py3-none-any.whl", hash = "sha256:1794ff25b19ba347ccce563fb1dd5898c3bb30f500b15f8c20ad373f6281b30f"},
+    {file = "distributed-2025.11.0.tar.gz", hash = "sha256:372c2f0c2faa890fc42188349969ba468161a9b356df49c4ca7d9a8d551a7ace"},
 ]
 
 [[package]]
@@ -993,6 +1046,7 @@ version = "0.19"
 requires_python = ">=3.6"
 summary = "A python package that provides useful locks"
 groups = ["default"]
+marker = "sys_platform != \"emscripten\""
 files = [
     {file = "fasteners-0.19-py3-none-any.whl", hash = "sha256:758819cb5d94cdedf4e836988b74de396ceacb8e2794d21f82d131fd9ee77237"},
     {file = "fasteners-0.19.tar.gz", hash = "sha256:b4f37c3ac52d8a445af3a66bce57b33b5e90b97c696b7b984f530cf8f0ded09c"},
@@ -3907,19 +3961,19 @@ files = [
 
 [[package]]
 name = "zarr"
-version = "2.15.0"
-requires_python = ">=3.8"
+version = "2.18.3"
+requires_python = ">=3.10"
 summary = "An implementation of chunked, compressed, N-dimensional arrays for Python"
 groups = ["default"]
 dependencies = [
     "asciitree",
-    "fasteners",
+    "fasteners; sys_platform != \"emscripten\"",
     "numcodecs>=0.10.0",
-    "numpy>=1.20",
+    "numpy>=1.24",
 ]
 files = [
-    {file = "zarr-2.15.0-py3-none-any.whl", hash = "sha256:7296b9f42cdc9096c5349527e71492c1b05ed5464027bfa5d008339796d00b9f"},
-    {file = "zarr-2.15.0.tar.gz", hash = "sha256:3894001c0bb5d68d3d21a0562cc49e6ba14fee7d17ad2be8d088ab301665a4c6"},
+    {file = "zarr-2.18.3-py3-none-any.whl", hash = "sha256:b1f7dfd2496f436745cdd4c7bcf8d3b4bc1dceef5fdd0d589c87130d842496dd"},
+    {file = "zarr-2.18.3.tar.gz", hash = "sha256:2580d8cb6dd84621771a10d31c4d777dca8a27706a1a89b29f42d2d37e2df5ce"},
 ]
 
 [[package]]
