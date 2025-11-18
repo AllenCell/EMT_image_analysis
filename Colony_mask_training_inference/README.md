@@ -20,7 +20,6 @@ Then, use the following steps to create a new virtual environment and install th
    conda activate emt-acm-env
    cd Colony_mask_training_inference
    pip install .
-   pip install bioio-ome-zarr
    ```
 
 
