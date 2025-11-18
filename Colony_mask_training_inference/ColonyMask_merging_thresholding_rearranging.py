@@ -21,7 +21,7 @@ import pandas as pd
 import random
 from skimage.filters import threshold_otsu
 from aicsimageio import AICSImage
-from aicsimageio.writers.ome_tiff_writer import OmeTiffWriter
+#from aicsimageio.writers.ome_tiff_writer import OmeTiffWriter
 from tifffile import imsave
 import matplotlib.pyplot as plt
 
