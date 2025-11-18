@@ -14,7 +14,6 @@ Then, use the following steps to create a new virtual environment and install th
    python -m venv .venv
    source .venv/bin/activate
    pip install .
-   pip install bioio-ome-zarr
    ```
 4. Alternatively use Conda package manager to create a virtual environment with python 3.10
    ```
