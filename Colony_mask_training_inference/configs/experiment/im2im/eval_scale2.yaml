@@ -21,7 +21,7 @@ target_col: seg
 spatial_dims: 3
 raw_im_channels: 1
 checkpoint:
-  ckpt_path: ${paths.data_dir}/all_cells_mask_seg_model_checkpoint.ckpt
+  ckpt_path: ${paths.root_dir}/data/all_cells_mask_seg_model_checkpoint.ckpt
 trainer:
   max_epochs: 1000
   devices: [0]
@@ -31,7 +31,7 @@ model:
   save_dir: ${paths.data_dir}/infer_movie_multiscale_patch2
 
 data:
-  csv_path: ${paths.data_dir}/predict_all_cells_mask_zarr_aws_v0.csv #path to csv containing test movies
+  csv_path: ${paths.data_dir}/predict.csv #path to csv containing test movies
   #batch_size: 1
   _aux: 
     patch_shape: [16, 256, 256]
