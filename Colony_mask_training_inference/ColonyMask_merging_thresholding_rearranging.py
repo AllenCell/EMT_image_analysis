@@ -1,29 +1,65 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.14.0
-#   kernelspec:
-#     display_name: validomiX
-#     language: python
-#     name: validomix
-# ---
-
-import os
-import shutil
-import numpy as np
+import argparse
 import glob
-import itertools
-import pandas as pd
-import random
-from skimage.filters import threshold_otsu
+import os
+import numpy as np
+
 from bioio import BioImage
-#from aicsimageio.writers.ome_tiff_writer import OmeTiffWriter
+from skimage.filters import threshold_otsu
 from tifffile import imwrite
-import matplotlib.pyplot as plt
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--outputdir", required=True)
+    outputdir = parser.parse_args().outputdir.rstrip("/")
+    dir_path = outputdir + "/runtime_data/infer_movie_multiscale_patch2/seg/*tif"
+    path_512 = outputdir + "/runtime_data/infer_movie_multiscale_patch3/seg/"
+    path_128 = outputdir + "/runtime_data/infer_movie_multiscale_patch1/seg/"
+    targetname = outputdir + "/output/"
+
+    for filename in glob.glob(dir_path):
+        # Directory prep
+        print(filename.split('/')[-1])
+        imgname = filename.split('/')[-1]
+        #id_temp = imgname.split('fms_id=')[1]
+        #fms_id = id_temp.split('_')[0]
+        fms_id = imgname.split('_')[0] + '_' + imgname.split('_')[1]
+        print(fms_id)
+        fms_id_dir_path = targetname + fms_id 
+        if not os.path.exists(fms_id_dir_path):
+            os.makedirs(fms_id_dir_path)
+        targetfilename = fms_id_dir_path + '/' + imgname
+        # Image operations
+        reader = BioImage(filename) 
+        IMG = reader.data
+        IMG = IMG[0]
+        print(IMG.shape)
+        struct_img0 = IMG[0,:,:,:]
+        struct_img1 = MyconvertFloatToChar(struct_img0)
+        thre = threshold_otsu(struct_img1)
+        bw = struct_img1 > thre
+        
+        img_512_path = path_512 + imgname
+        img_512 = BioImage(img_512_path).data
+        img_512 = img_512[0]
+        struct_img0_512 = img_512[0,:,:,:]
+        struct_img1_512 = MyconvertFloatToChar(struct_img0_512)
+        thre_512 = threshold_otsu(struct_img1_512)
+        bw_512 = struct_img1_512 > thre_512
+        
+        img_128_path = path_128 + imgname
+        img_128 = BioImage(img_128_path).data
+        img_128 = img_128[0]
+        struct_img0_128 = img_128[0,:,:,:]
+        struct_img1_128 = MyconvertFloatToChar(struct_img0_128)
+        thre_128 = threshold_otsu(struct_img1_128)
+        bw_128 = struct_img1_128 > thre_128
+        
+        bw_all = bw + bw_128 + bw_512
+        
+        out=bw_all.astype(np.uint8)
+        out[out>0] = 255
+        imwrite(targetfilename, out)
 
 
 def MyconvertFloatToChar(img):
@@ -39,51 +75,5 @@ def MyconvertFloatToChar(img):
     return img.astype(np.uint8)
 
 
-dir_path = "./data/infer_movie_multiscale_patch2/seg/*tif"
-path_512 = "./data/infer_movie_multiscale_patch3/seg/"
-path_128 = "./data/infer_movie_multiscale_patch1/seg/"
-targetname = "./data/multiscale_all_cells_mask_v0/"
-
-for filename in glob.glob(dir_path):
-    # Directory prep
-    print(filename.split('/')[-1])
-    imgname = filename.split('/')[-1]
-    #id_temp = imgname.split('fms_id=')[1]
-    #fms_id = id_temp.split('_')[0]
-    fms_id = imgname.split('_')[0] + '_' + imgname.split('_')[1]
-    print(fms_id)
-    fms_id_dir_path = targetname + fms_id 
-    if not os.path.exists(fms_id_dir_path):
-        os.makedirs(fms_id_dir_path)
-    targetfilename = fms_id_dir_path + '/' + imgname
-    # Image operations
-    reader = BioImage(filename) 
-    IMG = reader.data
-    IMG = IMG[0]
-    print(IMG.shape)
-    struct_img0 = IMG[0,:,:,:]
-    struct_img1 = MyconvertFloatToChar(struct_img0)
-    thre = threshold_otsu(struct_img1)
-    bw = struct_img1 > thre
-    
-    img_512_path = path_512 + imgname
-    img_512 = BioImage(img_512_path).data
-    img_512 = img_512[0]
-    struct_img0_512 = img_512[0,:,:,:]
-    struct_img1_512 = MyconvertFloatToChar(struct_img0_512)
-    thre_512 = threshold_otsu(struct_img1_512)
-    bw_512 = struct_img1_512 > thre_512
-    
-    img_128_path = path_128 + imgname
-    img_128 = BioImage(img_128_path).data
-    img_128 = img_128[0]
-    struct_img0_128 = img_128[0,:,:,:]
-    struct_img1_128 = MyconvertFloatToChar(struct_img0_128)
-    thre_128 = threshold_otsu(struct_img1_128)
-    bw_128 = struct_img1_128 > thre_128
-    
-    bw_all = bw + bw_128 + bw_512
-    
-    out=bw_all.astype(np.uint8)
-    out[out>0] = 255
-    imwrite(targetfilename, out)
+if __name__ == "__main__":
+    main()
