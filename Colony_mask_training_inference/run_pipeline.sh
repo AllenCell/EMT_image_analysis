@@ -1,4 +1,8 @@
 #!/bin/bash
+#SBATCH --partition aics_gpu
+#SBATCH --gres gpu:v100:1
+#SBATCH --time 150
+#SBATCH --mem 64Gb
 
 source .venv/bin/activate
 # first arg is the output directory, second arg is the source file path
