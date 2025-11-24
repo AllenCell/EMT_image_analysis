@@ -18,7 +18,11 @@ echo "0,$2,0" >> "$1/runtime_data/predict.csv"
 
 export CYTODL_CONFIG_PATH=$PWD/configs
 export HOME=/home/daniel.saelid
-# explain if works
+
+# this hydra override syntax is a little crazy:
+# in order to pass special characters to a hydra CLI override, you need syntax like 'paths.data_dir="some spaces(!)"'
+# the string (possibly) containing special characters is an arg to this script, and args can't be used within single quotes
+# so, we concatenate by ending the single quote string, inserting a double quote string with the arg, then continuing the single quote string
 python -m cyto_dl.eval experiment=im2im/eval_scale1.yaml 'paths.data_dir="'"$1"'/runtime_data"' 'paths.log_dir="'"$1"'/runtime_data/cyto_dl_logs"'
 python -m cyto_dl.eval experiment=im2im/eval_scale2.yaml 'paths.data_dir="'"$1"'/runtime_data"' 'paths.log_dir="'"$1"'/runtime_data/cyto_dl_logs"'
 python -m cyto_dl.eval experiment=im2im/eval_scale3.yaml 'paths.data_dir="'"$1"'/runtime_data"' 'paths.log_dir="'"$1"'/runtime_data/cyto_dl_logs"'
