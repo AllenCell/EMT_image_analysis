@@ -17,7 +17,7 @@ def main():
     path_512 = output_dir / "runtime_data/infer_movie_multiscale_patch3/seg"
     # final location for merged masks
     merged_dir = output_dir / "output"
-    merged_dir.mkdir(parents=True)
+    merged_dir.mkdir(parents=True, exist_ok=True)
 
     for file in path_128.glob('*.tif'):
         target_file = merged_dir / file.name
