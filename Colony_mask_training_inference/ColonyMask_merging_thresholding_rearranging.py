@@ -2,6 +2,7 @@ import argparse
 import numpy as np
 
 from bioio import BioImage
+from locking_csv_writer import append_to_csv_manifest
 from pathlib import Path
 from skimage.filters import threshold_otsu
 from tifffile import imwrite
@@ -10,7 +11,10 @@ from tifffile import imwrite
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--outputdir", required=True)
-    output_dir = Path(parser.parse_args().outputdir)
+    parser.add_argument("--csvmanifest", required=False)
+    args = parser.parse_args()
+    output_dir = Path(args.outputdir)
+    csv_manifest = Path(args.csvmanifest) if args.csvmanifest else None
     # directories containing segmentations for different patch sizes
     path_128 = output_dir / "runtime_data/infer_movie_multiscale_patch1/seg"
     path_256 = output_dir / "runtime_data/infer_movie_multiscale_patch2/seg"
@@ -32,6 +36,9 @@ def main():
         out = bw_all.astype(np.uint8)
         out[out > 0] = 255
         imwrite(target_file, out)
+        if csv_manifest:
+            # name of the output directory is the name of the source file being put through ACM
+            append_to_csv_manifest(csv_manifest, [target_file.absolute(), target_file.name, output_dir.name])
 
 
 def create_bw_image(img_path):
