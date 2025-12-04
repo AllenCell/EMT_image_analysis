@@ -14,7 +14,7 @@ mkdir "$1/output"
 
 # generate csv to use as input
 echo "count,movie_path,bf_channel" > "$1/runtime_data/predict.csv"
-echo '0,'"$2"',0' >> "$1/runtime_data/predict.csv"
+echo '0,"'"$2"'",0' >> "$1/runtime_data/predict.csv"
 
 export CYTODL_CONFIG_PATH=$PWD/configs
 export HOME=/home/daniel.saelid

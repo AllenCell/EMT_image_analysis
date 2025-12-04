@@ -14,7 +14,7 @@ def main():
     parser.add_argument("--filename", required=True)
     parser.add_argument("--parentfilename", required=True)
     args = parser.parse_args()
-    append_to_csv_manifest(args.csvpath, args.csvcolumns)
+    append_to_csv_manifest(args.csvpath, args.filepath, args.filename, args.parentfilename)
 
 
 def append_to_csv_manifest(csv_manifest, file_path, file_name, parent_file_name):
