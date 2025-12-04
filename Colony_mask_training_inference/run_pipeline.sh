@@ -13,14 +13,14 @@ mkdir "$1/runtime_data/cyto_dl_logs"
 mkdir "$1/output"
 
 # generate csv to use as input
-python locking_csv_writer.py "$1/runtime_data/predict.csv" count movie_path bf_channel
-python locking_csv_writer.py "$1/runtime_data/predict.csv" 0 "$2" 0
+echo "count,movie_path,bf_channel" > "$1/runtime_data/predict.csv"
+echo '0,'"$2"',0' >> "$1/runtime_data/predict.csv"
 
 export CYTODL_CONFIG_PATH=$PWD/configs
 export HOME=/home/daniel.saelid
 
 # write the source file row to the csv manifest
-python locking_csv_writer.py "$4" "$2" "$3" "" 
+python locking_manifest_writer.py "$4" --filepath "$2" --filename "$3" --parentfilename "" 
 
 # this hydra override syntax is a little crazy:
 # in order to pass special characters to a hydra CLI override, you need syntax like 'paths.data_dir="some spaces(!)"'
@@ -30,4 +30,4 @@ python -m cyto_dl.eval experiment=im2im/eval_scale1.yaml 'paths.data_dir="'"$1"'
 python -m cyto_dl.eval experiment=im2im/eval_scale2.yaml 'paths.data_dir="'"$1"'/runtime_data"' 'paths.log_dir="'"$1"'/runtime_data/cyto_dl_logs"'
 python -m cyto_dl.eval experiment=im2im/eval_scale3.yaml 'paths.data_dir="'"$1"'/runtime_data"' 'paths.log_dir="'"$1"'/runtime_data/cyto_dl_logs"'
 
-python ColonyMask_merging_thresholding_rearranging.py --outputdir="$1"
+python ColonyMask_merging_thresholding_rearranging.py --outputdir="$1" --csvmanifest="$4"

@@ -2,7 +2,7 @@ import argparse
 import numpy as np
 
 from bioio import BioImage
-from locking_csv_writer import append_to_csv_manifest
+from locking_manifest_writer import append_to_csv_manifest
 from pathlib import Path
 from skimage.filters import threshold_otsu
 from tifffile import imwrite
@@ -38,7 +38,7 @@ def main():
         imwrite(target_file, out)
         if csv_manifest:
             # name of the output directory is the name of the source file being put through ACM
-            append_to_csv_manifest(csv_manifest, [target_file.absolute(), target_file.name, output_dir.name])
+            append_to_csv_manifest(csv_manifest, target_file.absolute(), target_file.name, output_dir.name)
 
 
 def create_bw_image(img_path):
