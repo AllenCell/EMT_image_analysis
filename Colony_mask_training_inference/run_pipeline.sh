@@ -1,8 +1,4 @@
 #!/bin/bash
-#SBATCH --partition aics_gpu
-#SBATCH --gres gpu:v100:1
-#SBATCH --time 150
-#SBATCH --mem 64Gb
 
 source .venv/bin/activate
 # first arg is the output directory, second arg is the source file path, third arg is source file name, fourth arg is csv manifest path
@@ -17,7 +13,6 @@ echo "count,movie_path,bf_channel" > "$1/runtime_data/predict.csv"
 echo '0,"'"$2"'",0' >> "$1/runtime_data/predict.csv"
 
 export CYTODL_CONFIG_PATH=$PWD/configs
-export HOME=/home/daniel.saelid
 
 # write the source file row to the csv manifest
 python locking_manifest_writer.py "$4" --filepath "$2" --filename "$3" --parentfilename "" 
