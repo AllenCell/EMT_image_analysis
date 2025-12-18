@@ -15,12 +15,8 @@ echo '0,"'"$2"'",0' >> "$1/runtime_data/predict.csv"
 
 export CYTODL_CONFIG_PATH="$PWD/configs"
 # required for apptainer to use GCC
-if [ -n "$LD_LIBRARY_PATH" ]; then
-    if [ -z "$LIBRARY_PATH" ]; then
-        export LIBRARY_PATH="$LD_LIBRARY_PATH"
-    else
-        export LIBRARY_PATH="$LIBRARY_PATH:$LD_LIBRARY_PATH"
-    fi
+if [ "$LD_LIBRARY_PATH" == "/.singularity.d/libs" ]; then
+    export LIBRARY_PATH="$LD_LIBRARY_PATH"
 fi
 
 # write the source file row to the csv manifest
