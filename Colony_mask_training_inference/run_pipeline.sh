@@ -13,7 +13,15 @@ mkdir "$1/output"
 echo "count,movie_path,bf_channel" > "$1/runtime_data/predict.csv"
 echo '0,"'"$2"'",0' >> "$1/runtime_data/predict.csv"
 
-export CYTODL_CONFIG_PATH=$PWD/configs
+export CYTODL_CONFIG_PATH="$PWD/configs"
+# required for apptainer to use GCC
+if [ -n "$LD_LIBRARY_PATH" ]; then
+    if [ -z "$LIBRARY_PATH" ]; then
+        export LIBRARY_PATH="$LD_LIBRARY_PATH"
+    else
+        export LIBRARY_PATH="$LIBRARY_PATH:$LD_LIBRARY_PATH"
+    fi
+fi
 
 # write the source file row to the csv manifest
 python locking_manifest_writer.py "$4" --filepath "$2" --filename "$3" --parentfilename "" 
