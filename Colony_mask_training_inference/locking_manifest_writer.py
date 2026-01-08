@@ -4,7 +4,8 @@ import fcntl
 import os
 
 
-MANIFEST_COLUMNS = ['File Path', 'File Name', 'Parent File Name']
+AICS_VAST_PREFIX = "/allen/aics"
+MANIFEST_COLUMNS = ['File Path', 'File URL', 'File Name', 'Parent File Name']
 
 
 def main():
@@ -25,11 +26,18 @@ def append_to_csv_manifest(csv_manifest, file_path, file_name, parent_file_name)
             writer = csv.writer(f)
             if size == 0:
                 writer.writerow(MANIFEST_COLUMNS)
-            writer.writerow([file_path, file_name, parent_file_name])
+            writer.writerow([file_path, file_path_to_url(file_path), file_name, parent_file_name])
         except:
             print(f"failed to write csv row for {csv_manifest}")
         finally:
             fcntl.flock(f, fcntl.LOCK_UN)
+
+
+def file_path_to_url(file_path):
+    if file_path.startswith(AICS_VAST_PREFIX):
+        return file_path.replace(AICS_VAST_PREFIX, "https://vast-files.int.allencell.org")
+    else:
+        return ""
 
 
 if __name__ == '__main__':
