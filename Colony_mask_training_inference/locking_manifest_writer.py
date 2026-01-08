@@ -27,8 +27,8 @@ def append_to_csv_manifest(csv_manifest, file_path, file_name, parent_file_name)
             if size == 0:
                 writer.writerow(MANIFEST_COLUMNS)
             writer.writerow([file_path, file_path_to_url(file_path), file_name, parent_file_name])
-        except:
-            print(f"failed to write csv row for {csv_manifest}")
+        except Exception as e:
+            print(f"failed to write csv row for {csv_manifest} with {e}")
         finally:
             fcntl.flock(f, fcntl.LOCK_UN)
 
