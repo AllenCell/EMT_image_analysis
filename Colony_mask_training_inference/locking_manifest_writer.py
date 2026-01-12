@@ -5,6 +5,7 @@ import os
 
 
 AICS_VAST_PREFIX = "/allen/aics"
+FMS_CACHE_VAST_PREFIX = "/allen/programs/allencell/data/proj0"
 MANIFEST_COLUMNS = ['File Path', 'VAST Path', 'File Name', 'Parent File Name']
 
 
@@ -36,8 +37,10 @@ def append_to_csv_manifest(csv_manifest, file_path, file_name, parent_file_name)
 def file_path_to_url(file_path):
     if file_path.startswith(AICS_VAST_PREFIX):
         return file_path.replace(AICS_VAST_PREFIX, "https://vast-files.int.allencell.org")
+    elif file_path.startswith(FMS_CACHE_VAST_PREFIX):
+        return file_path.replace(FMS_CACHE_VAST_PREFIX, "https://s3.us-west-2.amazonaws.com/production.files.allencell.org")
     else:
-        return file_path
+        return "N/A"
 
 
 if __name__ == '__main__':
