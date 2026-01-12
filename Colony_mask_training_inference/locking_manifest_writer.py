@@ -37,7 +37,7 @@ def file_path_to_url(file_path):
     if file_path.startswith(AICS_VAST_PREFIX):
         return file_path.replace(AICS_VAST_PREFIX, "https://vast-files.int.allencell.org")
     else:
-        return ""
+        return file_path
 
 
 if __name__ == '__main__':
