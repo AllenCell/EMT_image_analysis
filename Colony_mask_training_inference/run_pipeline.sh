@@ -1,17 +1,25 @@
 #!/bin/bash
-set -e
+# args:
+#   $1: output directory
+#   $2: source file path
+#   $3: source file name
+#   $4: csv manifest path (may be accessed by multiple processes)
+#   $5: brightfield channel
 
+set -e
 source .venv/bin/activate
-# first arg is the output directory, second arg is the source file path, third arg is source file name, fourth arg is csv manifest path
-# note that quotes are used extensively to avoid issues with spaces/special chars in file paths
+
+# note that throughout this script, quotes are used extensively to avoid issues with spaces/special chars in file paths
+
+# create output dir structure
 mkdir -p "$1"
 mkdir "$1/runtime_data"
 mkdir "$1/runtime_data/cyto_dl_logs"
 mkdir "$1/output"
 
-# generate csv to use as input
-echo "count,movie_path,bf_channel" > "$1/runtime_data/predict.csv"
-echo '0,"'"$2"'",0' >> "$1/runtime_data/predict.csv"
+# generate csv to use as input for cyto-dl
+echo "movie_path,bf_channel" > "$1/runtime_data/predict.csv"
+echo '"'"$2"'",'"$5" >> "$1/runtime_data/predict.csv"
 
 export CYTODL_CONFIG_PATH="$PWD/configs"
 # required for apptainer to use GCC
