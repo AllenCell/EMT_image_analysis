@@ -2,7 +2,7 @@
 #SBATCH --partition aics_gpu
 #SBATCH --gres gpu:v100:1
 #SBATCH --time 150
-#SBATCH --mem 64Gb
+#SBATCH --mem 48Gb
 
 # this script should be used with sbatch (it is a workaround for the slurm API being unable to request GPUs)
 
